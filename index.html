@@ -310,10 +310,46 @@
       max-width: 60ch;
     }
 
-    .evolution-grid {
+    .evolution-groups {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .evolution-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    .evolution-group-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .evolution-group-head h3 {
+      font-size: 18px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    .evolution-group-head span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .evolution-carousel {
+      display: grid;
       gap: 14px;
+    }
+
+    .evolution-carousel.three-up {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .evolution-carousel.two-up {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .evolution-card {
@@ -327,6 +363,7 @@
     }
 
     .evolution-card-thumb {
+      aspect-ratio: 3 / 4;
       border-radius: 20px;
       overflow: hidden;
       background: linear-gradient(180deg, rgba(239, 246, 255, 0.92), rgba(222, 235, 255, 0.9));
@@ -343,7 +380,9 @@
     .result-poster-art img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
     }
 
     .evolution-card-range {
@@ -1102,7 +1141,6 @@
     }
 
     @media (max-width: 900px) {
-      .evolution-grid,
       .result-hero,
       .analysis-grid {
         grid-template-columns: 1fr;
@@ -1186,10 +1224,6 @@
         font-size: 14px;
       }
 
-      .evolution-grid {
-        gap: 12px;
-      }
-
       .evolution-card {
         grid-template-columns: 112px 1fr;
         align-items: center;
@@ -1217,6 +1251,25 @@
       .button-hero {
         min-width: 100%;
         border-radius: 16px;
+      }
+
+      .evolution-group-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .evolution-carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+      }
+
+      .evolution-carousel .evolution-card {
+        min-width: min(78vw, 270px);
+        flex: 0 0 auto;
+        scroll-snap-align: start;
       }
 
       .intro-actions {
@@ -1276,6 +1329,10 @@
       .evolution-card {
         grid-template-columns: 1fr;
       }
+
+      .evolution-card-thumb {
+        aspect-ratio: 3 / 4;
+      }
     }
   </style>
 </head>
@@ -1307,47 +1364,64 @@
           </p>
         </div>
 
-        <div class="evolution-grid">
-          <article class="evolution-card">
-            <div class="evolution-card-thumb" id="stageThumb1"></div>
-            <div>
-              <span class="evolution-card-range">0-40점</span>
-              <h3>땅에서 겨우 일어나는 네안데르탈인</h3>
-              <p>AI를 아직 낯선 존재처럼 대하는 단계입니다.</p>
+        <div class="evolution-groups">
+          <section class="evolution-group">
+            <div class="evolution-group-head">
+              <h3>원시형 진화 3단 캐러셀</h3>
+              <span>Neanderthal → Early Sapiens → Tool User</span>
             </div>
-          </article>
-          <article class="evolution-card">
-            <div class="evolution-card-thumb" id="stageThumb2"></div>
-            <div>
-              <span class="evolution-card-range">41-60점</span>
-              <h3>갓 진화를 시작한 호모 사피엔스</h3>
-              <p>AI를 도구로 보기 시작했지만, 아직 운영보다는 감각에 기대는 구간입니다.</p>
+            <div class="evolution-carousel three-up">
+              <article class="evolution-card">
+                <div class="evolution-card-thumb" id="stageThumb1"></div>
+                <div>
+                  <span class="evolution-card-range">0-40점</span>
+                  <h3>땅에서 겨우 일어나는 네안데르탈인</h3>
+                  <p>AI를 아직 낯선 존재처럼 대하는 단계입니다.</p>
+                </div>
+              </article>
+              <article class="evolution-card">
+                <div class="evolution-card-thumb" id="stageThumb2"></div>
+                <div>
+                  <span class="evolution-card-range">41-60점</span>
+                  <h3>갓 진화를 시작한 호모 사피엔스</h3>
+                  <p>AI를 도구로 보기 시작했지만, 아직 운영보다는 감각에 기대는 구간입니다.</p>
+                </div>
+              </article>
+              <article class="evolution-card">
+                <div class="evolution-card-thumb" id="stageThumb3"></div>
+                <div>
+                  <span class="evolution-card-range">61-80점</span>
+                  <h3>도끼를 쓰는 호모 사피엔스사피엔스</h3>
+                  <p>질문을 구조화하고, 작업을 시키고, 다시 고치는 흐름이 생긴 단계입니다.</p>
+                </div>
+              </article>
             </div>
-          </article>
-          <article class="evolution-card">
-            <div class="evolution-card-thumb" id="stageThumb3"></div>
-            <div>
-              <span class="evolution-card-range">61-80점</span>
-              <h3>도끼를 쓰는 호모 사피엔스사피엔스</h3>
-              <p>질문을 구조화하고, 작업을 시키고, 다시 고치는 흐름이 생긴 단계입니다.</p>
+          </section>
+
+          <section class="evolution-group">
+            <div class="evolution-group-head">
+              <h3>현대형 진화 2단 캐러셀</h3>
+              <span>Computer User → AI Native</span>
             </div>
-          </article>
-          <article class="evolution-card">
-            <div class="evolution-card-thumb" id="stageThumb4"></div>
-            <div>
-              <span class="evolution-card-range">81-95점</span>
-              <h3>컴퓨터를 쓰는 인간</h3>
-              <p>까만 목티와 청바지를 입고, AI를 실무 시스템처럼 다루는 상위권 사용자입니다.</p>
+            <div class="evolution-carousel two-up">
+              <article class="evolution-card">
+                <div class="evolution-card-thumb" id="stageThumb4"></div>
+                <div>
+                  <span class="evolution-card-range">81-95점</span>
+                  <h3>컴퓨터를 쓰는 인간</h3>
+                  <p>까만 목티와 청바지를 입고, AI를 실무 시스템처럼 다루는 상위권 사용자입니다.</p>
+                </div>
+              </article>
+              <article class="evolution-card">
+                <div class="evolution-card-thumb" id="stageThumb5"></div>
+                <div>
+                  <span class="evolution-card-range">96-100점</span>
+                  <h3>AI 글라스를 끼고 있는 AI Native</h3>
+                  <p>무지개색 안경처럼 AI를 자연스러운 인지 확장으로 다루는 최상위 단계입니다.</p>
+                </div>
+              </article>
             </div>
-          </article>
-          <article class="evolution-card">
-            <div class="evolution-card-thumb" id="stageThumb5"></div>
-            <div>
-              <span class="evolution-card-range">96-100점</span>
-              <h3>AI 글라스를 끼고 있는 AI Native</h3>
-              <p>무지개색 안경처럼 AI를 자연스러운 인지 확장으로 다루는 최상위 단계입니다.</p>
-            </div>
-          </article>
+          </section>
         </div>
 
         <div class="intro-actions">
