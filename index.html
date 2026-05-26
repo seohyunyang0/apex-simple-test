@@ -339,6 +339,13 @@
       height: auto;
     }
 
+    .evolution-card-thumb img,
+    .result-poster-art img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     .evolution-card-range {
       display: inline-flex;
       width: fit-content;
@@ -2406,6 +2413,18 @@
       `;
     }
 
+    function getProfileAsset(profile) {
+      const assets = {
+        neanderthal: "assets/evolution/stage-1.png",
+        sapiens: "assets/evolution/stage-2.png",
+        toolmaker: "assets/evolution/stage-3.png",
+        operator: "assets/evolution/stage-4.png",
+        native: "assets/evolution/stage-5.png"
+      };
+
+      return assets[profile.key] || assets.native;
+    }
+
     function buildResultDetail(profile, total, snapshot) {
       return `
         <p>${escapeHtml(profile.detail)}</p>
@@ -2428,7 +2447,7 @@
         }
 
         const profile = getTierProfile(score);
-        target.innerHTML = buildResultPoster(profile, score, 50, { compact: true });
+        target.innerHTML = `<img src="${getProfileAsset(profile)}" alt="${escapeHtml(profile.name)}" loading="lazy" />`;
       });
     }
 
@@ -2468,7 +2487,7 @@
       els.scoreGaugeValue.textContent = `${roundedTotal} / 100`;
       els.scoreGaugeFill.style.width = `${roundedTotal}%`;
       els.scoreGaugeMarker.style.left = `${gaugePosition}%`;
-      els.resultPosterArt.innerHTML = buildResultPoster(profile, total, percentile);
+      els.resultPosterArt.innerHTML = `<img src="${getProfileAsset(profile)}" alt="${escapeHtml(profile.name)}" />`;
       els.resultDetail.innerHTML = buildResultDetail(profile, total, snapshot);
 
       els.rail1.style.width = `${(part1 / 20) * 100}%`;
