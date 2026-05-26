@@ -1336,74 +1336,6 @@
     </section>
 
     <section class="stack">
-      <section class="panel screen intro-panel" id="introPanel">
-        <div class="intro-head">
-          <span class="eyebrow">5 Stages Preview</span>
-          <h2>5단계 진화지도 미리보기</h2>
-          <p>
-            결과는 아래 5개 구간 중 하나로 표현됩니다. 지금은 기준을 먼저 보고, 다음 버튼을 누르면 바로 테스트가 시작됩니다.
-          </p>
-        </div>
-
-        <div class="evolution-groups">
-          <section class="evolution-group">
-            <div class="evolution-carousel three-up">
-              <article class="evolution-card">
-                <div class="evolution-card-thumb" id="stageThumb1"></div>
-                <div>
-                  <span class="evolution-card-range">0-40점</span>
-                  <h3>땅에서 겨우 일어나는 네안데르탈인</h3>
-                  <p>AI를 아직 낯선 존재처럼 대하는 단계입니다.</p>
-                </div>
-              </article>
-              <article class="evolution-card">
-                <div class="evolution-card-thumb" id="stageThumb2"></div>
-                <div>
-                  <span class="evolution-card-range">41-60점</span>
-                  <h3>갓 진화를 시작한 호모 사피엔스</h3>
-                  <p>AI를 도구로 보기 시작했지만, 아직 운영보다는 감각에 기대는 구간입니다.</p>
-                </div>
-              </article>
-              <article class="evolution-card">
-                <div class="evolution-card-thumb" id="stageThumb3"></div>
-                <div>
-                  <span class="evolution-card-range">61-80점</span>
-                  <h3>도끼를 쓰는 호모 사피엔스사피엔스</h3>
-                  <p>질문을 구조화하고, 작업을 시키고, 다시 고치는 흐름이 생긴 단계입니다.</p>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section class="evolution-group">
-            <div class="evolution-carousel two-up">
-              <article class="evolution-card">
-                <div class="evolution-card-thumb" id="stageThumb4"></div>
-                <div>
-                  <span class="evolution-card-range">81-95점</span>
-                  <h3>컴퓨터를 쓰는 인간</h3>
-                  <p>까만 목티와 청바지를 입고, AI를 실무 시스템처럼 다루는 상위권 사용자입니다.</p>
-                </div>
-              </article>
-              <article class="evolution-card">
-                <div class="evolution-card-thumb" id="stageThumb5"></div>
-                <div>
-                  <span class="evolution-card-range">96-100점</span>
-                  <h3>AI 글라스를 끼고 있는 AI Native</h3>
-                  <p>무지개색 안경처럼 AI를 자연스러운 인지 확장으로 다루는 최상위 단계입니다.</p>
-                </div>
-              </article>
-            </div>
-          </section>
-        </div>
-
-        <div class="intro-actions">
-          <button class="button button-secondary" id="introBackButton" type="button">이전 화면</button>
-          <button class="button button-primary button-hero" id="stageStartButton" type="button">다음 테스트 시작하기</button>
-        </div>
-        <p class="intro-note">테스트는 4문항으로 구성되며, 휴대폰에서도 바로 이어서 진행할 수 있습니다.</p>
-      </section>
-
       <section class="panel screen" id="quizPanel">
         <div class="progress-wrap">
           <div class="progress-bar" aria-hidden="true">
@@ -1682,7 +1614,6 @@
 
     const els = {
       landingPanel: document.getElementById("landingPanel"),
-      introPanel: document.getElementById("introPanel"),
       quizPanel: document.getElementById("quizPanel"),
       resultPanel: document.getElementById("resultPanel"),
       progressFill: document.getElementById("progressFill"),
@@ -1721,20 +1652,13 @@
       toast: document.getElementById("toast"),
       benchmarkNote: document.getElementById("benchmarkNote"),
       startButton: document.getElementById("startButton"),
-      introBackButton: document.getElementById("introBackButton"),
-      stageStartButton: document.getElementById("stageStartButton"),
       shareButton: document.getElementById("shareButton"),
       restartButton: document.getElementById("restartButton"),
-      heroMotion: document.getElementById("heroMotion"),
-      stageThumb1: document.getElementById("stageThumb1"),
-      stageThumb2: document.getElementById("stageThumb2"),
-      stageThumb3: document.getElementById("stageThumb3"),
-      stageThumb4: document.getElementById("stageThumb4"),
-      stageThumb5: document.getElementById("stageThumb5")
+      heroMotion: document.getElementById("heroMotion")
     };
 
     const steps = [...document.querySelectorAll(".question-step")];
-    const screens = [els.landingPanel, els.introPanel, els.quizPanel, els.resultPanel];
+    const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
     let currentStep = 0;
 
     function setScreen(name) {
@@ -1744,8 +1668,6 @@
 
       if (name === "landing") {
         els.landingPanel.classList.add("active");
-      } else if (name === "intro") {
-        els.introPanel.classList.add("active");
       } else if (name === "quiz") {
         els.quizPanel.classList.add("active");
       } else if (name === "result") {
@@ -2479,25 +2401,6 @@
       `;
     }
 
-    function renderStagePreview() {
-      const stageThumbs = [
-        { target: els.stageThumb1, score: 24 },
-        { target: els.stageThumb2, score: 52 },
-        { target: els.stageThumb3, score: 72 },
-        { target: els.stageThumb4, score: 89 },
-        { target: els.stageThumb5, score: 98 }
-      ];
-
-      stageThumbs.forEach(({ target, score }) => {
-        if (!target) {
-          return;
-        }
-
-        const profile = getTierProfile(score);
-        target.innerHTML = `<img src="${getProfileAsset(profile)}" alt="${escapeHtml(profile.name)}" loading="lazy" />`;
-      });
-    }
-
     function renderList(target, items) {
       target.innerHTML = "";
       items.forEach((item) => {
@@ -2581,10 +2484,6 @@
       setStep(currentStep - 1);
     }
 
-    function openIntro() {
-      setScreen("intro");
-    }
-
     function openQuiz() {
       setStep(0);
       updateCounters();
@@ -2607,9 +2506,7 @@
       setScreen("quiz");
     }
 
-    els.startButton.addEventListener("click", openIntro);
-    els.introBackButton.addEventListener("click", () => setScreen("landing"));
-    els.stageStartButton.addEventListener("click", openQuiz);
+    els.startButton.addEventListener("click", openQuiz);
     els.prevButton.addEventListener("click", prevStep);
     els.nextButton.addEventListener("click", nextStep);
     els.restartButton.addEventListener("click", restartQuiz);
@@ -2629,7 +2526,6 @@
     });
 
     updateCounters();
-    renderStagePreview();
     createHeroMotion();
     setStep(0);
     setScreen("landing");
