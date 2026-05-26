@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 활용 수준 테스트</title>
+  <meta
+    name="description"
+    content="4문항으로 확인하는 AI 활용 수준 테스트. 점수와 상위 퍼센타일로 내 AI 실력을 증명하세요."
+  />
+  <style>
+    :root {
+      --bg: #edf4ff;
+      --bg-strong: #dce9ff;
+      --surface: rgba(250, 252, 255, 0.9);
+      --surface-strong: #ffffff;
+      --ink: #10213f;
+      --muted: #5a6d8f;
+      --line: rgba(16, 33, 63, 0.12);
+      --brand: #0450c3;
+      --brand-strong: #023987;
+      --accent: #2a7fff;
+      --gold: #7aa7ff;
+      --shadow: 0 22px 60px rgba(19, 52, 108, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f7fbff 0%, #e8f1ff 100%);
+      font-family: "SUIT Variable", "Pretendard Variable", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .page {
+      width: min(980px, calc(100vw - 24px));
+      margin: 0 auto;
+      padding: 18px 0 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(232, 242, 255, 0.88)),
+        var(--surface);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      --pointer-x: 50%;
+      --pointer-y: 42%;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      animation: rise 280ms ease;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(4, 80, 195, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(4, 80, 195, 0.05) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(circle at 50% 42%, black 0%, black 34%, transparent 86%);
+      -webkit-mask-image: radial-gradient(circle at 50% 42%, black 0%, black 34%, transparent 86%);
+      pointer-events: none;
+      opacity: 0.45;
+      z-index: 0;
+    }
+
+    .hero-motion {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-motion::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(4, 80, 195, 0.16) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.34;
+      mask-image: radial-gradient(circle at 50% 42%, black 12%, black 42%, transparent 88%);
+      -webkit-mask-image: radial-gradient(circle at 50% 42%, black 12%, black 42%, transparent 88%);
+    }
+
+    .hero-motion::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle 180px at var(--pointer-x) var(--pointer-y), rgba(42, 127, 255, 0.24), transparent 68%),
+        radial-gradient(circle 320px at 50% 42%, rgba(4, 80, 195, 0.08), transparent 76%);
+    }
+
+    .hero-node {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+      margin-top: -4px;
+      border-radius: 50%;
+      background: rgba(4, 80, 195, 0.18);
+      border: 1px solid rgba(4, 80, 195, 0.16);
+      box-shadow: 0 0 0 0 rgba(42, 127, 255, 0);
+      opacity: 0.42;
+      translate: 0 0;
+      transform: scale(var(--node-scale, 0.92));
+      transition: opacity 180ms ease, transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      animation: nodeFloat 6s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .hero-node::after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid rgba(42, 127, 255, 0.12);
+      opacity: 0;
+      transform: scale(0.55);
+    }
+
+    .hero-node.is-spark {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(42, 127, 255, 0.78);
+      box-shadow:
+        0 0 0 1px rgba(42, 127, 255, 0.08),
+        0 0 18px rgba(42, 127, 255, 0.5);
+      opacity: 1;
+      --node-scale: 1.14;
+    }
+
+    .hero-node.is-spark::after {
+      animation: nodePulse 820ms ease-out forwards;
+    }
+
+    .hero-crosshair {
+      position: absolute;
+      left: var(--pointer-x);
+      top: var(--pointer-y);
+      width: 92px;
+      height: 92px;
+      margin-left: -46px;
+      margin-top: -46px;
+      border-radius: 50%;
+      border: 1px solid rgba(4, 80, 195, 0.14);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0) 58%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        0 0 26px rgba(42, 127, 255, 0.12);
+      opacity: 0.9;
+      transition: left 140ms ease, top 140ms ease, opacity 180ms ease;
+    }
+
+    .hero-crosshair::before,
+    .hero-crosshair::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: rgba(4, 80, 195, 0.16);
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-crosshair::before {
+      width: 1px;
+      height: 112px;
+    }
+
+    .hero-crosshair::after {
+      width: 112px;
+      height: 1px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 92px;
+      height: 92px;
+      margin: 8px auto 18px;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(4, 80, 195, 0.14), rgba(42, 127, 255, 0.1)),
+        rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      box-shadow: 0 16px 36px rgba(19, 52, 108, 0.08);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+    }
+
+    .hero-copy h1 {
+      margin-top: 0;
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      max-width: 12ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-copy p {
+      margin-top: 18px;
+      max-width: 34ch;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-actions {
+      display: inline-flex;
+      margin-top: 26px;
+      justify-content: center;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .panel {
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      background: var(--surface);
+      box-shadow: 0 12px 30px rgba(19, 52, 108, 0.06);
+    }
+
+    .panel.hidden {
+      display: none;
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(29, 28, 25, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--brand));
+      transition: width 220ms ease;
+    }
+
+    .progress-label {
+      min-width: 92px;
+      text-align: right;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .question-step {
+      display: none;
+    }
+
+    .question-step.active {
+      display: block;
+      animation: rise 280ms ease;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes nodePulse {
+      0% {
+        opacity: 0.85;
+        transform: scale(0.55);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.95);
+      }
+    }
+
+    @keyframes nodeFloat {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -4px;
+      }
+    }
+
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(42, 127, 255, 0.12);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .step-top small {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      max-width: 36ch;
+      text-align: right;
+    }
+
+    .question-title {
+      font-size: clamp(24px, 4vw, 36px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin-bottom: 14px;
+      max-width: 19ch;
+    }
+
+    .question-copy {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 16px;
+      margin-bottom: 18px;
+      max-width: 66ch;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .option {
+      position: relative;
+      display: block;
+      padding: 20px 18px 20px 58px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(29, 28, 25, 0.1);
+      background: rgba(255, 255, 255, 0.72);
+      cursor: pointer;
+      transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+      min-height: 78px;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(4, 80, 195, 0.35);
+      background: rgba(239, 246, 255, 0.92);
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .option-mark {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(29, 28, 25, 0.18);
+      background: #fff;
+    }
+
+    .option input:checked + .option-mark {
+      border-color: var(--brand);
+      box-shadow: inset 0 0 0 6px var(--brand);
+    }
+
+    .prompt-box,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(29, 28, 25, 0.12);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.74);
+      color: var(--ink);
+      padding: 16px 18px;
+      line-height: 1.7;
+      resize: vertical;
+      min-height: 160px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    textarea:focus {
+      border-color: rgba(4, 80, 195, 0.42);
+      box-shadow: 0 0 0 4px rgba(4, 80, 195, 0.08);
+    }
+
+    .scenario {
+      margin-bottom: 18px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(233, 242, 255, 0.92));
+      border: 1px solid rgba(16, 33, 63, 0.08);
+    }
+
+    .scenario strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--brand-strong);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .scenario ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      min-width: 760px;
+    }
+
+    .table-scroll {
+      margin-top: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(29, 28, 25, 0.08);
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    .data-table th {
+      color: var(--muted);
+      background: rgba(29, 28, 25, 0.04);
+      font-weight: 800;
+    }
+
+    .split-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 20px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button-primary {
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+      box-shadow: 0 16px 34px rgba(4, 80, 195, 0.22);
+    }
+
+    .button-secondary {
+      color: var(--brand-strong);
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(4, 80, 195, 0.16);
+      box-shadow: 0 10px 24px rgba(19, 52, 108, 0.08);
+    }
+
+    .button-hero {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-width: min(100%, 320px);
+      padding: 17px 24px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0)) padding-box,
+        linear-gradient(135deg, #0347b0 0%, #0450c3 40%, #2a7fff 100%) border-box;
+      border: 1px solid transparent;
+      box-shadow:
+        0 20px 40px rgba(4, 80, 195, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+
+    .button-hero::after {
+      content: "↗";
+      font-size: 16px;
+      line-height: 1;
+      opacity: 0.9;
+      transition: transform 160ms ease;
+    }
+
+    .button-hero:hover::after {
+      transform: translate(2px, -1px);
+    }
+
+    .helper {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand-strong);
+      font-size: 14px;
+      display: none;
+    }
+
+    .result-hero {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .score-card {
+      padding: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(122, 167, 255, 0.2), transparent 34%),
+        linear-gradient(135deg, #ffffff, #e6f0ff);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+    }
+
+    .score-card h2 {
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .score-number {
+      margin-top: 14px;
+      font-size: clamp(64px, 12vw, 110px);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+    }
+
+    .percentile-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(42, 127, 255, 0.12);
+      color: var(--accent);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .top-badge {
+      margin-left: 10px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(122, 167, 255, 0.18);
+      color: #194fb8;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .result-summary {
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 46ch;
+    }
+
+    .result-poster-card {
+      padding: 22px;
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(230, 240, 255, 0.94)),
+        var(--surface);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      box-shadow: 0 18px 42px rgba(19, 52, 108, 0.08);
+    }
+
+    .result-poster-shell {
+      position: relative;
+      padding: 14px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(4, 80, 195, 0.08), rgba(42, 127, 255, 0.02)),
+        rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(4, 80, 195, 0.12);
+      overflow: hidden;
+    }
+
+    .result-poster-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(4, 80, 195, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .result-poster-art {
+      position: relative;
+      z-index: 1;
+      min-height: 500px;
+    }
+
+    .result-poster-art svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .result-copy-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-kicker {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h2.result-tier-name {
+      margin-top: 16px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .score-gauge-wrap {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+    }
+
+    .score-gauge-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .score-gauge-meta strong {
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .score-gauge-bar {
+      position: relative;
+      height: 22px;
+      border-radius: 999px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg,
+          rgba(122, 167, 255, 0.26) 0%,
+          rgba(122, 167, 255, 0.26) 40%,
+          rgba(80, 138, 247, 0.28) 40%,
+          rgba(80, 138, 247, 0.28) 60%,
+          rgba(42, 127, 255, 0.32) 60%,
+          rgba(42, 127, 255, 0.32) 80%,
+          rgba(4, 80, 195, 0.4) 80%,
+          rgba(4, 80, 195, 0.4) 95%,
+          rgba(2, 57, 135, 0.52) 95%,
+          rgba(2, 57, 135, 0.52) 100%);
+      border: 1px solid rgba(4, 80, 195, 0.12);
+    }
+
+    .score-gauge-bar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(90deg, transparent 0%, transparent 39.7%, rgba(255, 255, 255, 0.76) 39.7%, rgba(255, 255, 255, 0.76) 40.3%, transparent 40.3%, transparent 59.7%, rgba(255, 255, 255, 0.76) 59.7%, rgba(255, 255, 255, 0.76) 60.3%, transparent 60.3%, transparent 79.7%, rgba(255, 255, 255, 0.76) 79.7%, rgba(255, 255, 255, 0.76) 80.3%, transparent 80.3%, transparent 94.7%, rgba(255, 255, 255, 0.76) 94.7%, rgba(255, 255, 255, 0.76) 95.3%, transparent 95.3%);
+    }
+
+    .score-gauge-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.06));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+    }
+
+    .score-gauge-marker {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid var(--brand);
+      box-shadow: 0 8px 18px rgba(4, 80, 195, 0.22);
+      transform: translate(-50%, -50%);
+    }
+
+    .score-gauge-scale {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .score-gauge-scale span:last-child {
+      text-align: right;
+    }
+
+    .tier-guide {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .tier-guide-row {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .tier-guide-row strong {
+      display: inline-flex;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand-strong);
+      font-size: 12px;
+    }
+
+    .result-detail {
+      margin-top: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-detail p {
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 15px;
+    }
+
+    .result-detail strong {
+      color: var(--brand-strong);
+    }
+
+    .score-rail {
+      display: grid;
+      gap: 12px;
+      padding: 24px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(29, 28, 25, 0.08);
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .score-row span {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .rail {
+      height: 12px;
+      background: rgba(29, 28, 25, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rail > i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--brand));
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .result-box {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(29, 28, 25, 0.08);
+    }
+
+    .result-box h3 {
+      font-size: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .result-box ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .result-note {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(29, 28, 25, 0.05);
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(29, 28, 25, 0.92);
+      color: #fff;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+      z-index: 30;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .result-hero,
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-top {
+        flex-direction: column;
+      }
+
+      .step-top small {
+        text-align: left;
+      }
+
+      .score-row {
+        grid-template-columns: 88px 1fr auto;
+      }
+
+      .result-poster-art {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100vw - 14px, 980px);
+        padding-top: 8px;
+        padding-bottom: 28px;
+        justify-content: flex-start;
+      }
+
+      .hero,
+      .panel {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .hero::before {
+        background-size: 42px 42px;
+      }
+
+      .hero-motion::before {
+        background-size: 38px 38px;
+        opacity: 0.3;
+      }
+
+      .hero-crosshair {
+        width: 72px;
+        height: 72px;
+        margin-left: -36px;
+        margin-top: -36px;
+      }
+
+      .hero-crosshair::before {
+        height: 88px;
+      }
+
+      .hero-crosshair::after {
+        width: 88px;
+      }
+
+      .hero-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        font-size: 21px;
+      }
+
+      .hero-copy p {
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .question-title {
+        max-width: none;
+        font-size: clamp(24px, 7vw, 34px);
+      }
+
+      .question-copy,
+      .step-top small,
+      .helper {
+        font-size: 14px;
+      }
+
+      .actions {
+        flex-direction: column-reverse;
+        position: sticky;
+        bottom: 0;
+        margin-left: -18px;
+        margin-right: -18px;
+        margin-bottom: -18px;
+        padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
+        background: linear-gradient(180deg, rgba(232, 241, 255, 0), rgba(232, 241, 255, 0.92) 22%, rgba(232, 241, 255, 1));
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .button-hero {
+        min-width: 100%;
+        border-radius: 16px;
+      }
+
+      textarea {
+        min-height: 136px;
+        padding: 14px 15px;
+      }
+
+      .option {
+        padding: 18px 16px 18px 52px;
+      }
+
+      .option-mark {
+        left: 16px;
+        top: 19px;
+      }
+
+      .score-row {
+        grid-template-columns: 1fr;
+      }
+
+      .score-gauge-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .tier-guide-row {
+        grid-template-columns: 1fr;
+      }
+
+      .score-gauge-scale {
+        font-size: 11px;
+      }
+
+      .result-poster-card,
+      .score-card,
+      .score-rail {
+        padding: 18px;
+        border-radius: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero screen active" id="landingPanel">
+      <div class="hero-motion" id="heroMotion" aria-hidden="true">
+        <div class="hero-crosshair"></div>
+      </div>
+      <div class="hero-copy">
+        <div class="hero-logo" aria-label="APEX 로고">APEX</div>
+        <h1>나는 내 AI 스킬 수준은 상위 몇 %일까?</h1>
+        <p>
+          4개의 짧은 질문으로 당신의 프롬프트 설계, 검증 사고, 설명 책임, 업무 적용력 점수를 휴대폰에서도 바로 확인해보세요.
+        </p>
+        <div class="hero-actions">
+          <button class="button button-primary button-hero" id="startButton" type="button">테스트 시작하기</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="stack">
+      <section class="panel screen" id="quizPanel">
+        <div class="progress-wrap">
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-label" id="progressLabel">1 / 4</div>
+        </div>
+
+        <div class="question-step active" data-step="0">
+          <div class="step-top">
+            <div class="step-tag">PART 1 · 검증 감각</div>
+            <small>객관식 1문항. AI 답변을 비판적으로 읽는 기본 감각을 봅니다.</small>
+          </div>
+          <h2 class="question-title">AI 답변을 검증할 때 가장 먼저 의심해야 하는 건 뭘까요?</h2>
+          <p class="question-copy">
+            아래 보기 중, 실제로 AI 환각을 가장 잘 잡아내는 관점에 가까운 조합을 선택하세요.
+          </p>
+          <div class="options" role="radiogroup" aria-label="Part 1 객관식">
+            <label class="option">
+              <input type="radio" name="part1" value="a" />
+              <span class="option-mark"></span>
+              문법 오류, 응답 길이, 응답 속도
+            </label>
+            <label class="option">
+              <input type="radio" name="part1" value="b" />
+              <span class="option-mark"></span>
+              구체적 수치/통계, 고유명사/출처, 인과관계/논리 전개
+            </label>
+            <label class="option">
+              <input type="radio" name="part1" value="c" />
+              <span class="option-mark"></span>
+              AI 모델 종류, 구독 유형, 프롬프트 길이
+            </label>
+            <label class="option">
+              <input type="radio" name="part1" value="d" />
+              <span class="option-mark"></span>
+              글꼴 크기, 이미지 품질, 파일 형식
+            </label>
+          </div>
+        </div>
+
+        <div class="question-step" data-step="1">
+          <div class="step-top">
+            <div class="step-tag">PART 2 · 설명 책임</div>
+            <small>객관식 1문항. AI 결과를 사람에게 적용할 때 무엇을 지켜야 하는지 봅니다.</small>
+          </div>
+          <h2 class="question-title">AI가 사람에게 영향을 주는 결정을 도울 때 가장 먼저 지켜야 할 원칙은 무엇일까요?</h2>
+          <p class="question-copy">
+            아래 보기 중, 채용·평가·고객 판단처럼 민감한 상황에서 가장 책임 있는 운영 방식에 가까운 답을 고르세요.
+          </p>
+          <div class="options" role="radiogroup" aria-label="Part 2 객관식">
+            <label class="option">
+              <input type="radio" name="part2Choice" value="a" />
+              <span class="option-mark"></span>
+              정확도만 높으면 AI 점수를 그대로 확정 결과로 써도 된다.
+            </label>
+            <label class="option">
+              <input type="radio" name="part2Choice" value="b" />
+              <span class="option-mark"></span>
+              AI 결과는 참고 자료로 쓰고, 설명 책임과 인간 최종 검토를 유지해야 한다.
+            </label>
+            <label class="option">
+              <input type="radio" name="part2Choice" value="c" />
+              <span class="option-mark"></span>
+              최신 모델을 썼다면 편향 검토와 이의제기 절차는 생략해도 된다.
+            </label>
+            <label class="option">
+              <input type="radio" name="part2Choice" value="d" />
+              <span class="option-mark"></span>
+              사용자가 결과 이유를 몰라도 분류 속도만 빠르면 운영상 더 효율적이다.
+            </label>
+          </div>
+        </div>
+
+        <div class="question-step" data-step="2">
+          <div class="step-top">
+            <div class="step-tag">PART 3 · 실무 적용력</div>
+            <small>실전형 문항. 프롬프트 구조화와 검증 루프 설계를 봅니다.</small>
+          </div>
+          <h2 class="question-title">실무에서 AI에게 어떻게 시키고, 어떻게 다시 검증하실 건가요?</h2>
+          <div class="scenario">
+            <strong>상황</strong>
+            <p class="question-copy" style="margin-bottom: 0;">
+              당신은 SaaS 기업 마케팅팀 인턴입니다. 팀장이 “이 데이터 보고 고객 이탈 원인과 방지 전략을 AI로 분석해서
+              보고서 초안 만들어줘”라고 말했습니다.
+            </p>
+            <ul>
+              <li>원래 데이터에 있던 고객 이름/이메일은 제거됨</li>
+              <li>AI에 보낼 때 회사명과 경쟁사 실명은 빼야 함</li>
+              <li>AI가 수치를 만들어내면 근거가 있는지 반드시 확인해야 함</li>
+              <li>특정 고객군을 차별하는 전략은 제안하면 안 됨</li>
+            </ul>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>월</th>
+                    <th>신규가입</th>
+                    <th>이탈</th>
+                    <th>이탈률</th>
+                    <th>NPS</th>
+                    <th>평균사용</th>
+                    <th>CS문의</th>
+                    <th>주요이탈사유</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2025-10</td><td>320</td><td>45</td><td>14.1%</td><td>42</td><td>18</td><td>89</td><td>가격</td></tr>
+                  <tr><td>2025-11</td><td>285</td><td>62</td><td>21.8%</td><td>38</td><td>15</td><td>124</td><td>기능부족</td></tr>
+                  <tr><td>2025-12</td><td>190</td><td>78</td><td>41.1%</td><td>31</td><td>11</td><td>203</td><td>경쟁사이동</td></tr>
+                  <tr><td>2026-01</td><td>210</td><td>91</td><td>43.3%</td><td>28</td><td>9</td><td>267</td><td>기능부족+가격</td></tr>
+                  <tr><td>2026-02</td><td>175</td><td>85</td><td>48.6%</td><td>25</td><td>7</td><td>312</td><td>전체불만</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="split-grid">
+            <div>
+              <p class="question-copy">1차 프롬프트를 작성하세요.</p>
+              <textarea id="part3Prompt" placeholder="AI에게 보낼 첫 요청문"></textarea>
+            </div>
+            <div>
+              <p class="question-copy">2차 검증 질문을 작성하세요.</p>
+              <textarea id="part3Verify" placeholder="근거와 추정을 가르는 검증 질문"></textarea>
+            </div>
+            <div>
+              <p class="question-copy">3차 개선 질문을 작성하세요.</p>
+              <textarea id="part3Improve" placeholder="결과를 더 실무적으로 다듬는 후속 지시"></textarea>
+            </div>
+          </div>
+          <div class="helper" id="part3Helper">현재 0자</div>
+        </div>
+
+        <div class="question-step" data-step="3">
+          <div class="step-top">
+            <div class="step-tag">PART 4 · 리스크 인식</div>
+            <small>마지막 주관식 문항. 편향, 설명 책임, 인간 최종결정 원칙을 정리합니다.</small>
+          </div>
+          <h2 class="question-title">AI가 채용을 자동 평가한다면, 뭐가 제일 위험할까요?</h2>
+          <div class="scenario">
+            <strong>상황</strong>
+            <p class="question-copy" style="margin-bottom: 0;">
+              한 회사가 AI로 이력서와 자기소개서를 분석해 0~100점 적합성 점수를 자동 부여하고,
+              상위 20%만 면접 대상으로 넘기고 있습니다.
+            </p>
+            <ul>
+              <li>특정 학교명이 들어간 지원자가 평균적으로 더 높은 점수를 받음</li>
+              <li>육아휴직 이력이 있는 지원자의 점수가 유의미하게 낮음</li>
+              <li>탈락자는 이유를 듣지 못하고 자동 메일만 받음</li>
+              <li>회사는 “AI가 판단한 것”이라며 설명을 거부함</li>
+            </ul>
+          </div>
+          <p class="question-copy">
+            핵심 문제 3가지와 왜 위험한지, 그리고 개선방안 2가지를 적어보세요.
+            권장 분량은 250~500자입니다.
+          </p>
+          <textarea id="part4Answer" placeholder="예: 편향 문제, 설명 책임 부재, 인간 최종결정 부재..."></textarea>
+          <div class="helper" id="part4Helper">현재 0자</div>
+        </div>
+
+        <div class="error" id="quizError"></div>
+
+        <div class="actions">
+          <button class="button button-secondary" id="prevButton" type="button">이전</button>
+          <button class="button button-primary" id="nextButton" type="button">다음</button>
+        </div>
+      </section>
+
+      <section class="panel screen" id="resultPanel">
+        <div class="result-hero">
+          <div class="result-poster-card">
+            <div class="result-poster-shell">
+              <div class="result-poster-art" id="resultPosterArt"></div>
+            </div>
+          </div>
+
+          <div class="score-card result-copy-card">
+            <div class="result-kicker" id="resultTierRange">0-40점 구간</div>
+            <h2 class="result-tier-name" id="resultTierName">땅에서 겨우 일어나는 네안데르탈인</h2>
+            <div class="score-number" id="displayScore">0점</div>
+            <div class="percentile-pill" id="percentileText">상위 0.0%</div>
+            <p class="result-summary" id="summaryText"></p>
+            <div class="score-gauge-wrap">
+              <div class="score-gauge-meta">
+                <span>현재 당신의 APEX 진화 좌표</span>
+                <strong id="scoreGaugeValue">0 / 100</strong>
+              </div>
+              <div class="score-gauge-bar" aria-hidden="true">
+                <i class="score-gauge-fill" id="scoreGaugeFill" style="width: 0%;"></i>
+                <span class="score-gauge-marker" id="scoreGaugeMarker" style="left: 0%;"></span>
+              </div>
+              <div class="score-gauge-scale">
+                <span>0</span>
+                <span>40</span>
+                <span>60</span>
+                <span>80</span>
+                <span>95</span>
+                <span>100</span>
+              </div>
+              <div class="tier-guide">
+                <div class="tier-guide-row"><strong>0-40</strong><span>땅에서 겨우 일어나는 네안데르탈인</span></div>
+                <div class="tier-guide-row"><strong>41-60</strong><span>호모 사피엔스</span></div>
+                <div class="tier-guide-row"><strong>61-80</strong><span>도구를 제대로 쓰는 호모 사피엔스사피엔스</span></div>
+                <div class="tier-guide-row"><strong>81-95</strong><span>컴퓨터를 들고 다니는 블랙 터틀넥 실무형 사용자</span></div>
+                <div class="tier-guide-row"><strong>96-100</strong><span>AI 글라스를 낀 AI Native</span></div>
+              </div>
+            </div>
+            <div class="result-detail" id="resultDetail"></div>
+            <div class="result-note" id="benchmarkNote">
+              이 버전은 정적 HTML 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다.
+            </div>
+            <div class="footer-actions">
+              <button class="button button-primary" id="shareButton" type="button">결과 문구 복사</button>
+              <button class="button button-secondary" id="restartButton" type="button">다시 테스트하기</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-rail" style="margin-top: 18px;">
+          <div class="score-row">
+            <span>Part 1</span>
+            <div class="rail"><i id="rail1" style="width: 0%;"></i></div>
+            <strong id="part1ScoreLabel">0 / 20</strong>
+          </div>
+          <div class="score-row">
+            <span>Part 2</span>
+            <div class="rail"><i id="rail2" style="width: 0%;"></i></div>
+            <strong id="part2ScoreLabel">0 / 15</strong>
+          </div>
+          <div class="score-row">
+            <span>Part 3</span>
+            <div class="rail"><i id="rail3" style="width: 0%;"></i></div>
+            <strong id="part3ScoreLabel">0 / 45</strong>
+          </div>
+          <div class="score-row">
+            <span>Part 4</span>
+            <div class="rail"><i id="rail4" style="width: 0%;"></i></div>
+            <strong id="part4ScoreLabel">0 / 20</strong>
+          </div>
+        </div>
+
+        <div class="analysis-grid">
+          <div class="result-box">
+            <h3>잘하는 점</h3>
+            <ul id="strengthList"></ul>
+          </div>
+          <div class="result-box">
+            <h3>보완 포인트</h3>
+            <ul id="weaknessList"></ul>
+          </div>
+          <div class="result-box">
+            <h3>다음 행동</h3>
+            <ul id="actionList"></ul>
+          </div>
+          <div class="result-box">
+            <h3>결과 해석</h3>
+            <ul id="insightList"></ul>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다.</div>
+
+  <script>
+    const benchmarkScores = [
+      18.2, 21.4, 24.8, 27.5, 30.1, 31.9, 34.2, 35.6, 37.7, 39.8,
+      41.2, 42.5, 43.8, 45.1, 46.7, 47.9, 49.4, 50.7, 51.6, 52.9,
+      54.1, 55.4, 56.2, 57.3, 58.1, 59.2, 60.3, 61.5, 62.1, 63.4,
+      64.8, 65.2, 66.4, 67.6, 68.8, 69.4, 70.1, 71.6, 72.5, 73.3,
+      74.4, 75.6, 76.3, 77.1, 78.4, 79.2, 80.4, 81.7, 82.5, 83.1,
+      84.2, 85.6, 86.1, 87.4, 88.3, 89.1, 90.2, 91.4, 92.1, 93.5
+    ];
+
+    const els = {
+      landingPanel: document.getElementById("landingPanel"),
+      quizPanel: document.getElementById("quizPanel"),
+      resultPanel: document.getElementById("resultPanel"),
+      progressFill: document.getElementById("progressFill"),
+      progressLabel: document.getElementById("progressLabel"),
+      prevButton: document.getElementById("prevButton"),
+      nextButton: document.getElementById("nextButton"),
+      quizError: document.getElementById("quizError"),
+      part3Prompt: document.getElementById("part3Prompt"),
+      part3Verify: document.getElementById("part3Verify"),
+      part3Improve: document.getElementById("part3Improve"),
+      part3Helper: document.getElementById("part3Helper"),
+      part4Answer: document.getElementById("part4Answer"),
+      part4Helper: document.getElementById("part4Helper"),
+      displayScore: document.getElementById("displayScore"),
+      percentileText: document.getElementById("percentileText"),
+      summaryText: document.getElementById("summaryText"),
+      resultPosterArt: document.getElementById("resultPosterArt"),
+      resultTierRange: document.getElementById("resultTierRange"),
+      resultTierName: document.getElementById("resultTierName"),
+      scoreGaugeValue: document.getElementById("scoreGaugeValue"),
+      scoreGaugeFill: document.getElementById("scoreGaugeFill"),
+      scoreGaugeMarker: document.getElementById("scoreGaugeMarker"),
+      resultDetail: document.getElementById("resultDetail"),
+      rail1: document.getElementById("rail1"),
+      rail2: document.getElementById("rail2"),
+      rail3: document.getElementById("rail3"),
+      rail4: document.getElementById("rail4"),
+      part1ScoreLabel: document.getElementById("part1ScoreLabel"),
+      part2ScoreLabel: document.getElementById("part2ScoreLabel"),
+      part3ScoreLabel: document.getElementById("part3ScoreLabel"),
+      part4ScoreLabel: document.getElementById("part4ScoreLabel"),
+      strengthList: document.getElementById("strengthList"),
+      weaknessList: document.getElementById("weaknessList"),
+      actionList: document.getElementById("actionList"),
+      insightList: document.getElementById("insightList"),
+      toast: document.getElementById("toast"),
+      benchmarkNote: document.getElementById("benchmarkNote"),
+      startButton: document.getElementById("startButton"),
+      shareButton: document.getElementById("shareButton"),
+      restartButton: document.getElementById("restartButton"),
+      heroMotion: document.getElementById("heroMotion")
+    };
+
+    const steps = [...document.querySelectorAll(".question-step")];
+    const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
+    let currentStep = 0;
+
+    function setScreen(name) {
+      screens.forEach((screen) => {
+        screen.classList.remove("active");
+      });
+
+      if (name === "landing") {
+        els.landingPanel.classList.add("active");
+      } else if (name === "quiz") {
+        els.quizPanel.classList.add("active");
+      } else if (name === "result") {
+        els.resultPanel.classList.add("active");
+      }
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      window.clearTimeout(showToast._timer);
+      showToast._timer = window.setTimeout(() => {
+        els.toast.classList.remove("show");
+      }, 1800);
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function createHeroMotion() {
+      if (!els.heroMotion) {
+        return;
+      }
+
+      const nodes = [];
+      let sparkleTimer = 0;
+
+      function buildNodes() {
+        els.heroMotion.querySelectorAll(".hero-node").forEach((node) => node.remove());
+        nodes.length = 0;
+
+        const rect = els.heroMotion.getBoundingClientRect();
+        const cols = window.innerWidth <= 640 ? 5 : 7;
+        const rows = window.innerWidth <= 640 ? 4 : 5;
+        const usableWidth = rect.width * 0.82;
+        const usableHeight = rect.height * 0.58;
+        const startX = rect.width * 0.09;
+        const startY = rect.height * 0.16;
+
+        for (let row = 0; row < rows; row += 1) {
+          for (let col = 0; col < cols; col += 1) {
+            const node = document.createElement("span");
+            node.className = "hero-node";
+            const jitterX = ((row + col) % 2 === 0 ? 1 : -1) * (10 + ((col * 7 + row * 5) % 9));
+            const jitterY = ((row + col) % 2 === 0 ? -1 : 1) * (8 + ((row * 11 + col * 3) % 7));
+            const x = startX + (usableWidth / (cols - 1)) * col + jitterX;
+            const y = startY + (usableHeight / (rows - 1)) * row + jitterY;
+            node.style.left = `${x}px`;
+            node.style.top = `${y}px`;
+            node.style.setProperty("--delay", `${(row * cols + col) * 0.12}s`);
+            els.heroMotion.appendChild(node);
+            nodes.push({ node, x, y });
+          }
+        }
+      }
+
+      function updatePointer(clientX, clientY) {
+        const rect = els.heroMotion.getBoundingClientRect();
+        const x = clamp(clientX - rect.left, 0, rect.width);
+        const y = clamp(clientY - rect.top, 0, rect.height);
+        els.landingPanel.style.setProperty("--pointer-x", `${x}px`);
+        els.landingPanel.style.setProperty("--pointer-y", `${y}px`);
+
+        nodes.forEach((item) => {
+          const dx = item.x - x;
+          const dy = item.y - y;
+          const distance = Math.hypot(dx, dy);
+          const intensity = clamp(1 - (distance / 180), 0, 1);
+          item.node.style.opacity = (0.34 + intensity * 0.66).toFixed(2);
+          item.node.style.setProperty("--node-scale", (0.92 + intensity * 0.36).toFixed(3));
+          item.node.style.background = `rgba(255, 255, 255, ${0.14 + intensity * 0.72})`;
+          item.node.style.boxShadow = `0 0 ${Math.round(8 + intensity * 20)}px rgba(42, 127, 255, ${0.08 + intensity * 0.3})`;
+        });
+      }
+
+      function sparkle() {
+        if (!nodes.length) {
+          return;
+        }
+
+        const target = nodes[Math.floor(Math.random() * nodes.length)].node;
+        target.classList.add("is-spark");
+        window.setTimeout(() => {
+          target.classList.remove("is-spark");
+        }, 820);
+      }
+
+      function resetPointer() {
+        const rect = els.heroMotion.getBoundingClientRect();
+        updatePointer(rect.left + rect.width * 0.62, rect.top + rect.height * 0.34);
+      }
+
+      buildNodes();
+      resetPointer();
+      sparkleTimer = window.setInterval(sparkle, 1150);
+
+      els.landingPanel.addEventListener("pointermove", (event) => {
+        updatePointer(event.clientX, event.clientY);
+      });
+
+      els.landingPanel.addEventListener("pointerleave", resetPointer);
+
+      els.landingPanel.addEventListener("touchstart", (event) => {
+        const touch = event.touches[0];
+        if (touch) {
+          updatePointer(touch.clientX, touch.clientY);
+        }
+      }, { passive: true });
+
+      els.landingPanel.addEventListener("touchmove", (event) => {
+        const touch = event.touches[0];
+        if (touch) {
+          updatePointer(touch.clientX, touch.clientY);
+        }
+      }, { passive: true });
+
+      window.addEventListener("resize", () => {
+        buildNodes();
+        resetPointer();
+      });
+
+      window.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          window.clearInterval(sparkleTimer);
+          sparkleTimer = 0;
+          return;
+        }
+
+        if (!sparkleTimer) {
+          sparkleTimer = window.setInterval(sparkle, 1150);
+        }
+      });
+    }
+
+    function setStep(stepIndex) {
+      currentStep = clamp(stepIndex, 0, steps.length - 1);
+      steps.forEach((step, index) => {
+        step.classList.toggle("active", index === currentStep);
+      });
+      const progress = ((currentStep + 1) / steps.length) * 100;
+      els.progressFill.style.width = progress + "%";
+      els.progressLabel.textContent = `${currentStep + 1} / ${steps.length}`;
+      els.prevButton.style.visibility = currentStep === 0 ? "hidden" : "visible";
+      els.nextButton.textContent = currentStep === steps.length - 1 ? "결과 보기" : "다음";
+      els.quizError.style.display = "none";
+    }
+
+    function getCheckedPart1() {
+      return document.querySelector('input[name="part1"]:checked');
+    }
+
+    function getCheckedPart2() {
+      return document.querySelector('input[name="part2Choice"]:checked');
+    }
+
+    function updateCounters() {
+      const totalLength =
+        els.part3Prompt.value.trim().length +
+        els.part3Verify.value.trim().length +
+        els.part3Improve.value.trim().length;
+      els.part3Helper.textContent = `현재 ${totalLength}자`;
+      els.part4Helper.textContent = `현재 ${els.part4Answer.value.trim().length}자`;
+    }
+
+    function validateStep(stepIndex) {
+      if (stepIndex === 0) {
+        if (!getCheckedPart1()) {
+          return "Part 1 보기 하나를 선택해 주세요.";
+        }
+      }
+
+      if (stepIndex === 1) {
+        if (!getCheckedPart2()) {
+          return "Part 2 보기 하나를 선택해 주세요.";
+        }
+      }
+
+      if (stepIndex === 2) {
+        const p = els.part3Prompt.value.trim();
+        const v = els.part3Verify.value.trim();
+        const i = els.part3Improve.value.trim();
+
+        if (p.length < 80 || v.length < 45 || i.length < 45) {
+          return "Part 3의 1차/2차/3차 답변을 모두 충분히 작성해 주세요.";
+        }
+      }
+
+      if (stepIndex === 3) {
+        const value = els.part4Answer.value.trim();
+        if (value.length < 140) {
+          return "Part 4는 최소 140자 이상 작성해 주세요.";
+        }
+      }
+
+      return "";
+    }
+
+    function countMatches(text, patterns) {
+      return patterns.reduce((count, pattern) => count + (pattern.test(text) ? 1 : 0), 0);
+    }
+
+    function scorePart1() {
+      const checked = getCheckedPart1();
+      return checked && checked.value === "b" ? 20 : 0;
+    }
+
+    function scorePart2() {
+      const checked = getCheckedPart2();
+      return checked && checked.value === "b" ? 15 : 0;
+    }
+
+    function scorePart4() {
+      const text = els.part4Answer.value.trim();
+      const normalized = text.toLowerCase();
+      const rubric = {
+        bias: countMatches(normalized, [/편향/, /차별/, /학교/, /육아휴직/, /불공정/]),
+        transparency: countMatches(normalized, [/설명/, /투명/, /이유/, /고지/, /통지/]),
+        human: countMatches(normalized, [/인간/, /사람/, /최종/, /검토/, /승인/]),
+        legal: countMatches(normalized, [/법/, /윤리/, /채용/, /공정/, /개인정보/, /권리/]),
+        improve: countMatches(normalized, [/개선/, /감사/, /모니터링/, /이의/, /검증/, /테스트/, /가이드/])
+      };
+
+      const subs = {
+        bias: clamp(rubric.bias >= 2 ? 4 : rubric.bias * 2, 0, 4),
+        transparency: clamp(rubric.transparency >= 2 ? 4 : rubric.transparency * 2, 0, 4),
+        human: clamp(rubric.human >= 2 ? 4 : rubric.human * 2, 0, 4),
+        legal: clamp(rubric.legal >= 2 ? 4 : rubric.legal * 2, 0, 4),
+        improve: clamp(rubric.improve >= 2 ? 4 : rubric.improve * 2, 0, 4)
+      };
+
+      let total = Object.values(subs).reduce((sum, value) => sum + value, 0);
+      total = clamp(total, 0, 20);
+
+      return {
+        score: total,
+        subs
+      };
+    }
+
+    function scorePart3() {
+      const prompt = els.part3Prompt.value.trim();
+      const verify = els.part3Verify.value.trim();
+      const improve = els.part3Improve.value.trim();
+      const all = `${prompt}\n${verify}\n${improve}`.toLowerCase();
+
+      const roleContext = countMatches(all, [/역할/, /목적/, /맥락/, /상황/, /분석가/, /보고서/]);
+      const security = countMatches(all, [/익명/, /비식별/, /회사명/, /실명/, /보안/, /개인정보/, /경쟁사/]);
+      const structure = countMatches(all, [/표/, /항목/, /형식/, /섹션/, /출력/, /요약/, /분석 범위/]);
+      const evidence = countMatches(all, [/근거/, /출처/, /추정/, /사실/, /검증/, /확인/, /불확실/]);
+      const loop = countMatches(all, [/2차/, /3차/, /다시/, /수정/, /개선/, /재작성/, /보완/]);
+
+      const subs = {
+        roleContext: clamp(roleContext >= 3 ? 9 : roleContext * 3, 0, 9),
+        security: clamp(security >= 3 ? 9 : security * 3, 0, 9),
+        structure: clamp(structure >= 3 ? 9 : structure * 3, 0, 9),
+        evidence: clamp(evidence >= 3 ? 9 : evidence * 3, 0, 9),
+        loop: clamp(loop >= 3 ? 9 : loop * 3, 0, 9)
+      };
+
+      const segmentationBonus =
+        (prompt.length >= 110 ? 1 : 0) +
+        (verify.length >= 70 ? 1 : 0) +
+        (improve.length >= 70 ? 1 : 0);
+
+      let total = Object.values(subs).reduce((sum, value) => sum + value, 0);
+      total = clamp(total + (segmentationBonus >= 2 ? 1 : 0), 0, 45);
+
+      return {
+        score: total,
+        subs
+      };
+    }
+
+    function computePercentile(rankingScore) {
+      const synthetic = [...benchmarkScores, rankingScore].sort((a, b) => b - a);
+      const rank = synthetic.findIndex((score) => score === rankingScore) + 1;
+      const empirical = (rank / synthetic.length) * 100;
+      const curve = 100 - (1 / (1 + Math.exp(-(rankingScore - 62) / 9))) * 100;
+      const blended = (empirical * 0.42) + (curve * 0.58);
+      return clamp(Math.round(blended * 10) / 10, 1.0, 99.9);
+    }
+
+    function getSummary(percentile, total) {
+      if (percentile <= 7) {
+        return "AI를 그냥 잘 쓰는 수준이 아니라, 구조적으로 다루는 상위권에 가깝습니다.";
+      }
+      if (percentile <= 20) {
+        return "활용 수준이 높습니다. 특히 실무형 질문에서 강점이 보이지만, 더 정교한 검증 루프를 만들면 더 올라갈 수 있습니다.";
+      }
+      if (percentile <= 45) {
+        return "AI 활용은 익숙하지만, 아직 구조화와 리스크 인식에서 상위권과 차이가 납니다.";
+      }
+      if (total < 45) {
+        return "AI를 써보긴 했지만 아직 검색형 사용 비중이 높고, 검증과 재지시 습관은 더 필요합니다.";
+      }
+      return "사용 경험은 충분하지만, 결과를 다루는 방식이 아직 감각 중심이라 실무형 체계로 다듬을 여지가 큽니다.";
+    }
+
+    function buildStrengths(part1, part2, part3, part4) {
+      const list = [];
+
+      if (part1 === 20) {
+        list.push("AI 답변을 볼 때 무엇을 의심해야 하는지 기본 검증 감각이 있습니다.");
+      }
+      if (part2 === 15) {
+        list.push("AI 결과를 그대로 확정하지 않고, 설명 책임과 인간 최종 검토를 지켜야 한다는 원칙이 분명합니다.");
+      }
+      if (part4.subs.bias >= 4) {
+        list.push("편향과 불공정을 빠르게 식별하는 리스크 감각이 좋습니다.");
+      }
+      if (part4.subs.human >= 4) {
+        list.push("AI가 결정하더라도 인간이 최종 책임을 져야 한다는 원칙이 분명합니다.");
+      }
+      if (part3.subs.security >= 6) {
+        list.push("실무 프롬프트 안에 익명화·보안 조건을 자연스럽게 포함할 수 있습니다.");
+      }
+      if (part3.subs.evidence >= 6) {
+        list.push("근거 있는 사실과 추정을 구분시키는 검증 질문을 잘 던지는 편입니다.");
+      }
+      if (part3.subs.loop >= 6) {
+        list.push("1차 응답으로 끝내지 않고 다시 묻고 고치는 개선 루프가 살아 있습니다.");
+      }
+
+      return list.slice(0, 2);
+    }
+
+    function buildWeaknesses(part1, part2, part3, part4) {
+      const list = [];
+
+      if (part1 === 0) {
+        list.push("AI 답변을 검증하는 핵심 포인트를 아직 정확히 구분하지 못할 수 있습니다.");
+      }
+      if (part2 === 0) {
+        list.push("AI 결과를 사람에게 적용할 때 필요한 설명 책임과 인간 검토 원칙이 아직 약할 수 있습니다.");
+      }
+      if (part4.subs.transparency <= 2) {
+        list.push("설명 책임과 투명성 문제를 다루는 관점이 더 선명해질 필요가 있습니다.");
+      }
+      if (part4.subs.legal <= 2) {
+        list.push("법적·윤리적 리스크를 언어화하는 힘은 아직 약한 편입니다.");
+      }
+      if (part3.subs.structure <= 3) {
+        list.push("AI에게 줄 출력 형식과 분석 범위를 더 구체적으로 지정할 필요가 있습니다.");
+      }
+      if (part3.subs.evidence <= 3) {
+        list.push("근거와 추정을 가르는 검증 질문이 아직 충분히 살아나지 않았습니다.");
+      }
+      if (part3.subs.loop <= 3) {
+        list.push("한 번의 답변으로 끝내지 않고 개선 루프를 설계하는 습관이 더 필요합니다.");
+      }
+
+      return list.slice(0, 2);
+    }
+
+    function buildActions(part1, part2, part3, part4) {
+      const actions = [];
+
+      if (part1 === 0) {
+        actions.push("AI 답변을 볼 때 `수치·출처·논리` 3가지를 먼저 의심하는 습관부터 붙여보세요.");
+      }
+      if (part2 === 0 || part4.subs.bias <= 2 || part4.subs.legal <= 2) {
+        actions.push("채용, 평가, 고객 데이터처럼 사람에게 영향을 주는 업무에서는 `편향·설명 책임·인간 최종결정` 3가지를 체크리스트로 만드세요.");
+      }
+      if (part3.subs.security <= 4) {
+        actions.push("프롬프트에 항상 `익명화`, `실명 제거`, `민감정보 제외` 조건을 먼저 넣어보세요.");
+      }
+      if (part3.subs.evidence <= 4) {
+        actions.push("AI에게 답을 받은 뒤 `이 중 근거 있는 사실과 추정을 구분해줘`라는 2차 질문을 습관화해보세요.");
+      }
+      if (part3.subs.structure <= 4) {
+        actions.push("결과를 더 잘 받으려면 출력 형식을 먼저 지정해보세요. 예: 핵심 원인 3개, 근거 표, 실행안 3개.");
+      }
+
+      if (actions.length < 3) {
+        actions.push("한 번에 완벽한 답을 기대하기보다 1차 초안 → 검증 → 개선 루프로 AI를 다뤄보세요.");
+      }
+
+      return actions.slice(0, 3);
+    }
+
+    function buildInsights(percentile, part1, part2, part3, part4) {
+      const items = [];
+
+      if (part3.score >= part4.score && part3.score >= part1 && part3.score >= part2) {
+        items.push("당신의 점수는 지식보다 실전 적용력에서 더 많이 갈립니다.");
+      } else if (part4.score >= part3.score) {
+        items.push("리스크를 읽는 눈은 있지만, 그 판단을 실제 프롬프트 구조로 옮기는 힘은 더 키울 수 있습니다.");
+      } else {
+        items.push("기초 감각은 있지만, 수행형 문항에서 실제 실력 차이가 더 드러났습니다.");
+      }
+
+      if (percentile <= 12) {
+        items.push("상위권 답변은 공통적으로 `보안 조건 + 검증 질문 + 후속 개선 지시`가 같이 들어갑니다.");
+      } else if (percentile <= 35) {
+        items.push("상위권과의 차이는 보통 `근거 검증`과 `재지시 설계`에서 벌어집니다.");
+      } else {
+        items.push("점수 차이는 AI를 얼마나 많이 써봤는가보다, 결과를 어떻게 관리하는가에서 생깁니다.");
+      }
+
+      return items.slice(0, 2);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function getTierProfile(total) {
+      const rounded = Math.round(total);
+
+      if (rounded <= 40) {
+        return {
+          key: "neanderthal",
+          rangeLabel: "0-40점 구간",
+          name: "땅에서 겨우 일어나는 네안데르탈인",
+          posterLines: ["땅에서 겨우 일어나는", "네안데르탈인"],
+          subtitle: "AI를 아직 낯선 존재처럼 다루는 초기 단계",
+          detail:
+            "지금은 AI에게 한 번 묻고 끝내는 경향이 강합니다. 답을 받는 것과 답을 검증하는 것이 아직 분리되지 않았기 때문에, 결과 품질도 운에 많이 좌우됩니다.",
+          nextMove:
+            "먼저 `수치·출처·논리`를 확인하는 기본 검증 체크리스트와, 한 번 더 되묻는 2차 질문 습관을 붙이면 가장 큰 점프가 납니다."
+        };
+      }
+
+      if (rounded <= 60) {
+        return {
+          key: "sapiens",
+          rangeLabel: "41-60점 구간",
+          name: "호모 사피엔스",
+          posterLines: ["호모 사피엔스"],
+          subtitle: "AI를 도구로 인식하기 시작한 사용자",
+          detail:
+            "무작정 쓰는 단계는 지났고, 상황에 따라 AI를 활용할 수 있습니다. 다만 결과를 구조적으로 관리하기보다 감각적으로 수정하는 비중이 아직 큽니다.",
+          nextMove:
+            "프롬프트에 역할, 목표, 출력 형식, 금지 조건을 먼저 넣고, 후속 검증 질문을 분리하면 상위 구간으로 빠르게 올라갈 수 있습니다."
+        };
+      }
+
+      if (rounded <= 80) {
+        return {
+          key: "toolmaker",
+          rangeLabel: "61-80점 구간",
+          name: "도구를 제대로 쓰는 호모 사피엔스사피엔스",
+          posterLines: ["도구를 제대로 쓰는", "호모 사피엔스사피엔스"],
+          subtitle: "AI를 실무 도구처럼 다루는 중상위권 단계",
+          detail:
+            "이 구간부터는 AI를 단순 검색창이 아니라 작업용 인터페이스로 씁니다. 요구사항을 나누고, 결과를 다시 검토하고, 한 번 더 개선시키는 흐름이 살아 있습니다.",
+          nextMove:
+            "이제 중요한 건 정답률보다 운영 품질입니다. 보안 조건, 설명 책임, 편향 점검을 프롬프트와 검수 루프 안에 자연스럽게 넣는 연습이 필요합니다."
+        };
+      }
+
+      if (rounded <= 95) {
+        return {
+          key: "operator",
+          rangeLabel: "81-95점 구간",
+          name: "컴퓨터를 들고 다니는 블랙 터틀넥 실무형 사용자",
+          posterLines: ["컴퓨터를 들고 다니는", "블랙 터틀넥 사용자"],
+          subtitle: "AI를 업무 시스템처럼 운영하는 상위권 단계",
+          detail:
+            "당신은 이미 AI를 꽤 잘 씁니다. 좋은 질문을 던지고, 출력 형식을 통제하고, 결과의 허점을 다시 찾아내는 루프가 비교적 안정적으로 작동합니다.",
+          nextMove:
+            "여기서 더 올라가려면 개인 숙련을 넘어서 팀 기준을 만들어야 합니다. 재현 가능한 템플릿, 검수 체크리스트, 설명 가능한 결과 구조가 핵심입니다."
+        };
+      }
+
+      return {
+        key: "native",
+        rangeLabel: "96-100점 구간",
+        name: "AI 글라스를 낀 AI Native",
+        posterLines: ["AI 글라스를 낀", "AI Native"],
+        subtitle: "AI를 자연스러운 인지 확장처럼 다루는 최상위 단계",
+        detail:
+          "이 구간은 프롬프트를 잘 쓰는 수준을 넘어, AI와 함께 사고하는 방식이 체화된 상태에 가깝습니다. 무엇을 맡기고 무엇을 검증해야 하는지 경계가 선명합니다.",
+        nextMove:
+          "다음 과제는 더 똑똑해지는 것이 아니라 더 신뢰받는 것입니다. 팀원도 같은 품질을 재현할 수 있게 만드는 운영 설계 능력이 중요합니다."
+      };
+    }
+
+    function getAreaSnapshot(part1, part2, part3, part4) {
+      const areas = [
+        { label: "검증 감각", ratio: part1 / 20 },
+        { label: "설명 책임", ratio: part2 / 15 },
+        { label: "실무 적용력", ratio: part3.score / 45 },
+        { label: "리스크 인식", ratio: part4.score / 20 }
+      ].sort((a, b) => b.ratio - a.ratio);
+
+      return {
+        strongest: areas[0],
+        weakest: areas[areas.length - 1]
+      };
+    }
+
+    function getPosterAccessory(profile) {
+      if (profile.key === "neanderthal") {
+        return `
+          <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M286 316 L322 250" fill="none" />
+            <ellipse cx="332" cy="236" rx="18" ry="24" fill="#9db4d7" />
+            <path d="M294 390 L330 410" fill="none" />
+            <ellipse cx="340" cy="418" rx="10" ry="7" fill="#dbe8fb" stroke="none" />
+          </g>
+        `;
+      }
+
+      if (profile.key === "sapiens") {
+        return `
+          <g stroke="#10213f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="276" y="285" width="52" height="68" rx="10" fill="#ffffff" />
+            <path d="M286 301 H317" />
+            <path d="M286 318 H317" />
+            <path d="M286 335 H306" />
+          </g>
+        `;
+      }
+
+      if (profile.key === "toolmaker") {
+        return `
+          <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M284 318 L326 274" fill="none" />
+            <path d="M327 272 C338 261 353 258 360 264 C367 271 364 286 353 297 L339 311" fill="none" />
+            <circle cx="83" cy="370" r="18" fill="rgba(42,127,255,0.16)" />
+            <path d="M83 356 V384 M69 370 H97 M73 360 L93 380 M93 360 L73 380" />
+          </g>
+        `;
+      }
+
+      if (profile.key === "operator") {
+        return `
+          <g stroke="#10213f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="272" y="287" width="70" height="48" rx="8" fill="#f8fbff" />
+            <path d="M278 342 H336" />
+            <path d="M301 336 L291 354 H323 L313 336" fill="#cfe0ff" />
+          </g>
+        `;
+      }
+
+      return `
+        <g stroke="#2a7fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <circle cx="92" cy="120" r="18" />
+          <circle cx="315" cy="120" r="14" />
+          <circle cx="324" cy="332" r="12" />
+          <path d="M110 126 H180" />
+          <path d="M218 126 H301" />
+          <path d="M324 320 V344" />
+          <path d="M313 332 H335" />
+        </g>
+      `;
+    }
+
+    function getPosterOutfit(profile) {
+      if (profile.key === "operator") {
+        return `
+          <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#11161f" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M179 356 L173 435 C181 442 192 445 201 445 C210 445 220 442 228 435 L222 356 Z" fill="#6f8dc2" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+        `;
+      }
+
+      if (profile.key === "native") {
+        return `
+          <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#fdfefe" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M179 356 L173 435 C181 442 192 445 201 445 C210 445 220 442 228 435 L222 356 Z" fill="#dce9ff" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <g stroke="#2a7fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="154" y="187" width="38" height="24" rx="10" />
+            <rect x="216" y="187" width="38" height="24" rx="10" />
+            <path d="M192 199 H216" />
+          </g>
+        `;
+      }
+
+      return "";
+    }
+
+    function buildResultPoster(profile, total, percentile) {
+      const posterLines = (profile.posterLines || [profile.name]).map((line) => escapeHtml(line));
+      const safeSubtitle = escapeHtml(profile.subtitle);
+      const safeRange = escapeHtml(profile.rangeLabel);
+      const posterText = posterLines
+        .map((line, index) => `<tspan x="210" dy="${index === 0 ? 0 : 18}">${line}</tspan>`)
+        .join("");
+      const scoreY = posterLines.length > 1 ? 488 : 474;
+
+      return `
+        <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
+          <defs>
+            <linearGradient id="posterBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f8fbff" />
+              <stop offset="100%" stop-color="#deebff" />
+            </linearGradient>
+          </defs>
+          <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#posterBg)" />
+          <rect x="28" y="82" width="364" height="390" rx="22" fill="rgba(255,255,255,0.62)" stroke="rgba(4,80,195,0.18)" stroke-width="3" />
+          <rect x="55" y="30" width="310" height="54" rx="27" fill="#ffffff" stroke="#0450c3" stroke-width="3.5" />
+          <text x="210" y="64" text-anchor="middle" fill="#10213f" font-size="20" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">APEX AI 진화 결과</text>
+          <text x="210" y="112" text-anchor="middle" fill="#3b5d91" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
+          <text x="210" y="136" text-anchor="middle" fill="#5a6d8f" font-size="14" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeSubtitle}</text>
+          <g opacity="0.55" fill="#c8dcff">
+            <circle cx="64" cy="150" r="18" />
+            <circle cx="356" cy="177" r="14" />
+            <circle cx="84" cy="438" r="24" />
+            <circle cx="347" cy="448" r="20" />
+          </g>
+          <g opacity="0.6" stroke="#7aa7ff" stroke-width="3" stroke-linecap="round">
+            <path d="M74 210 C88 188 104 191 115 207" fill="none" />
+            <path d="M320 202 C337 180 353 184 365 202" fill="none" />
+            <path d="M332 226 L342 234 L353 222" fill="none" />
+            <path d="M85 236 L94 244 L104 233" fill="none" />
+          </g>
+          <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="205" cy="210" r="62" fill="#ffffff" />
+            <path d="M168 281 C146 301 142 351 151 400 C159 442 190 455 205 455 C220 455 251 442 259 400 C268 351 264 301 242 281 Z" fill="#ffffff" />
+            <path d="M167 309 C137 330 129 360 140 392" fill="none" />
+            <path d="M243 309 C273 330 281 360 270 392" fill="none" />
+            <path d="M184 404 C181 433 181 461 189 485" fill="none" />
+            <path d="M226 404 C229 433 229 461 221 485" fill="none" />
+            <circle cx="183" cy="206" r="7" fill="#10213f" stroke="none" />
+            <circle cx="227" cy="206" r="7" fill="#10213f" stroke="none" />
+            <path d="M183 185 L194 181" fill="none" />
+            <path d="M227 181 L238 185" fill="none" />
+            <path d="M186 238 C197 247 213 247 224 238" fill="none" />
+          </g>
+          ${getPosterOutfit(profile)}
+          ${getPosterAccessory(profile)}
+          <rect x="70" y="426" width="270" height="66" rx="28" fill="#edf4ff" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
+          <text x="210" y="448" text-anchor="middle" fill="#0450c3" font-size="15" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${posterText}</text>
+          <text x="210" y="${scoreY}" text-anchor="middle" fill="#5a6d8f" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${Math.round(total)}점 · 상위 ${percentile.toFixed(1)}%</text>
+        </svg>
+      `;
+    }
+
+    function buildResultDetail(profile, total, snapshot) {
+      return `
+        <p>${escapeHtml(profile.detail)}</p>
+        <p>현재 점수는 <strong>${Math.round(total)}점</strong>으로 <strong>${escapeHtml(profile.name)}</strong> 구간입니다. 상대적으로는 <strong>${escapeHtml(snapshot.strongest.label)}</strong>이 강점이고, 다음 점프 포인트는 <strong>${escapeHtml(snapshot.weakest.label)}</strong>입니다. ${escapeHtml(profile.nextMove)}</p>
+      `;
+    }
+
+    function renderList(target, items) {
+      target.innerHTML = "";
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        target.appendChild(li);
+      });
+    }
+
+    function showResult() {
+      const part1 = scorePart1();
+      const part2 = scorePart2();
+      const part3 = scorePart3();
+      const part4 = scorePart4();
+      const total = Math.round((part1 + part2 + part3.score + part4.score) * 10) / 10;
+      const roundedTotal = Math.round(total);
+      const verificationSub = part3.subs.evidence + part4.subs.transparency + (part2 === 15 ? 1 : 0);
+      const rankingScore =
+        total +
+        (part3.score / 1000) +
+        (part4.score / 10000) +
+        (verificationSub / 100000);
+      const percentile = computePercentile(rankingScore);
+      const topBadge = percentile <= 7 ? '<span class="top-badge">TOP 7%</span>' : "";
+      const profile = getTierProfile(total);
+      const snapshot = getAreaSnapshot(part1, part2, part3, part4);
+      const gaugePosition = clamp(roundedTotal, 1.5, 98.5);
+
+      els.resultTierRange.textContent = profile.rangeLabel;
+      els.resultTierName.textContent = profile.name;
+      els.displayScore.textContent = `${roundedTotal}점`;
+      els.percentileText.innerHTML = `상위 ${percentile.toFixed(1)}% ${topBadge}`;
+      els.summaryText.textContent = getSummary(percentile, total);
+      els.scoreGaugeValue.textContent = `${roundedTotal} / 100`;
+      els.scoreGaugeFill.style.width = `${roundedTotal}%`;
+      els.scoreGaugeMarker.style.left = `${gaugePosition}%`;
+      els.resultPosterArt.innerHTML = buildResultPoster(profile, total, percentile);
+      els.resultDetail.innerHTML = buildResultDetail(profile, total, snapshot);
+
+      els.rail1.style.width = `${(part1 / 20) * 100}%`;
+      els.rail2.style.width = `${(part2 / 15) * 100}%`;
+      els.rail3.style.width = `${(part3.score / 45) * 100}%`;
+      els.rail4.style.width = `${(part4.score / 20) * 100}%`;
+      els.part1ScoreLabel.textContent = `${part1} / 20`;
+      els.part2ScoreLabel.textContent = `${part2} / 15`;
+      els.part3ScoreLabel.textContent = `${part3.score} / 45`;
+      els.part4ScoreLabel.textContent = `${part4.score} / 20`;
+
+      renderList(els.strengthList, buildStrengths(part1, part2, part3, part4));
+      renderList(els.weaknessList, buildWeaknesses(part1, part2, part3, part4));
+      renderList(els.actionList, buildActions(part1, part2, part3, part4));
+      renderList(els.insightList, buildInsights(percentile, part1, part2, part3, part4));
+
+      els.benchmarkNote.textContent =
+        "이 버전은 정적 HTML 4문항 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다. 정식 운영 시 실제 응답 데이터로 퍼센타일을 교체하면 더 정교해집니다.";
+
+      setScreen("result");
+
+      const shareText =
+        `나는 AI 활용 수준 4문항 테스트에서 ${roundedTotal}점, ${profile.name}, 상위 ${percentile.toFixed(1)}%가 나왔어요.`;
+      els.shareButton.dataset.share = shareText;
+    }
+
+    function nextStep() {
+      const error = validateStep(currentStep);
+      if (error) {
+        els.quizError.textContent = error;
+        els.quizError.style.display = "block";
+        return;
+      }
+
+      if (currentStep === steps.length - 1) {
+        showResult();
+        return;
+      }
+
+      setStep(currentStep + 1);
+    }
+
+    function prevStep() {
+      setStep(currentStep - 1);
+    }
+
+    function openQuiz() {
+      setStep(0);
+      updateCounters();
+      setScreen("quiz");
+    }
+
+    function restartQuiz() {
+      document.querySelectorAll('input[name="part1"]').forEach((input) => {
+        input.checked = false;
+      });
+      document.querySelectorAll('input[name="part2Choice"]').forEach((input) => {
+        input.checked = false;
+      });
+      els.part3Prompt.value = "";
+      els.part3Verify.value = "";
+      els.part3Improve.value = "";
+      els.part4Answer.value = "";
+      updateCounters();
+      setStep(0);
+      setScreen("quiz");
+    }
+
+    els.startButton.addEventListener("click", openQuiz);
+    els.prevButton.addEventListener("click", prevStep);
+    els.nextButton.addEventListener("click", nextStep);
+    els.restartButton.addEventListener("click", restartQuiz);
+
+    [els.part3Prompt, els.part3Verify, els.part3Improve, els.part4Answer].forEach((field) => {
+      field.addEventListener("input", updateCounters);
+    });
+
+    els.shareButton.addEventListener("click", async () => {
+      const shareText = els.shareButton.dataset.share || "AI 활용 수준 테스트 결과를 확인해보세요.";
+      try {
+        await navigator.clipboard.writeText(shareText);
+        showToast("결과 문구를 복사했습니다.");
+      } catch (_error) {
+        showToast("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+      }
+    });
+
+    updateCounters();
+    createHeroMotion();
+    setStep(0);
+    setScreen("landing");
+  </script>
+</body>
+</html>
