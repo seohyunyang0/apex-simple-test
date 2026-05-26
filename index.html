@@ -286,6 +286,98 @@
       margin-top: 22px;
     }
 
+    .intro-panel {
+      display: grid;
+      gap: 18px;
+    }
+
+    .intro-head {
+      display: grid;
+      gap: 10px;
+    }
+
+    .intro-head h2 {
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 1.14;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+    }
+
+    .intro-head p {
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 16px;
+      max-width: 60ch;
+    }
+
+    .evolution-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .evolution-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      box-shadow: 0 12px 30px rgba(19, 52, 108, 0.06);
+    }
+
+    .evolution-card-thumb {
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(239, 246, 255, 0.92), rgba(222, 235, 255, 0.9));
+      border: 1px solid rgba(4, 80, 195, 0.12);
+    }
+
+    .evolution-card-thumb svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .evolution-card-range {
+      display: inline-flex;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .evolution-card h3 {
+      font-size: 16px;
+      line-height: 1.38;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    .evolution-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .intro-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .intro-note {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
     .panel {
       padding: 24px;
       border-radius: var(--radius-xl);
@@ -996,6 +1088,7 @@
     }
 
     @media (max-width: 900px) {
+      .evolution-grid,
       .result-hero,
       .analysis-grid {
         grid-template-columns: 1fr;
@@ -1079,6 +1172,19 @@
         font-size: 14px;
       }
 
+      .evolution-grid {
+        gap: 12px;
+      }
+
+      .evolution-card {
+        grid-template-columns: 112px 1fr;
+        align-items: center;
+      }
+
+      .evolution-card-thumb {
+        align-self: stretch;
+      }
+
       .actions {
         flex-direction: column-reverse;
         position: sticky;
@@ -1097,6 +1203,11 @@
       .button-hero {
         min-width: 100%;
         border-radius: 16px;
+      }
+
+      .intro-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
       }
 
       textarea {
@@ -1136,6 +1247,10 @@
         padding: 18px;
         border-radius: 22px;
       }
+
+      .evolution-card {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -1158,6 +1273,65 @@
     </section>
 
     <section class="stack">
+      <section class="panel screen intro-panel" id="introPanel">
+        <div class="intro-head">
+          <span class="eyebrow">5 Stages Preview</span>
+          <h2>시험 전에, 당신이 도착할 수 있는 5단계 진화 지도를 먼저 보여드릴게요.</h2>
+          <p>
+            결과는 아래 5개 구간 중 하나로 표현됩니다. 지금은 기준을 먼저 보고, 다음 버튼을 누르면 바로 테스트가 시작됩니다.
+          </p>
+        </div>
+
+        <div class="evolution-grid">
+          <article class="evolution-card">
+            <div class="evolution-card-thumb" id="stageThumb1"></div>
+            <div>
+              <span class="evolution-card-range">0-40점</span>
+              <h3>땅에서 겨우 일어나는 네안데르탈인</h3>
+              <p>AI를 아직 낯선 존재처럼 대하는 단계입니다.</p>
+            </div>
+          </article>
+          <article class="evolution-card">
+            <div class="evolution-card-thumb" id="stageThumb2"></div>
+            <div>
+              <span class="evolution-card-range">41-60점</span>
+              <h3>갓 진화를 시작한 호모 사피엔스</h3>
+              <p>AI를 도구로 보기 시작했지만, 아직 운영보다는 감각에 기대는 구간입니다.</p>
+            </div>
+          </article>
+          <article class="evolution-card">
+            <div class="evolution-card-thumb" id="stageThumb3"></div>
+            <div>
+              <span class="evolution-card-range">61-80점</span>
+              <h3>도끼를 쓰는 호모 사피엔스사피엔스</h3>
+              <p>질문을 구조화하고, 작업을 시키고, 다시 고치는 흐름이 생긴 단계입니다.</p>
+            </div>
+          </article>
+          <article class="evolution-card">
+            <div class="evolution-card-thumb" id="stageThumb4"></div>
+            <div>
+              <span class="evolution-card-range">81-95점</span>
+              <h3>컴퓨터를 쓰는 인간</h3>
+              <p>까만 목티와 청바지를 입고, AI를 실무 시스템처럼 다루는 상위권 사용자입니다.</p>
+            </div>
+          </article>
+          <article class="evolution-card">
+            <div class="evolution-card-thumb" id="stageThumb5"></div>
+            <div>
+              <span class="evolution-card-range">96-100점</span>
+              <h3>AI 글라스를 끼고 있는 AI Native</h3>
+              <p>무지개색 안경처럼 AI를 자연스러운 인지 확장으로 다루는 최상위 단계입니다.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="intro-actions">
+          <button class="button button-secondary" id="introBackButton" type="button">이전 화면</button>
+          <button class="button button-primary button-hero" id="stageStartButton" type="button">다음 테스트 시작하기</button>
+        </div>
+        <p class="intro-note">테스트는 4문항으로 구성되며, 휴대폰에서도 바로 이어서 진행할 수 있습니다.</p>
+      </section>
+
       <section class="panel screen" id="quizPanel">
         <div class="progress-wrap">
           <div class="progress-bar" aria-hidden="true">
@@ -1360,9 +1534,9 @@
               </div>
               <div class="tier-guide">
                 <div class="tier-guide-row"><strong>0-40</strong><span>땅에서 겨우 일어나는 네안데르탈인</span></div>
-                <div class="tier-guide-row"><strong>41-60</strong><span>호모 사피엔스</span></div>
-                <div class="tier-guide-row"><strong>61-80</strong><span>도구를 제대로 쓰는 호모 사피엔스사피엔스</span></div>
-                <div class="tier-guide-row"><strong>81-95</strong><span>컴퓨터를 들고 다니는 블랙 터틀넥 실무형 사용자</span></div>
+                <div class="tier-guide-row"><strong>41-60</strong><span>갓 진화를 시작한 호모 사피엔스</span></div>
+                <div class="tier-guide-row"><strong>61-80</strong><span>도끼를 쓰는 호모 사피엔스사피엔스</span></div>
+                <div class="tier-guide-row"><strong>81-95</strong><span>컴퓨터를 쓰는 인간</span></div>
                 <div class="tier-guide-row"><strong>96-100</strong><span>AI 글라스를 낀 AI Native</span></div>
               </div>
             </div>
@@ -1436,6 +1610,7 @@
 
     const els = {
       landingPanel: document.getElementById("landingPanel"),
+      introPanel: document.getElementById("introPanel"),
       quizPanel: document.getElementById("quizPanel"),
       resultPanel: document.getElementById("resultPanel"),
       progressFill: document.getElementById("progressFill"),
@@ -1474,13 +1649,20 @@
       toast: document.getElementById("toast"),
       benchmarkNote: document.getElementById("benchmarkNote"),
       startButton: document.getElementById("startButton"),
+      introBackButton: document.getElementById("introBackButton"),
+      stageStartButton: document.getElementById("stageStartButton"),
       shareButton: document.getElementById("shareButton"),
       restartButton: document.getElementById("restartButton"),
-      heroMotion: document.getElementById("heroMotion")
+      heroMotion: document.getElementById("heroMotion"),
+      stageThumb1: document.getElementById("stageThumb1"),
+      stageThumb2: document.getElementById("stageThumb2"),
+      stageThumb3: document.getElementById("stageThumb3"),
+      stageThumb4: document.getElementById("stageThumb4"),
+      stageThumb5: document.getElementById("stageThumb5")
     };
 
     const steps = [...document.querySelectorAll(".question-step")];
-    const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
+    const screens = [els.landingPanel, els.introPanel, els.quizPanel, els.resultPanel];
     let currentStep = 0;
 
     function setScreen(name) {
@@ -1490,6 +1672,8 @@
 
       if (name === "landing") {
         els.landingPanel.classList.add("active");
+      } else if (name === "intro") {
+        els.introPanel.classList.add("active");
       } else if (name === "quiz") {
         els.quizPanel.classList.add("active");
       } else if (name === "result") {
@@ -1923,8 +2107,8 @@
         return {
           key: "sapiens",
           rangeLabel: "41-60점 구간",
-          name: "호모 사피엔스",
-          posterLines: ["호모 사피엔스"],
+          name: "갓 진화를 시작한 호모 사피엔스",
+          posterLines: ["갓 진화를 시작한", "호모 사피엔스"],
           subtitle: "AI를 도구로 인식하기 시작한 사용자",
           detail:
             "무작정 쓰는 단계는 지났고, 상황에 따라 AI를 활용할 수 있습니다. 다만 결과를 구조적으로 관리하기보다 감각적으로 수정하는 비중이 아직 큽니다.",
@@ -1937,8 +2121,8 @@
         return {
           key: "toolmaker",
           rangeLabel: "61-80점 구간",
-          name: "도구를 제대로 쓰는 호모 사피엔스사피엔스",
-          posterLines: ["도구를 제대로 쓰는", "호모 사피엔스사피엔스"],
+          name: "도끼를 쓰는 호모 사피엔스사피엔스",
+          posterLines: ["도끼를 쓰는", "호모 사피엔스사피엔스"],
           subtitle: "AI를 실무 도구처럼 다루는 중상위권 단계",
           detail:
             "이 구간부터는 AI를 단순 검색창이 아니라 작업용 인터페이스로 씁니다. 요구사항을 나누고, 결과를 다시 검토하고, 한 번 더 개선시키는 흐름이 살아 있습니다.",
@@ -1951,8 +2135,8 @@
         return {
           key: "operator",
           rangeLabel: "81-95점 구간",
-          name: "컴퓨터를 들고 다니는 블랙 터틀넥 실무형 사용자",
-          posterLines: ["컴퓨터를 들고 다니는", "블랙 터틀넥 사용자"],
+          name: "컴퓨터를 쓰는 인간",
+          posterLines: ["컴퓨터를 쓰는", "인간"],
           subtitle: "AI를 업무 시스템처럼 운영하는 상위권 단계",
           detail:
             "당신은 이미 AI를 꽤 잘 씁니다. 좋은 질문을 던지고, 출력 형식을 통제하고, 결과의 허점을 다시 찾아내는 루프가 비교적 안정적으로 작동합니다.",
@@ -2014,8 +2198,9 @@
       if (profile.key === "toolmaker") {
         return `
           <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M284 318 L326 274" fill="none" />
-            <path d="M327 272 C338 261 353 258 360 264 C367 271 364 286 353 297 L339 311" fill="none" />
+            <path d="M286 316 L330 272" fill="none" />
+            <path d="M330 272 L348 254 L364 270 L346 288 Z" fill="#cfe0ff" />
+            <path d="M346 288 L364 270" fill="none" />
             <circle cx="83" cy="370" r="18" fill="rgba(42,127,255,0.16)" />
             <path d="M83 356 V384 M69 370 H97 M73 360 L93 380 M93 360 L73 380" />
           </g>
@@ -2033,14 +2218,14 @@
       }
 
       return `
-        <g stroke="#2a7fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-          <circle cx="92" cy="120" r="18" />
-          <circle cx="315" cy="120" r="14" />
-          <circle cx="324" cy="332" r="12" />
-          <path d="M110 126 H180" />
-          <path d="M218 126 H301" />
-          <path d="M324 320 V344" />
-          <path d="M313 332 H335" />
+        <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <circle cx="92" cy="120" r="18" stroke="#ff5f6d" stroke-width="4" />
+          <circle cx="315" cy="120" r="14" stroke="#ffb347" stroke-width="4" />
+          <circle cx="324" cy="332" r="12" stroke="#6decb9" stroke-width="4" />
+          <path d="M110 126 H180" stroke="#7f7eff" stroke-width="4" />
+          <path d="M218 126 H301" stroke="#33c3ff" stroke-width="4" />
+          <path d="M324 320 V344" stroke="#b76dff" stroke-width="4" />
+          <path d="M313 332 H335" stroke="#00d4ff" stroke-width="4" />
         </g>
       `;
     }
@@ -2057,10 +2242,12 @@
         return `
           <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#fdfefe" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
           <path d="M179 356 L173 435 C181 442 192 445 201 445 C210 445 220 442 228 435 L222 356 Z" fill="#dce9ff" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
-          <g stroke="#2a7fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <rect x="154" y="187" width="38" height="24" rx="10" />
-            <rect x="216" y="187" width="38" height="24" rx="10" />
-            <path d="M192 199 H216" />
+          <g stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="154" y="187" width="38" height="24" rx="10" stroke="#ff5f6d" />
+            <rect x="216" y="187" width="38" height="24" rx="10" stroke="#00c2ff" />
+            <path d="M192 199 H216" stroke="#7f7eff" />
+            <path d="M154 199 H192" stroke="#ffb347" />
+            <path d="M216 199 H254" stroke="#6decb9" />
           </g>
         `;
       }
@@ -2068,7 +2255,8 @@
       return "";
     }
 
-    function buildResultPoster(profile, total, percentile) {
+    function buildResultPoster(profile, total, percentile, options = {}) {
+      const compact = options.compact === true;
       const posterLines = (profile.posterLines || [profile.name]).map((line) => escapeHtml(line));
       const safeSubtitle = escapeHtml(profile.subtitle);
       const safeRange = escapeHtml(profile.rangeLabel);
@@ -2076,6 +2264,10 @@
         .map((line, index) => `<tspan x="210" dy="${index === 0 ? 0 : 18}">${line}</tspan>`)
         .join("");
       const scoreY = posterLines.length > 1 ? 488 : 474;
+      const bottomText = compact
+        ? "결과 미리보기"
+        : `${Math.round(total)}점 · 상위 ${percentile.toFixed(1)}%`;
+      const titleText = compact ? "APEX 진화 단계" : "APEX AI 진화 결과";
 
       return `
         <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
@@ -2088,7 +2280,7 @@
           <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#posterBg)" />
           <rect x="28" y="82" width="364" height="390" rx="22" fill="rgba(255,255,255,0.62)" stroke="rgba(4,80,195,0.18)" stroke-width="3" />
           <rect x="55" y="30" width="310" height="54" rx="27" fill="#ffffff" stroke="#0450c3" stroke-width="3.5" />
-          <text x="210" y="64" text-anchor="middle" fill="#10213f" font-size="20" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">APEX AI 진화 결과</text>
+          <text x="210" y="64" text-anchor="middle" fill="#10213f" font-size="20" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${titleText}</text>
           <text x="210" y="112" text-anchor="middle" fill="#3b5d91" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
           <text x="210" y="136" text-anchor="middle" fill="#5a6d8f" font-size="14" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeSubtitle}</text>
           <g opacity="0.55" fill="#c8dcff">
@@ -2120,7 +2312,7 @@
           ${getPosterAccessory(profile)}
           <rect x="70" y="426" width="270" height="66" rx="28" fill="#edf4ff" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
           <text x="210" y="448" text-anchor="middle" fill="#0450c3" font-size="15" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${posterText}</text>
-          <text x="210" y="${scoreY}" text-anchor="middle" fill="#5a6d8f" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${Math.round(total)}점 · 상위 ${percentile.toFixed(1)}%</text>
+          <text x="210" y="${scoreY}" text-anchor="middle" fill="#5a6d8f" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${bottomText}</text>
         </svg>
       `;
     }
@@ -2130,6 +2322,25 @@
         <p>${escapeHtml(profile.detail)}</p>
         <p>현재 점수는 <strong>${Math.round(total)}점</strong>으로 <strong>${escapeHtml(profile.name)}</strong> 구간입니다. 상대적으로는 <strong>${escapeHtml(snapshot.strongest.label)}</strong>이 강점이고, 다음 점프 포인트는 <strong>${escapeHtml(snapshot.weakest.label)}</strong>입니다. ${escapeHtml(profile.nextMove)}</p>
       `;
+    }
+
+    function renderStagePreview() {
+      const stageThumbs = [
+        { target: els.stageThumb1, score: 24 },
+        { target: els.stageThumb2, score: 52 },
+        { target: els.stageThumb3, score: 72 },
+        { target: els.stageThumb4, score: 89 },
+        { target: els.stageThumb5, score: 98 }
+      ];
+
+      stageThumbs.forEach(({ target, score }) => {
+        if (!target) {
+          return;
+        }
+
+        const profile = getTierProfile(score);
+        target.innerHTML = buildResultPoster(profile, score, 50, { compact: true });
+      });
     }
 
     function renderList(target, items) {
@@ -2215,6 +2426,10 @@
       setStep(currentStep - 1);
     }
 
+    function openIntro() {
+      setScreen("intro");
+    }
+
     function openQuiz() {
       setStep(0);
       updateCounters();
@@ -2237,7 +2452,9 @@
       setScreen("quiz");
     }
 
-    els.startButton.addEventListener("click", openQuiz);
+    els.startButton.addEventListener("click", openIntro);
+    els.introBackButton.addEventListener("click", () => setScreen("landing"));
+    els.stageStartButton.addEventListener("click", openQuiz);
     els.prevButton.addEventListener("click", prevStep);
     els.nextButton.addEventListener("click", nextStep);
     els.restartButton.addEventListener("click", restartQuiz);
@@ -2257,6 +2474,7 @@
     });
 
     updateCounters();
+    renderStagePreview();
     createHeroMotion();
     setStep(0);
     setScreen("landing");
