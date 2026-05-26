@@ -2199,17 +2199,43 @@
             <path d="M294 390 L330 410" fill="none" />
             <ellipse cx="340" cy="418" rx="10" ry="7" fill="#dbe8fb" stroke="none" />
           </g>
+          <g fill="#5c432e" stroke="#5c432e" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M146 192 C145 162 165 145 191 144 C213 144 231 150 244 166 C252 176 257 191 255 205 C247 190 236 183 226 179 C211 173 190 172 173 177 C161 181 153 186 146 192 Z" />
+            <path d="M171 225 C176 241 188 252 205 255 C220 254 231 246 238 231 C236 250 227 265 210 269 C191 268 178 251 171 225 Z" />
+          </g>
           <g stroke="#5e4a31" stroke-width="4" stroke-linecap="round" opacity="0.95">
+            <path d="M153 178 L140 194" />
+            <path d="M162 168 L145 181" />
+            <path d="M175 160 L158 168" />
+            <path d="M186 157 L170 162" />
+            <path d="M224 157 L240 164" />
+            <path d="M238 163 L252 174" />
+            <path d="M248 175 L263 191" />
+            <path d="M176 232 L165 246" />
+            <path d="M188 241 L177 257" />
+            <path d="M222 241 L233 257" />
+            <path d="M234 231 L246 246" />
+            <path d="M181 286 L164 302" />
+            <path d="M194 292 L177 311" />
+            <path d="M205 296 L205 320" />
+            <path d="M216 292 L233 311" />
+            <path d="M229 286 L246 302" />
             <path d="M157 170 L145 182" />
             <path d="M170 161 L154 168" />
             <path d="M244 161 L258 171" />
             <path d="M258 174 L270 188" />
             <path d="M151 292 L132 310" />
             <path d="M260 292 L279 311" />
+            <path d="M145 320 L124 338" />
+            <path d="M267 320 L288 338" />
             <path d="M142 351 L121 370" />
             <path d="M269 351 L290 372" />
+            <path d="M148 384 L128 404" />
+            <path d="M262 384 L282 404" />
             <path d="M181 449 L169 470" />
             <path d="M225 449 L237 470" />
+            <path d="M190 454 L182 476" />
+            <path d="M216 454 L224 476" />
             <path d="M182 268 L164 279" />
             <path d="M228 268 L246 280" />
             <path d="M174 247 L153 252" />
@@ -2275,6 +2301,17 @@
     }
 
     function getPosterOutfit(profile) {
+      if (profile.key === "neanderthal") {
+        return `
+          <g fill="none" stroke="#6a4d35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M174 286 C183 274 225 274 236 286" stroke-width="5" />
+            <path d="M176 301 C187 290 223 290 234 301" stroke-width="5" />
+            <path d="M179 316 C190 308 220 308 231 316" stroke-width="4.5" />
+            <path d="M182 333 C193 327 217 327 228 333" stroke-width="4.5" />
+          </g>
+        `;
+      }
+
       if (profile.key === "toolmaker") {
         return `
           <path d="M166 279 C179 270 231 270 244 279 L236 324 C222 332 188 332 174 324 Z" fill="#b9976c" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
