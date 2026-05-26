@@ -1294,7 +1294,7 @@
       <section class="panel screen intro-panel" id="introPanel">
         <div class="intro-head">
           <span class="eyebrow">5 Stages Preview</span>
-          <h2>시험 전에, 당신이 도착할 수 있는 5단계 진화 지도를 먼저 보여드릴게요.</h2>
+          <h2>5단계 진화지도 미리보기</h2>
           <p>
             결과는 아래 5개 구간 중 하나로 표현됩니다. 지금은 기준을 먼저 보고, 다음 버튼을 누르면 바로 테스트가 시작됩니다.
           </p>
@@ -2199,6 +2199,22 @@
             <path d="M294 390 L330 410" fill="none" />
             <ellipse cx="340" cy="418" rx="10" ry="7" fill="#dbe8fb" stroke="none" />
           </g>
+          <g stroke="#5e4a31" stroke-width="4" stroke-linecap="round" opacity="0.95">
+            <path d="M157 170 L145 182" />
+            <path d="M170 161 L154 168" />
+            <path d="M244 161 L258 171" />
+            <path d="M258 174 L270 188" />
+            <path d="M151 292 L132 310" />
+            <path d="M260 292 L279 311" />
+            <path d="M142 351 L121 370" />
+            <path d="M269 351 L290 372" />
+            <path d="M181 449 L169 470" />
+            <path d="M225 449 L237 470" />
+            <path d="M182 268 L164 279" />
+            <path d="M228 268 L246 280" />
+            <path d="M174 247 L153 252" />
+            <path d="M236 247 L257 252" />
+          </g>
         `;
       }
 
@@ -2209,6 +2225,16 @@
             <path d="M286 301 H317" />
             <path d="M286 318 H317" />
             <path d="M286 335 H306" />
+          </g>
+          <g stroke="#6f593d" stroke-width="3.2" stroke-linecap="round" opacity="0.82">
+            <path d="M166 171 L156 179" />
+            <path d="M243 170 L253 178" />
+            <path d="M153 294 L140 306" />
+            <path d="M258 294 L271 306" />
+            <path d="M145 351 L132 363" />
+            <path d="M266 351 L279 363" />
+            <path d="M184 448 L176 463" />
+            <path d="M224 448 L232 463" />
           </g>
         `;
       }
@@ -2249,6 +2275,14 @@
     }
 
     function getPosterOutfit(profile) {
+      if (profile.key === "toolmaker") {
+        return `
+          <path d="M166 279 C179 270 231 270 244 279 L236 324 C222 332 188 332 174 324 Z" fill="#b9976c" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M182 323 L176 365 L230 365 L224 323 Z" fill="#c6a47a" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M188 286 L205 302 L224 286" fill="none" stroke="#8f6f49" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        `;
+      }
+
       if (profile.key === "operator") {
         return `
           <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#11161f" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
