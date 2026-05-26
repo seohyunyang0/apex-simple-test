@@ -987,6 +987,99 @@
       margin-top: 20px;
     }
 
+    .result-cta-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .result-cta-card {
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      box-shadow: 0 10px 24px rgba(19, 52, 108, 0.06);
+    }
+
+    .result-cta-card h3 {
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.04em;
+    }
+
+    .result-cta-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .result-cta-copy {
+      display: grid;
+      gap: 14px;
+      align-content: space-between;
+      min-height: 100%;
+    }
+
+    .share-platforms {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .share-platform {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(4, 80, 195, 0.12);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(236, 243, 255, 0.92));
+      color: var(--ink);
+      box-shadow: 0 10px 24px rgba(19, 52, 108, 0.06);
+    }
+
+    .share-platform:hover {
+      border-color: rgba(4, 80, 195, 0.28);
+      box-shadow: 0 14px 26px rgba(4, 80, 195, 0.12);
+    }
+
+    .share-platform[data-platform="kakao"] {
+      background: linear-gradient(180deg, #fff9d9, #fff2b4);
+      color: #402100;
+    }
+
+    .share-platform[data-platform="naver"] {
+      background: linear-gradient(180deg, #ecfff2, #d5f8df);
+      color: #0c7c3c;
+    }
+
+    .share-platform[data-platform="facebook"] {
+      background: linear-gradient(180deg, #eff4ff, #dbe8ff);
+      color: #1655d8;
+    }
+
+    .share-platform[data-platform="instagram"] {
+      background: linear-gradient(180deg, #fff1f7, #ffe2ef);
+      color: #c32572;
+    }
+
+    .share-platform[data-platform="linkedin"] {
+      background: linear-gradient(180deg, #eef8ff, #dcedff);
+      color: #006699;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -1010,7 +1103,8 @@
 
     @media (max-width: 900px) {
       .result-hero,
-      .analysis-grid {
+      .analysis-grid,
+      .result-cta-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1145,9 +1239,14 @@
 
       .result-poster-card,
       .score-card,
-      .score-rail {
+      .score-rail,
+      .result-cta-card {
         padding: 18px;
         border-radius: 22px;
+      }
+
+      .share-platforms {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .score-rail {
@@ -1396,7 +1495,7 @@
               이 버전은 정적 HTML 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다.
             </div>
             <div class="footer-actions">
-              <button class="button button-primary" id="shareButton" type="button">결과 문구 복사</button>
+              <button class="button button-primary" id="shareButton" type="button">공유용 리포트 복사</button>
               <button class="button button-secondary" id="restartButton" type="button">다시 테스트하기</button>
             </div>
           </div>
@@ -1443,6 +1542,39 @@
             <ul id="insightList"></ul>
           </div>
         </div>
+
+        <div class="result-cta-grid">
+          <div class="result-cta-card">
+            <div class="result-cta-copy">
+              <div>
+                <div class="eyebrow">Report & Share</div>
+                <h3>좀 더 자세한 보고서가 궁금하다면?</h3>
+                <p>공유용 리포트를 만든 뒤 원하는 채널에 바로 붙여넣거나, 가능한 채널은 공유 화면까지 열어드릴게요.</p>
+              </div>
+              <div>
+                <strong>공유용 리포트 만들기</strong>
+                <div class="share-platforms">
+                  <button class="button share-platform" data-share-platform="kakao" data-platform="kakao" type="button">카카오</button>
+                  <button class="button share-platform" data-share-platform="naver" data-platform="naver" type="button">네이버</button>
+                  <button class="button share-platform" data-share-platform="facebook" data-platform="facebook" type="button">페이스북</button>
+                  <button class="button share-platform" data-share-platform="instagram" data-platform="instagram" type="button">인스타그램</button>
+                  <button class="button share-platform" data-share-platform="linkedin" data-platform="linkedin" type="button">링크드인</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-cta-card">
+            <div class="result-cta-copy">
+              <div>
+                <div class="eyebrow">Official</div>
+                <h3>정식 APEX도 궁금하다면</h3>
+                <p>공식 APEX 소개 페이지로 이동해 시험 구조와 프로그램 방향을 더 자세히 확인해보세요.</p>
+              </div>
+              <a class="button button-primary cta-link" href="https://scaila.kr/apex" target="_blank" rel="noreferrer">APEX 사이트로 이동</a>
+            </div>
+          </div>
+        </div>
       </section>
     </section>
   </div>
@@ -1458,6 +1590,7 @@
       74.4, 75.6, 76.3, 77.1, 78.4, 79.2, 80.4, 81.7, 82.5, 83.1,
       84.2, 85.6, 86.1, 87.4, 88.3, 89.1, 90.2, 91.4, 92.1, 93.5
     ];
+    const SHARE_BASE_URL = "https://seohyunyang0.github.io/apex-simple-test/";
 
     const els = {
       landingPanel: document.getElementById("landingPanel"),
@@ -1503,6 +1636,7 @@
       restartButton: document.getElementById("restartButton"),
       heroMotion: document.getElementById("heroMotion")
     };
+    const sharePlatformButtons = [...document.querySelectorAll("[data-share-platform]")];
 
     const steps = [...document.querySelectorAll(".question-step")];
     const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
@@ -2016,52 +2150,109 @@
     function getPosterAccessory(profile) {
       if (profile.key === "neanderthal") {
         return `
-          <g stroke="#223457" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <path d="M280 330 L322 280" />
-            <ellipse cx="334" cy="268" rx="13" ry="19" />
-            <path d="M290 430 L330 452" />
+          <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M286 316 L322 250" fill="none" />
+            <ellipse cx="332" cy="236" rx="18" ry="24" fill="#9db4d7" />
+            <path d="M294 390 L330 410" fill="none" />
+            <ellipse cx="340" cy="418" rx="10" ry="7" fill="#dbe8fb" stroke="none" />
+          </g>
+          <g fill="#5c432e" stroke="#5c432e" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M146 192 C145 162 165 145 191 144 C213 144 231 150 244 166 C252 176 257 191 255 205 C247 190 236 183 226 179 C211 173 190 172 173 177 C161 181 153 186 146 192 Z" />
+            <path d="M171 225 C176 241 188 252 205 255 C220 254 231 246 238 231 C236 250 227 265 210 269 C191 268 178 251 171 225 Z" />
+          </g>
+          <g stroke="#5e4a31" stroke-width="4" stroke-linecap="round" opacity="0.95">
+            <path d="M153 178 L140 194" />
+            <path d="M162 168 L145 181" />
+            <path d="M175 160 L158 168" />
+            <path d="M186 157 L170 162" />
+            <path d="M224 157 L240 164" />
+            <path d="M238 163 L252 174" />
+            <path d="M248 175 L263 191" />
+            <path d="M176 232 L165 246" />
+            <path d="M188 241 L177 257" />
+            <path d="M222 241 L233 257" />
+            <path d="M234 231 L246 246" />
+            <path d="M181 286 L164 302" />
+            <path d="M194 292 L177 311" />
+            <path d="M205 296 L205 320" />
+            <path d="M216 292 L233 311" />
+            <path d="M229 286 L246 302" />
+            <path d="M157 170 L145 182" />
+            <path d="M170 161 L154 168" />
+            <path d="M244 161 L258 171" />
+            <path d="M258 174 L270 188" />
+            <path d="M151 292 L132 310" />
+            <path d="M260 292 L279 311" />
+            <path d="M145 320 L124 338" />
+            <path d="M267 320 L288 338" />
+            <path d="M142 351 L121 370" />
+            <path d="M269 351 L290 372" />
+            <path d="M148 384 L128 404" />
+            <path d="M262 384 L282 404" />
+            <path d="M181 449 L169 470" />
+            <path d="M225 449 L237 470" />
+            <path d="M190 454 L182 476" />
+            <path d="M216 454 L224 476" />
+            <path d="M182 268 L164 279" />
+            <path d="M228 268 L246 280" />
+            <path d="M174 247 L153 252" />
+            <path d="M236 247 L257 252" />
           </g>
         `;
       }
 
       if (profile.key === "sapiens") {
         return `
-          <g stroke="#223457" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <rect x="276" y="312" width="46" height="62" rx="9" />
-            <path d="M286 330 H311" />
-            <path d="M286 347 H311" />
-            <path d="M286 364 H305" />
+          <g stroke="#10213f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="276" y="285" width="52" height="68" rx="10" fill="#ffffff" />
+            <path d="M286 301 H317" />
+            <path d="M286 318 H317" />
+            <path d="M286 335 H306" />
+          </g>
+          <g stroke="#6f593d" stroke-width="3.2" stroke-linecap="round" opacity="0.82">
+            <path d="M166 171 L156 179" />
+            <path d="M243 170 L253 178" />
+            <path d="M153 294 L140 306" />
+            <path d="M258 294 L271 306" />
+            <path d="M145 351 L132 363" />
+            <path d="M266 351 L279 363" />
+            <path d="M184 448 L176 463" />
+            <path d="M224 448 L232 463" />
           </g>
         `;
       }
 
       if (profile.key === "toolmaker") {
         return `
-          <g stroke="#223457" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <path d="M285 344 L326 304" />
-            <path d="M326 304 L345 285" />
-            <path d="M346 286 L362 302 L345 318 L328 302 Z" />
+          <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M286 316 L330 272" fill="none" />
+            <path d="M330 272 L348 254 L364 270 L346 288 Z" fill="#cfe0ff" />
+            <path d="M346 288 L364 270" fill="none" />
+            <circle cx="83" cy="370" r="18" fill="rgba(42,127,255,0.16)" />
+            <path d="M83 356 V384 M69 370 H97 M73 360 L93 380 M93 360 L73 380" />
           </g>
         `;
       }
 
       if (profile.key === "operator") {
         return `
-          <g stroke="#223457" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <rect x="270" y="318" width="62" height="42" rx="8" />
-            <path d="M301 360 V378" />
-            <path d="M283 378 H319" />
+          <g stroke="#10213f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="272" y="287" width="70" height="48" rx="8" fill="#f8fbff" />
+            <path d="M278 342 H336" />
+            <path d="M301 336 L291 354 H323 L313 336" fill="#cfe0ff" />
           </g>
         `;
       }
 
       return `
-        <g stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="4">
-          <circle cx="106" cy="176" r="14" stroke="#ff5c62" />
-          <circle cx="314" cy="176" r="14" stroke="#ffb13b" />
-          <path d="M92 176 H120" stroke="#7c78ff" />
-          <path d="M300 176 H328" stroke="#2ed2ff" />
-          <path d="M344 432 H362 M353 423 V441" stroke="#47d7a8" />
+        <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <circle cx="92" cy="120" r="18" stroke="#ff5f6d" stroke-width="4" />
+          <circle cx="315" cy="120" r="14" stroke="#ffb347" stroke-width="4" />
+          <circle cx="324" cy="332" r="12" stroke="#6decb9" stroke-width="4" />
+          <path d="M110 126 H180" stroke="#7f7eff" stroke-width="4" />
+          <path d="M218 126 H301" stroke="#33c3ff" stroke-width="4" />
+          <path d="M324 320 V344" stroke="#b76dff" stroke-width="4" />
+          <path d="M313 332 H335" stroke="#00d4ff" stroke-width="4" />
         </g>
       `;
     }
@@ -2069,60 +2260,44 @@
     function getPosterOutfit(profile) {
       if (profile.key === "neanderthal") {
         return `
-          <g stroke="#7b5b33" stroke-width="3.3" stroke-linecap="round" fill="none">
-            <path d="M167 192 L150 176" />
-            <path d="M181 185 L164 169" />
-            <path d="M219 185 L236 169" />
-            <path d="M234 193 L250 178" />
-            <path d="M180 262 H230" />
-            <path d="M175 278 H235" />
-            <path d="M170 294 H240" />
-            <path d="M165 310 H245" />
-            <path d="M162 327 L148 351" />
-            <path d="M248 327 L262 351" />
-            <path d="M165 365 L147 391" />
-            <path d="M245 365 L263 391" />
-            <path d="M188 431 L180 470" />
-            <path d="M223 431 L231 470" />
+          <g fill="none" stroke="#6a4d35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M174 286 C183 274 225 274 236 286" stroke-width="5" />
+            <path d="M176 301 C187 290 223 290 234 301" stroke-width="5" />
+            <path d="M179 316 C190 308 220 308 231 316" stroke-width="4.5" />
+            <path d="M182 333 C193 327 217 327 228 333" stroke-width="4.5" />
           </g>
         `;
       }
 
       if (profile.key === "sapiens") {
-        return `
-          <g stroke="#8f7c5b" stroke-width="2.8" stroke-linecap="round" fill="none">
-            <path d="M174 191 L162 179" />
-            <path d="M234 191 L246 179" />
-            <path d="M164 328 L154 349" />
-            <path d="M246 328 L256 349" />
-            <path d="M188 432 L182 463" />
-            <path d="M222 432 L228 463" />
-          </g>
-        `;
+        return "";
       }
 
       if (profile.key === "toolmaker") {
         return `
-          <path d="M176 264 L230 264 L222 306 L184 306 Z" fill="#c7a06a" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
-          <path d="M180 306 L230 306 L224 354 L176 354 Z" fill="#d2b07c" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
-          <path d="M190 276 L204 291 L219 276" fill="none" stroke="#8f6a42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M166 279 C179 270 231 270 244 279 L236 324 C222 332 188 332 174 324 Z" fill="#b9976c" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M182 323 L176 365 L230 365 L224 323 Z" fill="#c6a47a" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M188 286 L205 302 L224 286" fill="none" stroke="#8f6f49" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
         `;
       }
 
       if (profile.key === "operator") {
         return `
-          <path d="M176 264 L230 264 L230 356 L176 356 Z" fill="#111926" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
-          <path d="M184 356 L226 356 L222 432 L188 432 Z" fill="#617bad" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
+          <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#11161f" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M179 356 L173 435 C181 442 192 445 201 445 C210 445 220 442 228 435 L222 356 Z" fill="#6f8dc2" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
         `;
       }
 
       if (profile.key === "native") {
         return `
-          <path d="M178 264 L228 264 L224 356 L182 356 Z" fill="#ffffff" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
-          <path d="M188 356 L218 356 L214 430 L192 430 Z" fill="#eff4ff" stroke="#223457" stroke-width="4" stroke-linejoin="round" />
-          <g stroke-width="4" stroke-linecap="round">
-            <path d="M178 286 L166 338" stroke="#223457" />
-            <path d="M228 286 L240 338" stroke="#223457" />
+          <path d="M165 279 C175 267 235 267 245 279 L235 356 C223 362 186 362 175 356 Z" fill="#fdfefe" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <path d="M179 356 L173 435 C181 442 192 445 201 445 C210 445 220 442 228 435 L222 356 Z" fill="#dce9ff" stroke="#10213f" stroke-width="5" stroke-linejoin="round" />
+          <g stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="154" y="187" width="38" height="24" rx="10" stroke="#ff5f6d" />
+            <rect x="216" y="187" width="38" height="24" rx="10" stroke="#00c2ff" />
+            <path d="M192 199 H216" stroke="#7f7eff" />
+            <path d="M154 199 H192" stroke="#ffb347" />
+            <path d="M216 199 H254" stroke="#6decb9" />
           </g>
         `;
       }
@@ -2131,64 +2306,20 @@
     }
 
     function buildPosterFigure(profile) {
-      const glasses = profile.key === "native"
-        ? `
-          <g stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-            <rect x="172" y="185" width="24" height="16" rx="8" stroke="#ff5c62" />
-            <rect x="212" y="185" width="24" height="16" rx="8" stroke="#28d6ff" />
-            <path d="M196 193 H212" stroke="#ffb13b" />
-          </g>
-        `
-        : "";
-
-      const bodyHair = profile.key === "neanderthal"
-        ? `
-          <g stroke="#7b5b33" stroke-width="3" stroke-linecap="round">
-            <path d="M186 274 L172 320" />
-            <path d="M204 270 L204 324" />
-            <path d="M222 274 L236 320" />
-            <path d="M170 336 L156 378" />
-            <path d="M238 336 L252 378" />
-            <path d="M190 356 L186 430" />
-            <path d="M218 356 L222 430" />
-          </g>
-        `
-        : "";
-
-      const lightHair = profile.key === "sapiens"
-        ? `
-          <g stroke="#8f7c5b" stroke-width="2.3" stroke-linecap="round">
-            <path d="M174 336 L164 378" />
-            <path d="M236 336 L246 378" />
-            <path d="M192 362 L190 428" />
-            <path d="M218 362 L220 428" />
-          </g>
-        `
-        : "";
-
       return `
-        <g stroke="#223457" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-          <circle cx="205" cy="196" r="42" fill="#fffdfb" />
-          <path d="M175 190 L184 186" />
-          <path d="M226 186 L235 190" />
-          <circle cx="188" cy="195" r="3.5" fill="#223457" stroke="none" />
-          <circle cx="222" cy="195" r="3.5" fill="#223457" stroke="none" />
-          <path d="M190 219 C198 228 212 228 220 219" />
-          <path d="M184 238 L172 272" />
-          <path d="M226 238 L238 272" />
-          <path d="M205 238 L205 304" />
-          <path d="M174 272 C164 288 161 312 166 338" />
-          <path d="M236 272 C246 288 249 312 244 338" />
-          <path d="M166 338 C162 360 162 386 170 424" />
-          <path d="M244 338 C248 360 248 386 240 424" />
-          <path d="M196 304 C190 340 188 382 188 430" />
-          <path d="M214 304 C220 340 222 382 222 430" />
-          <path d="M188 430 L184 458" />
-          <path d="M222 430 L226 458" />
-          ${glasses}
+        <g stroke="#10213f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="205" cy="210" r="62" fill="#ffffff" />
+          <path d="M168 281 C146 301 142 351 151 400 C159 442 190 455 205 455 C220 455 251 442 259 400 C268 351 264 301 242 281 Z" fill="#ffffff" />
+          <path d="M167 309 C137 330 129 360 140 392" fill="none" />
+          <path d="M243 309 C273 330 281 360 270 392" fill="none" />
+          <path d="M184 404 C181 433 181 461 189 485" fill="none" />
+          <path d="M226 404 C229 433 229 461 221 485" fill="none" />
+          <circle cx="183" cy="206" r="7" fill="#10213f" stroke="none" />
+          <circle cx="227" cy="206" r="7" fill="#10213f" stroke="none" />
+          <path d="M183 185 L194 181" fill="none" />
+          <path d="M227 181 L238 185" fill="none" />
+          <path d="M186 238 C197 247 213 247 224 238" fill="none" />
         </g>
-        ${bodyHair}
-        ${lightHair}
         ${getPosterOutfit(profile)}
         ${getPosterAccessory(profile)}
       `;
@@ -2199,47 +2330,42 @@
       const safeSubtitle = escapeHtml(profile.subtitle);
       const safeRange = escapeHtml(profile.rangeLabel);
       const posterText = posterLines
-        .map((line, index) => `<tspan x="210" dy="${index === 0 ? 0 : 17}">${line}</tspan>`)
+        .map((line, index) => `<tspan x="210" dy="${index === 0 ? 0 : 18}">${line}</tspan>`)
         .join("");
-      const scoreY = posterLines.length > 1 ? 453 : 438;
+      const scoreY = posterLines.length > 1 ? 488 : 474;
 
       return `
         <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
-          <rect x="14" y="12" width="392" height="496" rx="32" fill="#eef4ff" stroke="rgba(4,80,195,0.08)" stroke-width="2" />
-          <rect x="32" y="32" width="356" height="448" rx="28" fill="#dfeaff" stroke="rgba(4,80,195,0.14)" stroke-width="2" />
-          <rect x="70" y="56" width="280" height="38" rx="19" fill="#ffffff" stroke="#0450c3" stroke-width="3" />
-          <text x="210" y="81" text-anchor="middle" fill="#1a2f57" font-size="14" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">APEX 진화 단계</text>
-          <rect x="86" y="94" width="248" height="290" rx="18" fill="rgba(255,255,255,0.54)" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
-          <text x="210" y="118" text-anchor="middle" fill="#35558f" font-size="11" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
-          <text x="210" y="138" text-anchor="middle" fill="#5e759e" font-size="11" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeSubtitle}</text>
-          <g opacity="0.7">
-            <circle cx="112" cy="156" r="12" fill="#d7e4ff" />
-            <circle cx="312" cy="176" r="10" fill="#d7e4ff" />
-            <path d="M122 206 C132 191 142 191 152 206" stroke="#9ec0ff" stroke-width="3" fill="none" stroke-linecap="round" />
-            <path d="M148 224 L156 232 L164 224" stroke="#9ec0ff" stroke-width="3" fill="none" stroke-linecap="round" />
-            <path d="M274 206 C284 191 294 191 304 206" stroke="#9ec0ff" stroke-width="3" fill="none" stroke-linecap="round" />
-            <path d="M300 224 L308 232 L316 224" stroke="#9ec0ff" stroke-width="3" fill="none" stroke-linecap="round" />
-            <circle cx="128" cy="354" r="18" fill="#d7e4ff" />
-            <circle cx="296" cy="352" r="12" fill="#d7e4ff" />
+          <defs>
+            <linearGradient id="posterBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f8fbff" />
+              <stop offset="100%" stop-color="#deebff" />
+            </linearGradient>
+          </defs>
+          <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#posterBg)" />
+          <rect x="28" y="82" width="364" height="390" rx="22" fill="rgba(255,255,255,0.62)" stroke="rgba(4,80,195,0.18)" stroke-width="3" />
+          <rect x="55" y="30" width="310" height="54" rx="27" fill="#ffffff" stroke="#0450c3" stroke-width="3.5" />
+          <text x="210" y="64" text-anchor="middle" fill="#10213f" font-size="20" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">APEX 진화 단계</text>
+          <text x="210" y="112" text-anchor="middle" fill="#3b5d91" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
+          <text x="210" y="136" text-anchor="middle" fill="#5a6d8f" font-size="14" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeSubtitle}</text>
+          <g opacity="0.55" fill="#c8dcff">
+            <circle cx="64" cy="150" r="18" />
+            <circle cx="356" cy="177" r="14" />
+            <circle cx="84" cy="438" r="24" />
+            <circle cx="347" cy="448" r="20" />
+          </g>
+          <g opacity="0.6" stroke="#7aa7ff" stroke-width="3" stroke-linecap="round">
+            <path d="M74 210 C88 188 104 191 115 207" fill="none" />
+            <path d="M320 202 C337 180 353 184 365 202" fill="none" />
+            <path d="M332 226 L342 234 L353 222" fill="none" />
+            <path d="M85 236 L94 244 L104 233" fill="none" />
           </g>
           ${buildPosterFigure(profile)}
-          <rect x="118" y="348" width="184" height="58" rx="22" fill="#dfeaff" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
-          <text x="210" y="372" text-anchor="middle" fill="#0450c3" font-size="16" font-weight="900" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${posterText}</text>
+          <rect x="70" y="426" width="270" height="66" rx="28" fill="#edf4ff" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
+          <text x="210" y="448" text-anchor="middle" fill="#0450c3" font-size="15" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${posterText}</text>
           <text x="210" y="${scoreY}" text-anchor="middle" fill="#5a6d8f" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${Math.round(total)}점 · 상위 ${percentile.toFixed(1)}%</text>
         </svg>
       `;
-    }
-
-    function getProfileAsset(profile) {
-      const assets = {
-        neanderthal: "assets/evolution/stage-1.png",
-        sapiens: "assets/evolution/stage-2.png",
-        toolmaker: "assets/evolution/stage-3.png",
-        operator: "assets/evolution/stage-4.png",
-        native: "assets/evolution/stage-5.png"
-      };
-
-      return assets[profile.key] || assets.native;
     }
 
     function buildResultDetail(profile, total, snapshot) {
@@ -2247,6 +2373,102 @@
         <p>${escapeHtml(profile.detail)}</p>
         <p>현재 점수는 <strong>${Math.round(total)}점</strong>으로 <strong>${escapeHtml(profile.name)}</strong> 구간입니다. 상대적으로는 <strong>${escapeHtml(snapshot.strongest.label)}</strong>이 강점이고, 다음 점프 포인트는 <strong>${escapeHtml(snapshot.weakest.label)}</strong>입니다. ${escapeHtml(profile.nextMove)}</p>
       `;
+    }
+
+    function buildShareReport(profile, total, percentile, snapshot) {
+      const roundedTotal = Math.round(total);
+
+      return [
+        "APEX 간단테스트 결과 리포트",
+        `점수: ${roundedTotal}점`,
+        `단계: ${profile.name}`,
+        `퍼센타일: 상위 ${percentile.toFixed(1)}%`,
+        `강점: ${snapshot.strongest.label}`,
+        `다음 점프 포인트: ${snapshot.weakest.label}`,
+        `요약: ${getSummary(percentile, total)}`,
+        `다음 액션: ${profile.nextMove}`,
+        `테스트 링크: ${SHARE_BASE_URL}`
+      ].join("\n");
+    }
+
+    function buildPlatformShareText(platform, reportText) {
+      const platformIntro = {
+        kakao: "카카오로 공유할 APEX 결과입니다.",
+        naver: "네이버에 공유할 APEX 결과입니다.",
+        facebook: "페이스북에 공유할 APEX 결과입니다.",
+        instagram: "인스타그램에 공유할 APEX 결과입니다.",
+        linkedin: "링크드인에 공유할 APEX 결과입니다."
+      };
+
+      return `${platformIntro[platform] || "공유할 APEX 결과입니다."}\n\n${reportText}`;
+    }
+
+    async function copyText(value) {
+      await navigator.clipboard.writeText(value);
+    }
+
+    function openShareWindow(url) {
+      window.open(url, "_blank", "noopener,noreferrer,width=720,height=760");
+    }
+
+    function shareToPlatform(platform, text) {
+      const encodedUrl = encodeURIComponent(SHARE_BASE_URL);
+      const encodedTitle = encodeURIComponent("APEX 간단테스트 결과");
+      const encodedText = encodeURIComponent(text);
+
+      if (platform === "naver") {
+        openShareWindow(`https://share.naver.com/web/shareView?url=${encodedUrl}&title=${encodedTitle}`);
+        return true;
+      }
+
+      if (platform === "facebook") {
+        openShareWindow(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`);
+        return true;
+      }
+
+      if (platform === "linkedin") {
+        openShareWindow(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`);
+        return true;
+      }
+
+      return false;
+    }
+
+    async function handlePlatformShare(platform) {
+      const reportText = els.shareButton.dataset.report || "APEX 간단테스트 결과를 확인해보세요.";
+      const platformText = buildPlatformShareText(platform, reportText);
+
+      try {
+        await copyText(platformText);
+      } catch (_error) {
+        showToast("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+        return;
+      }
+
+      const opened = shareToPlatform(platform, platformText);
+
+      if (!opened && (platform === "kakao" || platform === "instagram") && navigator.share) {
+        try {
+          await navigator.share({
+            title: "APEX 간단테스트 결과",
+            text: platformText,
+            url: SHARE_BASE_URL
+          });
+          showToast(`${platform === "kakao" ? "카카오" : "인스타그램"} 공유용 리포트를 준비했습니다.`);
+          return;
+        } catch (_error) {
+          // 사용자가 공유 시트를 닫은 경우 복사만 유지
+        }
+      }
+
+      const messages = {
+        kakao: "카카오용 리포트를 복사했습니다. 대화창에 바로 붙여넣어보세요.",
+        naver: "네이버 공유창을 열고 리포트도 복사했습니다.",
+        facebook: "페이스북 공유창을 열고 리포트도 복사했습니다.",
+        instagram: "인스타그램용 리포트를 복사했습니다. 스토리나 DM에 붙여넣어보세요.",
+        linkedin: "링크드인 공유창을 열고 리포트도 복사했습니다."
+      };
+      showToast(messages[platform] || "공유용 리포트를 복사했습니다.");
     }
 
     function renderList(target, items) {
@@ -2307,9 +2529,8 @@
 
       setScreen("result");
 
-      const shareText =
-        `나는 AI 활용 수준 4문항 테스트에서 ${roundedTotal}점, ${profile.name}, 상위 ${percentile.toFixed(1)}%가 나왔어요.`;
-      els.shareButton.dataset.share = shareText;
+      const shareReport = buildShareReport(profile, total, percentile, snapshot);
+      els.shareButton.dataset.report = shareReport;
     }
 
     function nextStep() {
@@ -2364,13 +2585,19 @@
     });
 
     els.shareButton.addEventListener("click", async () => {
-      const shareText = els.shareButton.dataset.share || "AI 활용 수준 테스트 결과를 확인해보세요.";
+      const shareText = els.shareButton.dataset.report || "APEX 간단테스트 결과를 확인해보세요.";
       try {
-        await navigator.clipboard.writeText(shareText);
-        showToast("결과 문구를 복사했습니다.");
+        await copyText(shareText);
+        showToast("공유용 리포트를 복사했습니다.");
       } catch (_error) {
         showToast("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
       }
+    });
+
+    sharePlatformButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        handlePlatformShare(button.dataset.sharePlatform);
+      });
     });
 
     updateCounters();
