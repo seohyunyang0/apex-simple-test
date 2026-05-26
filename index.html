@@ -987,28 +987,35 @@
 
     .score-rail {
       display: grid;
-      gap: 12px;
-      padding: 24px;
-      border-radius: 28px;
+      gap: 8px;
+      padding: 18px 20px;
+      border-radius: 24px;
       background: rgba(255, 255, 255, 0.74);
       border: 1px solid rgba(29, 28, 25, 0.08);
     }
 
     .score-row {
       display: grid;
-      grid-template-columns: 112px 1fr auto;
+      grid-template-columns: 74px 1fr 58px;
       align-items: center;
       gap: 10px;
+      min-height: 34px;
     }
 
     .score-row span {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--muted);
     }
 
+    .score-row strong {
+      font-size: 13px;
+      text-align: right;
+      color: var(--ink);
+    }
+
     .rail {
-      height: 12px;
+      height: 10px;
       background: rgba(29, 28, 25, 0.08);
       border-radius: 999px;
       overflow: hidden;
@@ -1103,7 +1110,7 @@
       }
 
       .score-row {
-        grid-template-columns: 88px 1fr auto;
+        grid-template-columns: 70px 1fr 54px;
       }
 
       .result-poster-art {
@@ -1246,6 +1253,17 @@
       .score-rail {
         padding: 18px;
         border-radius: 22px;
+      }
+
+      .score-rail {
+        gap: 6px;
+        padding: 16px;
+      }
+
+      .score-row {
+        grid-template-columns: 62px 1fr 50px;
+        gap: 8px;
+        min-height: 30px;
       }
 
       .evolution-card {
