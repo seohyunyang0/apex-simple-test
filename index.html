@@ -1656,7 +1656,7 @@
 
           <div class="score-card result-copy-card">
             <div class="result-kicker" id="resultTierRange">0-40점 구간</div>
-            <h2 class="result-tier-name" id="resultTierName">땅에서 겨우 일어나는 네안데르탈인</h2>
+            <h2 class="result-tier-name" id="resultTierName">도입 전 단계</h2>
             <div class="score-number" id="displayScore">0점</div>
             <div class="percentile-pill" id="percentileText">상위 0.0%</div>
             <p class="result-summary" id="summaryText"></p>
@@ -1678,11 +1678,11 @@
                 <span>100</span>
               </div>
               <div class="tier-guide">
-                <div class="tier-guide-row"><strong>0-40</strong><span>땅에서 겨우 일어나는 네안데르탈인</span></div>
-                <div class="tier-guide-row"><strong>41-60</strong><span>갓 진화를 시작한 호모 사피엔스</span></div>
-                <div class="tier-guide-row"><strong>61-80</strong><span>도끼를 쓰는 호모 사피엔스사피엔스</span></div>
-                <div class="tier-guide-row"><strong>81-95</strong><span>컴퓨터를 쓰는 인간</span></div>
-                <div class="tier-guide-row"><strong>96-100</strong><span>AI 글라스를 낀 AI Native</span></div>
+                <div class="tier-guide-row"><strong>0-40</strong><span>도입 전 단계</span></div>
+                <div class="tier-guide-row"><strong>41-60</strong><span>기초 활용 단계</span></div>
+                <div class="tier-guide-row"><strong>61-80</strong><span>실무 활용 단계</span></div>
+                <div class="tier-guide-row"><strong>81-95</strong><span>운영 최적화 단계</span></div>
+                <div class="tier-guide-row"><strong>96-100</strong><span>전략 내재화 단계</span></div>
               </div>
             </div>
             <div class="result-detail" id="resultDetail"></div>
@@ -2263,13 +2263,13 @@
         return {
           key: "neanderthal",
           rangeLabel: "0-40점 구간",
-          name: "땅에서 겨우 일어나는 네안데르탈인",
-          posterLines: ["땅에서 겨우 일어나는", "네안데르탈인"],
-          subtitle: "AI를 아직 낯선 존재처럼 다루는 초기 단계",
+          name: "도입 전 단계",
+          posterLines: ["도입 전", "단계"],
+          subtitle: "안전한 사용 기준과 핵심 개념 정리가 필요한 초기 구간",
           detail:
-            "지금은 AI에게 한 번 묻고 끝내는 경향이 강합니다. 답을 받는 것과 답을 검증하는 것이 아직 분리되지 않았기 때문에, 결과 품질도 운에 많이 좌우됩니다.",
+            "현재는 AI를 업무에 붙일 때 무엇을 먼저 확인해야 하는지 기준을 세우는 단계입니다. 특히 민감정보 처리, 사실 검증, 전문가 검토 원칙을 명확히 정리해 두는 것이 중요합니다.",
           nextMove:
-            "먼저 `수치·출처·논리`를 확인하는 기본 검증 체크리스트와, 한 번 더 되묻는 2차 질문 습관을 붙이면 가장 큰 점프가 납니다."
+            "보안 체크리스트와 모델 선정 절차를 템플릿처럼 반복 적용하면 다음 구간으로 가장 빠르게 이동할 수 있습니다."
         };
       }
 
@@ -2277,13 +2277,13 @@
         return {
           key: "sapiens",
           rangeLabel: "41-60점 구간",
-          name: "갓 진화를 시작한 호모 사피엔스",
-          posterLines: ["갓 진화를 시작한", "호모 사피엔스"],
-          subtitle: "AI를 도구로 인식하기 시작한 사용자",
+          name: "기초 활용 단계",
+          posterLines: ["기초 활용", "단계"],
+          subtitle: "AI 활용 개념은 이해했지만 운영 기준은 더 다듬어야 하는 구간",
           detail:
-            "무작정 쓰는 단계는 지났고, 상황에 따라 AI를 활용할 수 있습니다. 다만 결과를 구조적으로 관리하기보다 감각적으로 수정하는 비중이 아직 큽니다.",
+            "AI를 어디에 쓰면 좋은지 감을 잡고 있지만, 보안·환각·전문가 검토 원칙이 상황마다 흔들릴 수 있습니다. 업무 적용 기준을 조금 더 정교하게 잡으면 안정성이 높아집니다.",
           nextMove:
-            "프롬프트에 역할, 목표, 출력 형식, 금지 조건을 먼저 넣고, 후속 검증 질문을 분리하면 상위 구간으로 빠르게 올라갈 수 있습니다."
+            "모델 비교를 `목적-컨텍스트-기능-보안-비용` 순서로 정리하는 습관을 들이면 실무 활용력이 빠르게 올라갑니다."
         };
       }
 
@@ -2291,13 +2291,13 @@
         return {
           key: "toolmaker",
           rangeLabel: "61-80점 구간",
-          name: "도끼를 쓰는 호모 사피엔스사피엔스",
-          posterLines: ["도끼를 쓰는", "호모 사피엔스사피엔스"],
-          subtitle: "AI를 실무 도구처럼 다루는 중상위권 단계",
+          name: "실무 활용 단계",
+          posterLines: ["실무 활용", "단계"],
+          subtitle: "실제 업무 적용과 검증 루틴이 자리 잡기 시작한 구간",
           detail:
-            "이 구간부터는 AI를 단순 검색창이 아니라 작업용 인터페이스로 씁니다. 요구사항을 나누고, 결과를 다시 검토하고, 한 번 더 개선시키는 흐름이 살아 있습니다.",
+            "이 구간부터는 AI를 단순 검색이 아니라 실무 도구로 다룹니다. 상황별로 적합한 모델을 고르고, 결과의 위험 요소를 점검하는 루틴이 점차 안정적으로 잡힙니다.",
           nextMove:
-            "이제 중요한 건 정답률보다 운영 품질입니다. 보안 조건, 설명 책임, 편향 점검을 프롬프트와 검수 루프 안에 자연스럽게 넣는 연습이 필요합니다."
+            "이제는 개별 정답보다 운영 품질이 중요합니다. 보안 검토와 사실 검증 단계를 반복 가능한 프로세스로 만들면 더 강해집니다."
         };
       }
 
@@ -2305,26 +2305,26 @@
         return {
           key: "operator",
           rangeLabel: "81-95점 구간",
-          name: "컴퓨터를 쓰는 인간",
-          posterLines: ["컴퓨터를 쓰는", "인간"],
-          subtitle: "AI를 업무 시스템처럼 운영하는 상위권 단계",
+          name: "운영 최적화 단계",
+          posterLines: ["운영 최적화", "단계"],
+          subtitle: "AI를 조직 업무 흐름 안에서 안정적으로 운영할 수 있는 구간",
           detail:
-            "당신은 이미 AI를 꽤 잘 씁니다. 좋은 질문을 던지고, 출력 형식을 통제하고, 결과의 허점을 다시 찾아내는 루프가 비교적 안정적으로 작동합니다.",
+            "당신은 AI를 단발성 실험이 아니라 운영 가능한 체계로 보기 시작했습니다. 위험도가 높은 영역에서도 검토 포인트를 구조적으로 설정할 수 있는 수준입니다.",
           nextMove:
-            "여기서 더 올라가려면 개인 숙련을 넘어서 팀 기준을 만들어야 합니다. 재현 가능한 템플릿, 검수 체크리스트, 설명 가능한 결과 구조가 핵심입니다."
+            "개인 숙련을 넘어 팀 단위의 재현성을 만드는 것이 다음 과제입니다. 점검 기준, 결과 설명 방식, 승인 프로세스를 함께 정리해 보세요."
         };
       }
 
       return {
         key: "native",
         rangeLabel: "96-100점 구간",
-        name: "AI 글라스를 낀 AI Native",
-        posterLines: ["AI 글라스를 낀", "AI Native"],
-        subtitle: "AI를 자연스러운 인지 확장처럼 다루는 최상위 단계",
+        name: "전략 내재화 단계",
+        posterLines: ["전략 내재화", "단계"],
+        subtitle: "AI 활용 원칙과 운영 판단이 업무 전략 안에 내재화된 최상위 구간",
         detail:
-          "이 구간은 프롬프트를 잘 쓰는 수준을 넘어, AI와 함께 사고하는 방식이 체화된 상태에 가깝습니다. 무엇을 맡기고 무엇을 검증해야 하는지 경계가 선명합니다.",
+          "이 구간은 단순히 AI를 잘 쓰는 수준을 넘어, 어떤 업무에 어떤 모델을 어떤 기준으로 붙일지까지 전략적으로 판단할 수 있는 상태에 가깝습니다.",
         nextMove:
-          "다음 과제는 더 똑똑해지는 것이 아니라 더 신뢰받는 것입니다. 팀원도 같은 품질을 재현할 수 있게 만드는 운영 설계 능력이 중요합니다."
+          "이제 핵심은 개인 성과보다 조직 전환입니다. 리드 수집, 전환 퍼널, 운영 데이터 축적까지 연결되는 구조로 확장해보세요."
       };
     }
 
@@ -2521,44 +2521,48 @@
     }
 
     function buildResultPoster(profile, total, percentile) {
-      const posterLines = (profile.posterLines || [profile.name]).map((line) => escapeHtml(line));
-      const safeSubtitle = escapeHtml(profile.subtitle);
       const safeRange = escapeHtml(profile.rangeLabel);
-      const posterText = posterLines
-        .map((line, index) => `<tspan x="210" dy="${index === 0 ? 0 : 18}">${line}</tspan>`)
-        .join("");
-      const scoreY = posterLines.length > 1 ? 488 : 474;
+      const safeName = escapeHtml(profile.name);
+      const score = Math.round(total);
+      const percentileValue = percentile.toFixed(1);
+      const gaugePercent = clamp(score, 0, 100);
+      const arcLength = 439.82;
+      const progressLength = (arcLength * gaugePercent) / 100;
 
       return `
         <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
           <defs>
-            <linearGradient id="posterBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#f8fbff" />
               <stop offset="100%" stop-color="#deebff" />
             </linearGradient>
+            <linearGradient id="gaugeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0cb4d4" />
+              <stop offset="100%" stop-color="#18c7a7" />
+            </linearGradient>
+            <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(15, 63, 127, 0.16)" />
+            </filter>
           </defs>
-          <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#posterBg)" />
-          <rect x="28" y="82" width="364" height="390" rx="22" fill="rgba(255,255,255,0.62)" stroke="rgba(4,80,195,0.18)" stroke-width="3" />
-          <rect x="55" y="30" width="310" height="54" rx="27" fill="#ffffff" stroke="#0450c3" stroke-width="3.5" />
-          <text x="210" y="64" text-anchor="middle" fill="#10213f" font-size="20" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">APEX 진화 단계</text>
-          <text x="210" y="112" text-anchor="middle" fill="#3b5d91" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
-          <text x="210" y="136" text-anchor="middle" fill="#5a6d8f" font-size="14" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeSubtitle}</text>
-          <g opacity="0.55" fill="#c8dcff">
-            <circle cx="64" cy="150" r="18" />
-            <circle cx="356" cy="177" r="14" />
-            <circle cx="84" cy="438" r="24" />
-            <circle cx="347" cy="448" r="20" />
+          <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#panelBg)" />
+          <rect x="28" y="28" width="364" height="464" rx="28" fill="rgba(255,255,255,0.86)" stroke="rgba(4,80,195,0.12)" stroke-width="2" />
+          <text x="54" y="76" fill="#10213f" font-size="28" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">AI 활용 점수</text>
+          <text x="54" y="106" fill="#5a6d8f" font-size="14" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
+          <text x="366" y="76" text-anchor="end" fill="#5a6d8f" font-size="14" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">리드 검증형 결과</text>
+          <g filter="url(#gaugeShadow)">
+            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="#d4dfef" stroke-width="44" stroke-linecap="round" pathLength="${arcLength}" />
+            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="url(#gaugeStroke)" stroke-width="44" stroke-linecap="round" pathLength="${arcLength}" stroke-dasharray="${progressLength} ${arcLength}" />
           </g>
-          <g opacity="0.6" stroke="#7aa7ff" stroke-width="3" stroke-linecap="round">
-            <path d="M74 210 C88 188 104 191 115 207" fill="none" />
-            <path d="M320 202 C337 180 353 184 365 202" fill="none" />
-            <path d="M332 226 L342 234 L353 222" fill="none" />
-            <path d="M85 236 L94 244 L104 233" fill="none" />
-          </g>
-          ${buildPosterFigure(profile)}
-          <rect x="70" y="426" width="270" height="66" rx="28" fill="#edf4ff" stroke="rgba(4,80,195,0.18)" stroke-width="2" />
-          <text x="210" y="448" text-anchor="middle" fill="#0450c3" font-size="15" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${posterText}</text>
-          <text x="210" y="${scoreY}" text-anchor="middle" fill="#5a6d8f" font-size="13" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${Math.round(total)}점 · 상위 ${percentile.toFixed(1)}%</text>
+          <text x="210" y="214" text-anchor="middle" fill="#667a9e" font-size="18" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">상위 ${percentileValue}%</text>
+          <text x="210" y="262" text-anchor="middle" fill="#10213f" font-size="54" font-weight="900" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${score}점</text>
+          <text x="210" y="302" text-anchor="middle" fill="#5a6d8f" font-size="17" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeName}</text>
+          <rect x="56" y="344" width="308" height="72" rx="20" fill="#f6f9ff" stroke="rgba(4,80,195,0.12)" stroke-width="2" />
+          <text x="92" y="387" fill="#5a6d8f" font-size="15" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">결과 점수</text>
+          <text x="328" y="388" text-anchor="end" fill="#10213f" font-size="28" font-weight="900" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${score} / 100</text>
+          <rect x="56" y="434" width="142" height="34" rx="17" fill="#edf4ff" />
+          <text x="127" y="456" text-anchor="middle" fill="#0450c3" font-size="14" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">정량 점수 기반</text>
+          <rect x="222" y="434" width="142" height="34" rx="17" fill="#edf4ff" />
+          <text x="293" y="456" text-anchor="middle" fill="#0450c3" font-size="14" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">퍼센타일 비교</text>
         </svg>
       `;
     }
