@@ -987,6 +987,16 @@
       margin-top: 20px;
     }
 
+    .save-status {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(4, 80, 195, 0.06);
+      color: var(--brand-strong);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .result-cta-grid {
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
@@ -1494,6 +1504,7 @@
             <div class="result-note" id="benchmarkNote">
               이 버전은 정적 HTML 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다.
             </div>
+            <div class="save-status" id="saveStatus">DB 저장: 설정 전</div>
             <div class="footer-actions">
               <button class="button button-primary" id="shareButton" type="button">공유용 리포트 복사</button>
               <button class="button button-secondary" id="restartButton" type="button">다시 테스트하기</button>
@@ -1581,6 +1592,8 @@
 
   <div class="toast" id="toast">복사되었습니다.</div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js"></script>
   <script>
     const benchmarkScores = [
       18.2, 21.4, 24.8, 27.5, 30.1, 31.9, 34.2, 35.6, 37.7, 39.8,
@@ -1591,6 +1604,7 @@
       84.2, 85.6, 86.1, 87.4, 88.3, 89.1, 90.2, 91.4, 92.1, 93.5
     ];
     const SHARE_BASE_URL = "https://seohyunyang0.github.io/apex-simple-test/";
+    const SUPABASE_CONFIG = window.SUPABASE_CONFIG || null;
 
     const els = {
       landingPanel: document.getElementById("landingPanel"),
@@ -1631,12 +1645,14 @@
       insightList: document.getElementById("insightList"),
       toast: document.getElementById("toast"),
       benchmarkNote: document.getElementById("benchmarkNote"),
+      saveStatus: document.getElementById("saveStatus"),
       startButton: document.getElementById("startButton"),
       shareButton: document.getElementById("shareButton"),
       restartButton: document.getElementById("restartButton"),
       heroMotion: document.getElementById("heroMotion")
     };
     const sharePlatformButtons = [...document.querySelectorAll("[data-share-platform]")];
+    let supabaseClient = null;
 
     const steps = [...document.querySelectorAll(".question-step")];
     const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
@@ -1663,6 +1679,12 @@
       showToast._timer = window.setTimeout(() => {
         els.toast.classList.remove("show");
       }, 1800);
+    }
+
+    function setSaveStatus(message) {
+      if (els.saveStatus) {
+        els.saveStatus.textContent = message;
+      }
     }
 
     function clamp(value, min, max) {
@@ -2407,6 +2429,87 @@
       await navigator.clipboard.writeText(value);
     }
 
+    function createSupabaseClient() {
+      if (!SUPABASE_CONFIG || !SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) {
+        setSaveStatus("DB 저장: Supabase 설정 전");
+        return null;
+      }
+
+      if (!window.supabase || typeof window.supabase.createClient !== "function") {
+        setSaveStatus("DB 저장: Supabase 라이브러리 로드 실패");
+        return null;
+      }
+
+      if (supabaseClient) {
+        return supabaseClient;
+      }
+
+      supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false
+        }
+      });
+      setSaveStatus("DB 저장: 연결 준비 완료");
+      return supabaseClient;
+    }
+
+    function buildResponseSnapshot() {
+      return {
+        part1: document.querySelector('input[name="part1"]:checked')?.value || null,
+        part2Choice: document.querySelector('input[name="part2Choice"]:checked')?.value || null,
+        part3Prompt: els.part3Prompt.value.trim(),
+        part3Verify: els.part3Verify.value.trim(),
+        part3Improve: els.part3Improve.value.trim(),
+        part4Answer: els.part4Answer.value.trim()
+      };
+    }
+
+    function buildSupabasePayload({ total, percentile, profile, snapshot, part1, part2, part3, part4 }) {
+      return {
+        session_id: crypto.randomUUID(),
+        score_total: Math.round(total * 10) / 10,
+        percentile,
+        tier_key: profile.key,
+        tier_name: profile.name,
+        strongest_area: snapshot.strongest.label,
+        weakest_area: snapshot.weakest.label,
+        part_scores: {
+          part1,
+          part2,
+          part3: part3.score,
+          part4: part4.score
+        },
+        subscores: {
+          part3: part3.subs,
+          part4: part4.subs
+        },
+        responses: buildResponseSnapshot(),
+        page_url: window.location.href,
+        user_agent: navigator.userAgent,
+        created_at_client: new Date().toISOString()
+      };
+    }
+
+    async function saveResultToSupabase(payload) {
+      const client = createSupabaseClient();
+      if (!client) {
+        return false;
+      }
+
+      setSaveStatus("DB 저장: 결과 업로드 중...");
+      const tableName = SUPABASE_CONFIG.table || "apex_test_results";
+      const { error } = await client.from(tableName).insert(payload);
+
+      if (error) {
+        setSaveStatus(`DB 저장 실패: ${error.message}`);
+        return false;
+      }
+
+      setSaveStatus("DB 저장 완료: 결과가 Supabase에 남았습니다.");
+      return true;
+    }
+
     function openShareWindow(url) {
       window.open(url, "_blank", "noopener,noreferrer,width=720,height=760");
     }
@@ -2531,6 +2634,18 @@
 
       const shareReport = buildShareReport(profile, total, percentile, snapshot);
       els.shareButton.dataset.report = shareReport;
+      saveResultToSupabase(
+        buildSupabasePayload({
+          total,
+          percentile,
+          profile,
+          snapshot,
+          part1,
+          part2,
+          part3,
+          part4
+        })
+      );
     }
 
     function nextStep() {
@@ -2600,6 +2715,7 @@
       });
     });
 
+    createSupabaseClient();
     updateCounters();
     createHeroMotion();
     setStep(0);
