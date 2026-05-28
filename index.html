@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>내 AI 스킬 수준은 상위 몇 %일까?</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/Favicon_5.svg" />
   <meta
     name="description"
     content="8문항으로 확인하는 AI 활용 수준 테스트. 점수와 상위 퍼센타일로 내 AI 실력을 진단하세요."
@@ -248,16 +249,20 @@
         rgba(255, 255, 255, 0.78);
       border: 1px solid rgba(16, 33, 63, 0.08);
       box-shadow: 0 16px 36px rgba(19, 52, 108, 0.08);
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      color: var(--ink);
+      padding: 14px;
+    }
+
+    .hero-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .hero-copy h1 {
       margin-top: 0;
       font-size: clamp(34px, 6vw, 68px);
-      line-height: 1.02;
+      line-height: 1.1;
       letter-spacing: -0.05em;
       max-width: 12ch;
       margin-left: auto;
@@ -1397,8 +1402,10 @@
         <div class="hero-crosshair"></div>
       </div>
       <div class="hero-copy">
-        <div class="hero-logo" aria-label="APEX 로고">APEX</div>
-        <h1>내 AI 스킬 수준은 상위 몇 %일까?</h1>
+        <div class="hero-logo" aria-label="APEX 로고">
+          <img src="./assets/Favicon_5.svg" alt="APEX 로고" />
+        </div>
+        <h1>내 AI 스킬 수준은<br />상위 몇 %일까?</h1>
         <p>
           8개의 질문으로 당신의 보안 감각, 환각 검증, 모델 선택 사고력, 프롬프트 핵심 역량을 휴대폰에서도 바로 확인해보세요.
         </p>
