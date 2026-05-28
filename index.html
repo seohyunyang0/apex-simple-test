@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 활용 수준 테스트</title>
+  <title>내 AI 스킬 수준은 상위 몇 %일까?</title>
   <meta
     name="description"
-    content="4문항으로 확인하는 AI 활용 수준 테스트. 점수와 상위 퍼센타일로 내 AI 실력을 증명하세요."
+    content="8문항으로 확인하는 AI 활용 수준 테스트. 점수와 상위 퍼센타일로 내 AI 실력을 진단하세요."
   />
   <style>
     :root {
@@ -546,6 +546,118 @@
 
     .split-grid {
       display: grid;
+      gap: 12px;
+    }
+
+    .sort-board {
+      display: grid;
+      gap: 14px;
+    }
+
+    .sort-pool,
+    .sort-zone {
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      border: 1px dashed rgba(4, 80, 195, 0.22);
+      background: rgba(255, 255, 255, 0.66);
+      transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .sort-pool.is-active,
+    .sort-zone.is-active {
+      border-color: rgba(4, 80, 195, 0.5);
+      background: rgba(232, 242, 255, 0.94);
+      box-shadow: inset 0 0 0 1px rgba(4, 80, 195, 0.06);
+    }
+
+    .sort-pool strong,
+    .sort-zone strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--brand-strong);
+      font-size: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .sort-zone small {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .sort-pool-body,
+    .sort-zone-body {
+      min-height: 72px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .sort-zone-body:empty::before {
+      content: "여기로 이동";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      border-radius: var(--radius-md);
+      border: 1px dashed rgba(4, 80, 195, 0.16);
+      background: rgba(244, 249, 255, 0.92);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sort-card {
+      appearance: none;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(16, 33, 63, 0.1);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(235, 243, 255, 0.95));
+      box-shadow: 0 10px 22px rgba(19, 52, 108, 0.06);
+      cursor: grab;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, opacity 160ms ease;
+    }
+
+    .sort-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(4, 80, 195, 0.34);
+    }
+
+    .sort-card:active {
+      cursor: grabbing;
+    }
+
+    .sort-card.is-selected {
+      border-color: rgba(4, 80, 195, 0.52);
+      background: rgba(232, 242, 255, 0.96);
+      box-shadow: 0 14px 28px rgba(4, 80, 195, 0.12);
+    }
+
+    .sort-card.is-dragging {
+      opacity: 0.56;
+      transform: scale(0.98);
+    }
+
+    .sort-card-title {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .sort-card-copy {
+      display: block;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .sort-zones {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -1114,7 +1226,8 @@
     @media (max-width: 900px) {
       .result-hero,
       .analysis-grid,
-      .result-cta-grid {
+      .result-cta-grid,
+      .sort-zones {
         grid-template-columns: 1fr;
       }
 
@@ -1259,6 +1372,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .sort-card {
+        padding: 13px 14px;
+      }
+
       .score-rail {
         gap: 6px;
         padding: 16px;
@@ -1281,9 +1398,9 @@
       </div>
       <div class="hero-copy">
         <div class="hero-logo" aria-label="APEX 로고">APEX</div>
-        <h1>나는 내 AI 스킬 수준은 상위 몇 %일까?</h1>
+        <h1>내 AI 스킬 수준은 상위 몇 %일까?</h1>
         <p>
-          8개의 질문으로 당신의 보안 감각, 프롬프트 이해, 환각 검증, 모델 선택 사고력을 휴대폰에서도 바로 확인해보세요.
+          8개의 질문으로 당신의 보안 감각, 환각 검증, 모델 선택 사고력, 프롬프트 핵심 역량을 휴대폰에서도 바로 확인해보세요.
         </p>
         <div class="hero-actions">
           <button class="button button-primary button-hero" id="startButton" type="button">테스트 시작하기</button>
@@ -1336,11 +1453,11 @@
         <div class="question-step" data-step="1">
           <div class="step-top">
             <div class="step-tag">PART 2 · 역할 부여</div>
-            <small>MCQ 문항. 구체적인 페르소나 설정의 이유를 묻습니다.</small>
+            <small>상황판단형 문항. 역할 설정이 응답 품질에 미치는 영향을 봅니다.</small>
           </div>
           <h2 class="question-title">역할 부여를 구체적으로 설정할수록 왜 더 좋을까요?</h2>
           <p class="question-copy">
-            역할 부여(Role Assignment) 기법에서 역할을 구체적으로 설정할수록 좋은 이유를 고르세요.
+            사내 교육팀이 AI로 법무 FAQ 초안을 만들고 있습니다. `전문 변호사`처럼 역할을 구체적으로 설정하려는 이유로 가장 적절한 답을 고르세요.
           </p>
           <div class="options" role="radiogroup" aria-label="Part 2 객관식">
             <label class="option">
@@ -1369,9 +1486,12 @@
         <div class="question-step" data-step="2">
           <div class="step-top">
             <div class="step-tag">PART 3 · 환각 검증</div>
-            <small>MCQ 문항. Hallucination 개념을 정확히 이해하는지 봅니다.</small>
+            <small>상황판단형 문항. Hallucination 리스크를 실제로 구분하는지 봅니다.</small>
           </div>
           <h2 class="question-title">'AI 환각(Hallucination)' 현상에 대한 설명으로 가장 정확한 것은?</h2>
+          <p class="question-copy">
+            연구팀이 AI에게 시장 규모와 교수 연구 인용까지 포함된 답변을 받았습니다. 아래 설명 중 가장 정확한 정의를 고르세요.
+          </p>
           <div class="options" role="radiogroup" aria-label="Part 3 객관식">
             <label class="option">
               <input type="radio" name="q3" value="a" />
@@ -1398,7 +1518,7 @@
 
         <div class="question-step" data-step="3">
           <div class="step-top">
-            <div class="step-tag">PART 4 · 법률 자문</div>
+            <div class="step-tag">PART 4 · 전문가 검토</div>
             <small>Case 문항. 전문가 검토 없는 AI 의존 리스크를 봅니다.</small>
           </div>
           <h2 class="question-title">AI 법률 자문 결과만 믿고 계약을 진행하려 할 때, 가장 적절한 대응은?</h2>
@@ -1435,7 +1555,7 @@
         <div class="question-step" data-step="4">
           <div class="step-top">
             <div class="step-tag">PART 5 · 구독 티어</div>
-            <small>MCQ 문항. Gemini 3.1 Pro Preview 구독 티어 이해를 봅니다.</small>
+            <small>상황판단형 문항. 유료 티어를 사업적으로 이해하는지 봅니다.</small>
           </div>
           <h2 class="question-title">'AI Ultra' 티어의 특징으로 가장 맞는 것은?</h2>
           <p class="question-copy">
@@ -1467,175 +1587,123 @@
 
         <div class="question-step" data-step="5">
           <div class="step-top">
-            <div class="step-tag">PART 6 · 카테고리 배정</div>
-            <small>각 항목을 가장 알맞은 카테고리에 배정하세요.</small>
+            <div class="step-tag">PART 6 · 보도자료 검증</div>
+            <small>상황판단형 문항. 검증 없는 대외 발신의 리스크를 판단합니다.</small>
           </div>
-          <h2 class="question-title">항목을 카테고리에 배정하세요.</h2>
-          <div class="split-grid">
-            <div class="scenario">
-              <strong>업무 목적 정의</strong>
-              <p class="question-copy" style="margin-bottom: 12px;">해결하려는 과제의 유형(분석, 생성, 검색, 코딩 등)을 명확히 한다</p>
-              <select id="mapPurpose" class="prompt-box">
-                <option value="">카테고리 선택</option>
-                <option value="feature">기능 매칭</option>
-                <option value="purpose">목적 정의</option>
-                <option value="security">보안 검토</option>
-                <option value="cost">비용 분석</option>
-                <option value="context">컨텍스트 비교</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>입력 데이터 규모 파악</strong>
-              <p class="question-copy" style="margin-bottom: 12px;">처리할 문서의 길이와 양에 따라 컨텍스트 윈도우를 비교한다</p>
-              <select id="mapContext" class="prompt-box">
-                <option value="">카테고리 선택</option>
-                <option value="feature">기능 매칭</option>
-                <option value="purpose">목적 정의</option>
-                <option value="security">보안 검토</option>
-                <option value="cost">비용 분석</option>
-                <option value="context">컨텍스트 비교</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>기능 특화 분석</strong>
-              <p class="question-copy" style="margin-bottom: 12px;">Gemini의 Deep Research, Claude의 Cowork, GPT의 멀티모달 등 고유 기능을 매칭한다</p>
-              <select id="mapFeature" class="prompt-box">
-                <option value="">카테고리 선택</option>
-                <option value="feature">기능 매칭</option>
-                <option value="purpose">목적 정의</option>
-                <option value="security">보안 검토</option>
-                <option value="cost">비용 분석</option>
-                <option value="context">컨텍스트 비교</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>보안 및 데이터 정책 확인</strong>
-              <p class="question-copy" style="margin-bottom: 12px;">각 모델의 데이터 학습 정책, 기업용 보안 옵션을 검토한다</p>
-              <select id="mapSecurity" class="prompt-box">
-                <option value="">카테고리 선택</option>
-                <option value="feature">기능 매칭</option>
-                <option value="purpose">목적 정의</option>
-                <option value="security">보안 검토</option>
-                <option value="cost">비용 분석</option>
-                <option value="context">컨텍스트 비교</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>비용 대비 성능 평가</strong>
-              <p class="question-copy" style="margin-bottom: 12px;">무료/유료 플랜별 기능 제한과 가격을 종합 비교한다</p>
-              <select id="mapCost" class="prompt-box">
-                <option value="">카테고리 선택</option>
-                <option value="feature">기능 매칭</option>
-                <option value="purpose">목적 정의</option>
-                <option value="security">보안 검토</option>
-                <option value="cost">비용 분석</option>
-                <option value="context">컨텍스트 비교</option>
-              </select>
-            </div>
+          <h2 class="question-title">AI가 만든 보도자료 문구를 검증 없이 외부 배포하려 할 때 가장 큰 문제는 무엇일까요?</h2>
+          <div class="scenario">
+            <strong>상황</strong>
+            <p class="question-copy" style="margin-bottom: 0;">
+              마케팅 담당자가 AI가 작성한 보도자료에 "업계 최초 특허 기술 적용"이라는 문구를 넣은 채 사실 확인 없이 언론에 배포하려고 합니다.
+            </p>
           </div>
-          <div class="helper" id="mappingHelper">현재 0 / 5개 배정</div>
+          <div class="options" role="radiogroup" aria-label="Part 6 객관식">
+            <label class="option">
+              <input type="radio" name="q6" value="a" />
+              <span class="option-mark"></span>
+              AI가 만든 문구는 어차피 초안이므로 검증 없이 배포해도 책임이 크지 않다
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="b" />
+              <span class="option-mark"></span>
+              AI가 전문적인 문체를 썼다면 사실 여부도 함께 신뢰할 수 있다
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="c" />
+              <span class="option-mark"></span>
+              대외 발신 문구는 사실·근거·표현 리스크를 반드시 사람과 원자료로 검증해야 한다
+            </label>
+            <label class="option">
+              <input type="radio" name="q6" value="d" />
+              <span class="option-mark"></span>
+              언론 배포 후 문제가 생기면 AI 서비스 제공사에 정정 책임을 넘기면 된다
+            </label>
+          </div>
         </div>
 
         <div class="question-step" data-step="6">
           <div class="step-top">
-            <div class="step-tag">PART 7 · 문제점 선택</div>
-            <small>해당되는 항목을 모두 선택하세요.</small>
+            <div class="step-tag">PART 7 · 리스크 분류</div>
+            <small>카드를 끌어 가장 알맞은 판단 카테고리로 분류하세요.</small>
           </div>
-          <h2 class="question-title">문제점 선택 · 해당되는 항목 모두 선택</h2>
-          <div class="options" role="group" aria-label="문제점 선택">
-            <label class="option">
-              <input type="checkbox" name="issues" value="gpt-context" />
-              <span class="option-mark"></span>
-              GPT-5.4의 컨텍스트 윈도우는 1백만 토큰이 아니라 128K 토큰이다
-            </label>
-            <label class="option">
-              <input type="checkbox" name="issues" value="attention-year" />
-              <span class="option-mark"></span>
-              'Attention Is All You Need' 논문은 2020년이 아니라 2017년에 발표되었다
-            </label>
-            <label class="option">
-              <input type="checkbox" name="issues" value="claude-context" />
-              <span class="option-mark"></span>
-              Claude의 1M 토큰 컨텍스트 지원 설명은 부정확하다
-            </label>
-            <label class="option">
-              <input type="checkbox" name="issues" value="claude-cowork" />
-              <span class="option-mark"></span>
-              Claude의 Cowork 기능 설명은 부정확하다
-            </label>
-            <label class="option">
-              <input type="checkbox" name="issues" value="gemini-reasoning" />
-              <span class="option-mark"></span>
-              Gemini 3.1 Pro가 추론 특화 모델이라는 설명은 부정확하다
-            </label>
+          <h2 class="question-title">아래 5개 판단 요소를 가장 적절한 카테고리로 끌어 분류하세요.</h2>
+          <div class="scenario">
+            <strong>풀이 방식</strong>
+            <p class="question-copy" style="margin-bottom: 0;">
+              카드를 길게 눌러 아래 박스로 이동하세요. 휴대폰에서는 카드를 한 번 탭한 뒤 원하는 박스를 누르면 배치됩니다.
+            </p>
           </div>
-          <div class="helper" id="issuesHelper">현재 0개 선택</div>
+          <div class="sort-board">
+            <div class="sort-pool" id="sortPool">
+              <strong>분류할 항목</strong>
+              <div class="sort-pool-body" id="sortPoolBody">
+                <button class="sort-card" type="button" draggable="true" data-item-id="purpose">
+                  <span class="sort-card-title">업무 목적 정의</span>
+                  <span class="sort-card-copy">해결하려는 과제의 유형(분석, 생성, 검색, 코딩 등)을 명확히 한다</span>
+                </button>
+                <button class="sort-card" type="button" draggable="true" data-item-id="context">
+                  <span class="sort-card-title">입력 데이터 규모 파악</span>
+                  <span class="sort-card-copy">처리할 문서의 길이와 양에 따라 컨텍스트 윈도우를 비교한다</span>
+                </button>
+                <button class="sort-card" type="button" draggable="true" data-item-id="feature">
+                  <span class="sort-card-title">기능 특화 분석</span>
+                  <span class="sort-card-copy">Gemini의 Deep Research, Claude의 Cowork, GPT의 멀티모달 등 고유 기능을 매칭한다</span>
+                </button>
+                <button class="sort-card" type="button" draggable="true" data-item-id="security">
+                  <span class="sort-card-title">보안 및 데이터 정책 확인</span>
+                  <span class="sort-card-copy">각 모델의 데이터 학습 정책, 기업용 보안 옵션을 검토한다</span>
+                </button>
+                <button class="sort-card" type="button" draggable="true" data-item-id="cost">
+                  <span class="sort-card-title">비용 대비 성능 평가</span>
+                  <span class="sort-card-copy">무료·유료 플랜별 기능 제한과 가격을 종합 비교한다</span>
+                </button>
+              </div>
+            </div>
+            <div class="sort-zones">
+              <div class="sort-zone" data-category="feature">
+                <strong>기능 매칭</strong>
+                <small>업무에 필요한 고유 기능을 비교하는 판단</small>
+                <div class="sort-zone-body"></div>
+              </div>
+              <div class="sort-zone" data-category="purpose">
+                <strong>목적 정의</strong>
+                <small>문제 유형과 목표를 먼저 분명히 하는 판단</small>
+                <div class="sort-zone-body"></div>
+              </div>
+              <div class="sort-zone" data-category="security">
+                <strong>보안 검토</strong>
+                <small>민감정보, 정책, 기업 보안 옵션을 따지는 판단</small>
+                <div class="sort-zone-body"></div>
+              </div>
+              <div class="sort-zone" data-category="cost">
+                <strong>비용 분석</strong>
+                <small>예산 대비 효율과 가격 구조를 비교하는 판단</small>
+                <div class="sort-zone-body"></div>
+              </div>
+              <div class="sort-zone" data-category="context">
+                <strong>컨텍스트 비교</strong>
+                <small>문서 길이, 입력량, 처리 범위를 보는 판단</small>
+                <div class="sort-zone-body"></div>
+              </div>
+            </div>
+          </div>
+          <div class="helper" id="sortingHelper">현재 0 / 5개 배치</div>
         </div>
 
         <div class="question-step" data-step="7">
           <div class="step-top">
-            <div class="step-tag">PART 8 · 순서 배열</div>
-            <small>적합한 모델 선정 절차를 순서대로 배열하세요.</small>
+            <div class="step-tag">PART 8 · 초단문 프롬프트</div>
+            <small>15자 이내로 핵심 제약을 얼마나 간결하게 쓰는지 봅니다.</small>
           </div>
-          <h2 class="question-title">AI 모델 도입 시 올바른 의사결정 절차를 순서대로 배열하세요.</h2>
-          <div class="split-grid">
-            <div class="scenario">
-              <strong>1단계</strong>
-              <select id="order1" class="prompt-box">
-                <option value="">항목 선택</option>
-                <option value="purpose">업무 목적 정의</option>
-                <option value="context">입력 데이터 규모 파악</option>
-                <option value="feature">기능 특화 분석</option>
-                <option value="security">보안 및 데이터 정책 확인</option>
-                <option value="cost">비용 대비 성능 평가</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>2단계</strong>
-              <select id="order2" class="prompt-box">
-                <option value="">항목 선택</option>
-                <option value="purpose">업무 목적 정의</option>
-                <option value="context">입력 데이터 규모 파악</option>
-                <option value="feature">기능 특화 분석</option>
-                <option value="security">보안 및 데이터 정책 확인</option>
-                <option value="cost">비용 대비 성능 평가</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>3단계</strong>
-              <select id="order3" class="prompt-box">
-                <option value="">항목 선택</option>
-                <option value="purpose">업무 목적 정의</option>
-                <option value="context">입력 데이터 규모 파악</option>
-                <option value="feature">기능 특화 분석</option>
-                <option value="security">보안 및 데이터 정책 확인</option>
-                <option value="cost">비용 대비 성능 평가</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>4단계</strong>
-              <select id="order4" class="prompt-box">
-                <option value="">항목 선택</option>
-                <option value="purpose">업무 목적 정의</option>
-                <option value="context">입력 데이터 규모 파악</option>
-                <option value="feature">기능 특화 분석</option>
-                <option value="security">보안 및 데이터 정책 확인</option>
-                <option value="cost">비용 대비 성능 평가</option>
-              </select>
-            </div>
-            <div class="scenario">
-              <strong>5단계</strong>
-              <select id="order5" class="prompt-box">
-                <option value="">항목 선택</option>
-                <option value="purpose">업무 목적 정의</option>
-                <option value="context">입력 데이터 규모 파악</option>
-                <option value="feature">기능 특화 분석</option>
-                <option value="security">보안 및 데이터 정책 확인</option>
-                <option value="cost">비용 대비 성능 평가</option>
-              </select>
-            </div>
+          <h2 class="question-title">재무 데이터 분석 요청 앞에 붙일 안전 제약 프롬프트를 15자 이내로 써보세요.</h2>
+          <div class="scenario">
+            <strong>조건</strong>
+            <p class="question-copy" style="margin-bottom: 0;">
+              비식별, 민감정보 제외, 근거 중심 중 최소 1개 이상의 핵심 제약을 담아주세요. 예: "비식별로 분석", "출처만 요약", "민감정보 제외"
+            </p>
           </div>
-          <div class="helper" id="orderingHelper">현재 0 / 5단계 선택</div>
+          <textarea id="shortPrompt" maxlength="15" placeholder="예: 비식별로 분석"></textarea>
+          <div class="helper" id="shortPromptHelper">현재 0 / 15자</div>
         </div>
 
         <div class="error" id="quizError"></div>
@@ -1656,7 +1724,7 @@
 
           <div class="score-card result-copy-card">
             <div class="result-kicker" id="resultTierRange">0-40점 구간</div>
-            <h2 class="result-tier-name" id="resultTierName">도입 전 단계</h2>
+            <h2 class="result-tier-name" id="resultTierName">AI 스타터</h2>
             <div class="score-number" id="displayScore">0점</div>
             <div class="percentile-pill" id="percentileText">상위 0.0%</div>
             <p class="result-summary" id="summaryText"></p>
@@ -1678,11 +1746,11 @@
                 <span>100</span>
               </div>
               <div class="tier-guide">
-                <div class="tier-guide-row"><strong>0-40</strong><span>도입 전 단계</span></div>
-                <div class="tier-guide-row"><strong>41-60</strong><span>기초 활용 단계</span></div>
-                <div class="tier-guide-row"><strong>61-80</strong><span>실무 활용 단계</span></div>
-                <div class="tier-guide-row"><strong>81-95</strong><span>운영 최적화 단계</span></div>
-                <div class="tier-guide-row"><strong>96-100</strong><span>전략 내재화 단계</span></div>
+                <div class="tier-guide-row"><strong>0-40</strong><span>AI 스타터</span></div>
+                <div class="tier-guide-row"><strong>41-60</strong><span>AI 라이트유저</span></div>
+                <div class="tier-guide-row"><strong>61-80</strong><span>AI 헤비유저</span></div>
+                <div class="tier-guide-row"><strong>81-95</strong><span>AI 마스터</span></div>
+                <div class="tier-guide-row"><strong>96-100</strong><span>AI Native</span></div>
               </div>
             </div>
             <div class="result-detail" id="resultDetail"></div>
@@ -1800,19 +1868,11 @@
       prevButton: document.getElementById("prevButton"),
       nextButton: document.getElementById("nextButton"),
       quizError: document.getElementById("quizError"),
-      mapPurpose: document.getElementById("mapPurpose"),
-      mapContext: document.getElementById("mapContext"),
-      mapFeature: document.getElementById("mapFeature"),
-      mapSecurity: document.getElementById("mapSecurity"),
-      mapCost: document.getElementById("mapCost"),
-      mappingHelper: document.getElementById("mappingHelper"),
-      issuesHelper: document.getElementById("issuesHelper"),
-      order1: document.getElementById("order1"),
-      order2: document.getElementById("order2"),
-      order3: document.getElementById("order3"),
-      order4: document.getElementById("order4"),
-      order5: document.getElementById("order5"),
-      orderingHelper: document.getElementById("orderingHelper"),
+      sortPool: document.getElementById("sortPool"),
+      sortPoolBody: document.getElementById("sortPoolBody"),
+      sortingHelper: document.getElementById("sortingHelper"),
+      shortPrompt: document.getElementById("shortPrompt"),
+      shortPromptHelper: document.getElementById("shortPromptHelper"),
       displayScore: document.getElementById("displayScore"),
       percentileText: document.getElementById("percentileText"),
       summaryText: document.getElementById("summaryText"),
@@ -1844,7 +1904,11 @@
       heroMotion: document.getElementById("heroMotion")
     };
     const sharePlatformButtons = [...document.querySelectorAll("[data-share-platform]")];
+    const sortCards = [...document.querySelectorAll(".sort-card")];
+    const sortZones = [...document.querySelectorAll(".sort-zone")];
+    const sortZoneBodies = sortZones.map((zone) => zone.querySelector(".sort-zone-body"));
     let supabaseClient = null;
+    let selectedSortCardId = null;
 
     const steps = [...document.querySelectorAll(".question-step")];
     const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
@@ -2015,73 +2079,148 @@
       return document.querySelector(`input[name="${name}"]:checked`)?.value || null;
     }
 
-    function getCheckedIssues() {
-      return [...document.querySelectorAll('input[name="issues"]:checked')].map((input) => input.value);
+    function getSortAssignments() {
+      const assignments = {};
+      sortZones.forEach((zone) => {
+        const category = zone.dataset.category;
+        const card = zone.querySelector(".sort-card");
+        if (card) {
+          assignments[card.dataset.itemId] = category;
+        }
+      });
+      return assignments;
     }
 
-    function getMappingValues() {
-      return {
-        purpose: els.mapPurpose.value,
-        context: els.mapContext.value,
-        feature: els.mapFeature.value,
-        security: els.mapSecurity.value,
-        cost: els.mapCost.value
-      };
-    }
-
-    function getOrderingValues() {
-      return [
-        els.order1.value,
-        els.order2.value,
-        els.order3.value,
-        els.order4.value,
-        els.order5.value
-      ];
+    function getPlacedSortCount() {
+      return Object.keys(getSortAssignments()).length;
     }
 
     function updateCounters() {
-      const mappingCount = Object.values(getMappingValues()).filter(Boolean).length;
-      const issuesCount = getCheckedIssues().length;
-      const orderingCount = getOrderingValues().filter(Boolean).length;
+      const placedCount = getPlacedSortCount();
+      const shortPromptLength = els.shortPrompt.value.trim().length;
 
-      if (els.mappingHelper) {
-        els.mappingHelper.textContent = `현재 ${mappingCount} / 5개 배정`;
+      if (els.sortingHelper) {
+        els.sortingHelper.textContent = `현재 ${placedCount} / 5개 배치`;
       }
-      if (els.issuesHelper) {
-        els.issuesHelper.textContent = `현재 ${issuesCount}개 선택`;
-      }
-      if (els.orderingHelper) {
-        els.orderingHelper.textContent = `현재 ${orderingCount} / 5단계 선택`;
+      if (els.shortPromptHelper) {
+        els.shortPromptHelper.textContent = `현재 ${shortPromptLength} / 15자`;
       }
     }
 
+    function clearSortSelection() {
+      selectedSortCardId = null;
+      sortCards.forEach((card) => card.classList.remove("is-selected"));
+    }
+
+    function findSortCard(cardId) {
+      return sortCards.find((card) => card.dataset.itemId === cardId) || null;
+    }
+
+    function moveSortCard(cardId, targetCategory = "") {
+      const card = findSortCard(cardId);
+      if (!card) {
+        return;
+      }
+
+      if (!targetCategory) {
+        els.sortPoolBody.appendChild(card);
+      } else {
+        const zone = sortZones.find((item) => item.dataset.category === targetCategory);
+        const zoneBody = zone?.querySelector(".sort-zone-body");
+        if (!zoneBody) {
+          return;
+        }
+
+        const existing = zoneBody.querySelector(".sort-card");
+        if (existing && existing !== card) {
+          els.sortPoolBody.appendChild(existing);
+        }
+        zoneBody.appendChild(card);
+      }
+
+      clearSortSelection();
+      updateCounters();
+    }
+
+    function setDropActive(target, active) {
+      if (target) {
+        target.classList.toggle("is-active", active);
+      }
+    }
+
+    function bindSortInteractions() {
+      sortCards.forEach((card) => {
+        card.addEventListener("dragstart", (event) => {
+          const cardId = card.dataset.itemId;
+          selectedSortCardId = cardId;
+          card.classList.add("is-dragging");
+          if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData("text/plain", cardId);
+          }
+        });
+
+        card.addEventListener("dragend", () => {
+          card.classList.remove("is-dragging");
+          setDropActive(els.sortPool, false);
+          sortZones.forEach((zone) => setDropActive(zone, false));
+        });
+
+        card.addEventListener("click", () => {
+          const alreadySelected = selectedSortCardId === card.dataset.itemId;
+          clearSortSelection();
+          if (!alreadySelected) {
+            selectedSortCardId = card.dataset.itemId;
+            card.classList.add("is-selected");
+          }
+        });
+      });
+
+      const dropTargets = [els.sortPool, ...sortZones];
+      dropTargets.forEach((target) => {
+        const category = target === els.sortPool ? "" : target.dataset.category;
+        target.addEventListener("dragover", (event) => {
+          event.preventDefault();
+          setDropActive(target, true);
+        });
+        target.addEventListener("dragleave", () => {
+          setDropActive(target, false);
+        });
+        target.addEventListener("drop", (event) => {
+          event.preventDefault();
+          const cardId = event.dataTransfer?.getData("text/plain") || selectedSortCardId;
+          moveSortCard(cardId, category);
+          setDropActive(target, false);
+        });
+        target.addEventListener("click", () => {
+          if (selectedSortCardId) {
+            moveSortCard(selectedSortCardId, category);
+          }
+        });
+      });
+    }
+
     function validateStep(stepIndex) {
-      if (stepIndex >= 0 && stepIndex <= 4) {
+      if (stepIndex >= 0 && stepIndex <= 5) {
         const answerName = `q${stepIndex + 1}`;
         if (!getCheckedValue(answerName)) {
           return `문항 ${stepIndex + 1}의 답을 선택해 주세요.`;
         }
       }
 
-      if (stepIndex === 5) {
-        if (Object.values(getMappingValues()).some((value) => !value)) {
-          return "카테고리 배정 5개를 모두 선택해 주세요.";
-        }
-      }
-
       if (stepIndex === 6) {
-        if (getCheckedIssues().length === 0) {
-          return "해당되는 문제점을 1개 이상 선택해 주세요.";
+        if (getPlacedSortCount() !== 5) {
+          return "5개 항목을 모두 카테고리 박스로 옮겨 주세요.";
         }
       }
 
       if (stepIndex === 7) {
-        const values = getOrderingValues();
-        if (values.some((value) => !value)) {
-          return "1단계부터 5단계까지 모두 선택해 주세요.";
+        const value = els.shortPrompt.value.trim();
+        if (!value) {
+          return "15자 이내 초단문 프롬프트를 입력해 주세요.";
         }
-        if (new Set(values).size !== values.length) {
-          return "순서 배열에는 같은 항목을 중복해서 넣을 수 없습니다.";
+        if (value.length > 15) {
+          return "프롬프트는 15자 이내로 작성해 주세요.";
         }
       }
 
@@ -2092,8 +2231,8 @@
       return getCheckedValue(name) === correctValue ? 10 : 0;
     }
 
-    function scoreMapping() {
-      const answers = getMappingValues();
+    function scoreSorting() {
+      const assignments = getSortAssignments();
       const correct = {
         purpose: "purpose",
         context: "context",
@@ -2101,41 +2240,28 @@
         security: "security",
         cost: "cost"
       };
-
-      const correctCount = Object.entries(correct).reduce((count, [key, value]) => {
-        return count + (answers[key] === value ? 1 : 0);
+      const matches = Object.entries(correct).reduce((count, [itemId, category]) => {
+        return count + (assignments[itemId] === category ? 1 : 0);
       }, 0);
 
       return {
-        score: correctCount * 6,
-        correctCount
+        score: matches * 6,
+        matches
       };
     }
 
-    function scoreIssues() {
-      const selected = getCheckedIssues();
-      const correct = ["gpt-context", "attention-year", "claude-context", "claude-cowork", "gemini-reasoning"];
-      const selectedSet = new Set(selected);
-      const correctSet = new Set(correct);
-      const hits = correct.filter((item) => selectedSet.has(item)).length;
-      const misses = selected.filter((item) => !correctSet.has(item)).length;
-      const score = clamp(Math.round((hits / correct.length) * 10) - (misses * 2), 0, 10);
+    function scoreShortPrompt() {
+      const value = els.shortPrompt.value.trim();
+      const hasSecurity = /비식별|민감정보|실명제외|익명/.test(value);
+      const hasEvidence = /근거|출처|검증/.test(value);
+      const hasLimit = /제외|금지|만|기반/.test(value);
+      const keywords = [hasSecurity, hasEvidence, hasLimit].filter(Boolean).length;
+      const conciseBonus = value.length <= 12 ? 1 : 0;
+      const score = clamp((keywords * 5) + conciseBonus, 0, 10);
 
       return {
         score,
-        hits,
-        selectedCount: selected.length
-      };
-    }
-
-    function scoreOrdering() {
-      const values = getOrderingValues();
-      const correct = ["purpose", "context", "feature", "security", "cost"];
-      const matches = values.reduce((count, value, index) => count + (value === correct[index] ? 1 : 0), 0);
-
-      return {
-        score: matches * 2,
-        matches
+        keywords
       };
     }
 
@@ -2174,10 +2300,10 @@
         list.push("역할 부여, 환각, 구독 티어처럼 AI 활용의 핵심 개념 이해가 탄탄합니다.");
       }
       if (part3 >= 28) {
-        list.push("모델 선정 절차를 목적, 컨텍스트, 기능, 보안, 비용 순서로 구조화해서 생각할 수 있습니다.");
+        list.push("리스크와 사업성을 함께 보며 모델 선정 절차를 순서대로 구조화할 수 있습니다.");
       }
       if (part4 >= 8) {
-        list.push("모델 비교 설명 속 오류나 과장 포인트를 비교적 잘 짚어낼 수 있습니다.");
+        list.push("짧은 프롬프트 안에도 핵심 제약을 압축해 넣는 감각이 좋습니다.");
       }
 
       return list.slice(0, 2);
@@ -2193,10 +2319,10 @@
         list.push("역할 부여, 환각, 구독 티어 같은 기본 개념에서 혼동이 남아 있을 수 있습니다.");
       }
       if (part3 <= 18) {
-        list.push("모델 선정 절차를 항목별로 정리하고 순서화하는 구조적 사고가 더 필요합니다.");
+        list.push("리스크와 사업성을 함께 고려한 모델 선정 순서를 구조화하는 힘이 더 필요합니다.");
       }
       if (part4 <= 4) {
-        list.push("모델, 논문, 기능 설명에서 사실 오류를 가려내는 검증 감각을 더 키울 필요가 있습니다.");
+        list.push("짧은 제약 프롬프트에 핵심 조건을 압축해서 넣는 감각을 더 키울 필요가 있습니다.");
       }
 
       return list.slice(0, 2);
@@ -2215,7 +2341,7 @@
         actions.push("모델 선정은 `목적 정의 → 컨텍스트 비교 → 기능 매칭 → 보안 검토 → 비용 분석` 순서로 반복 연습해보세요.");
       }
       if (part4 <= 6) {
-        actions.push("모델 소개 자료를 읽을 때는 발표 연도, 컨텍스트 길이, 기능 명칭처럼 검증 가능한 사실부터 먼저 체크해보세요.");
+        actions.push("짧은 프롬프트를 쓸 때도 `비식별`, `검증`, `출처`처럼 안전 제약 키워드 하나는 반드시 넣어보세요.");
       }
 
       if (actions.length < 3) {
@@ -2233,7 +2359,7 @@
       } else if (part1 >= part2 && part1 >= part3 && part1 >= part4) {
         items.push("보안과 전문가 검토 원칙은 비교적 강하지만, 모델 비교와 사실 검증 디테일에서 점수 차이가 벌어질 수 있습니다.");
       } else {
-        items.push("기초 개념 이해와 사실 검증 감각의 균형이 현재 점수에 큰 영향을 주고 있습니다.");
+        items.push("기초 개념 이해와 짧은 제약 프롬프트 설계 감각의 균형이 현재 점수에 영향을 주고 있습니다.");
       }
 
       if (percentile <= 12) {
@@ -2263,8 +2389,8 @@
         return {
           key: "neanderthal",
           rangeLabel: "0-40점 구간",
-          name: "도입 전 단계",
-          posterLines: ["도입 전", "단계"],
+          name: "AI 스타터",
+          posterLines: ["AI", "스타터"],
           subtitle: "안전한 사용 기준과 핵심 개념 정리가 필요한 초기 구간",
           detail:
             "현재는 AI를 업무에 붙일 때 무엇을 먼저 확인해야 하는지 기준을 세우는 단계입니다. 특히 민감정보 처리, 사실 검증, 전문가 검토 원칙을 명확히 정리해 두는 것이 중요합니다.",
@@ -2277,8 +2403,8 @@
         return {
           key: "sapiens",
           rangeLabel: "41-60점 구간",
-          name: "기초 활용 단계",
-          posterLines: ["기초 활용", "단계"],
+          name: "AI 라이트유저",
+          posterLines: ["AI", "라이트유저"],
           subtitle: "AI 활용 개념은 이해했지만 운영 기준은 더 다듬어야 하는 구간",
           detail:
             "AI를 어디에 쓰면 좋은지 감을 잡고 있지만, 보안·환각·전문가 검토 원칙이 상황마다 흔들릴 수 있습니다. 업무 적용 기준을 조금 더 정교하게 잡으면 안정성이 높아집니다.",
@@ -2291,8 +2417,8 @@
         return {
           key: "toolmaker",
           rangeLabel: "61-80점 구간",
-          name: "실무 활용 단계",
-          posterLines: ["실무 활용", "단계"],
+          name: "AI 헤비유저",
+          posterLines: ["AI", "헤비유저"],
           subtitle: "실제 업무 적용과 검증 루틴이 자리 잡기 시작한 구간",
           detail:
             "이 구간부터는 AI를 단순 검색이 아니라 실무 도구로 다룹니다. 상황별로 적합한 모델을 고르고, 결과의 위험 요소를 점검하는 루틴이 점차 안정적으로 잡힙니다.",
@@ -2305,8 +2431,8 @@
         return {
           key: "operator",
           rangeLabel: "81-95점 구간",
-          name: "운영 최적화 단계",
-          posterLines: ["운영 최적화", "단계"],
+          name: "AI 마스터",
+          posterLines: ["AI", "마스터"],
           subtitle: "AI를 조직 업무 흐름 안에서 안정적으로 운영할 수 있는 구간",
           detail:
             "당신은 AI를 단발성 실험이 아니라 운영 가능한 체계로 보기 시작했습니다. 위험도가 높은 영역에서도 검토 포인트를 구조적으로 설정할 수 있는 수준입니다.",
@@ -2318,8 +2444,8 @@
       return {
         key: "native",
         rangeLabel: "96-100점 구간",
-        name: "전략 내재화 단계",
-        posterLines: ["전략 내재화", "단계"],
+        name: "AI Native",
+        posterLines: ["AI", "Native"],
         subtitle: "AI 활용 원칙과 운영 판단이 업무 전략 안에 내재화된 최상위 구간",
         detail:
           "이 구간은 단순히 AI를 잘 쓰는 수준을 넘어, 어떤 업무에 어떤 모델을 어떤 기준으로 붙일지까지 전략적으로 판단할 수 있는 상태에 가깝습니다.",
@@ -2332,8 +2458,8 @@
       const areas = [
         { label: "보안·법률 판단", ratio: part1 / 20 },
         { label: "프롬프트·환각 이해", ratio: part2 / 30 },
-        { label: "모델 선정 구조화", ratio: part3 / 40 },
-        { label: "사실 검증 감각", ratio: part4 / 10 }
+        { label: "리스크·사업성 판단", ratio: part3 / 40 },
+        { label: "초단문 프롬프트 감각", ratio: part4 / 10 }
       ].sort((a, b) => b.ratio - a.ratio);
 
       return {
@@ -2638,9 +2764,9 @@
         q3: getCheckedValue("q3"),
         q4: getCheckedValue("q4"),
         q5: getCheckedValue("q5"),
-        mapping: getMappingValues(),
-        issues: getCheckedIssues(),
-        ordering: getOrderingValues()
+        q6: getCheckedValue("q6"),
+        sorting: getSortAssignments(),
+        shortPrompt: els.shortPrompt.value.trim()
       };
     }
 
@@ -2768,17 +2894,17 @@
       const q3 = scoreQuestion("q3", "d");
       const q4 = scoreQuestion("q4", "c");
       const q5 = scoreQuestion("q5", "c");
-      const mapping = scoreMapping();
-      const issues = scoreIssues();
-      const ordering = scoreOrdering();
+      const q6 = scoreQuestion("q6", "c");
+      const sorting = scoreSorting();
+      const shortPrompt = scoreShortPrompt();
 
       const part1 = q1 + q4;
       const part2 = q2 + q3 + q5;
-      const part3 = mapping.score + ordering.score;
-      const part4 = issues.score;
+      const part3 = q6 + sorting.score;
+      const part4 = shortPrompt.score;
       const total = Math.round((part1 + part2 + part3 + part4) * 10) / 10;
       const roundedTotal = Math.round(total);
-      const verificationSub = mapping.correctCount + issues.hits + ordering.matches;
+      const verificationSub = sorting.matches + shortPrompt.keywords + (q6 === 10 ? 1 : 0);
       const rankingScore =
         total +
         (part3 / 1000) +
@@ -2816,7 +2942,7 @@
       renderList(els.insightList, buildInsights(percentile, part1, part2, part3, part4));
 
       els.benchmarkNote.textContent =
-        "이 버전은 정적 HTML 4문항 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다. 정식 운영 시 실제 응답 데이터로 퍼센타일을 교체하면 더 정교해집니다.";
+        "이 버전은 정적 HTML 8문항 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다. 정식 운영 시 실제 응답 데이터로 퍼센타일을 교체하면 더 정교해집니다.";
 
       setScreen("result");
 
@@ -2833,15 +2959,15 @@
           part3: {
             score: part3,
             subs: {
-              mappingCorrect: mapping.correctCount,
-              orderingMatches: ordering.matches
+              businessCase: q6 === 10 ? 1 : 0,
+              sortingMatches: sorting.matches
             }
           },
           part4: {
             score: part4,
             subs: {
-              issuesHits: issues.hits,
-              issuesSelected: issues.selectedCount
+              promptKeywords: shortPrompt.keywords,
+              promptLength: els.shortPrompt.value.trim().length
             }
           }
         })
@@ -2875,17 +3001,18 @@
     }
 
     function restartQuiz() {
-      ["q1", "q2", "q3", "q4", "q5", "issues"].forEach((name) => {
+      ["q1", "q2", "q3", "q4", "q5", "q6"].forEach((name) => {
         document.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
           input.checked = false;
         });
       });
-      [els.mapPurpose, els.mapContext, els.mapFeature, els.mapSecurity, els.mapCost, els.order1, els.order2, els.order3, els.order4, els.order5]
-        .forEach((field) => {
-          if (field) {
-            field.value = "";
-          }
-        });
+      sortCards.forEach((card) => {
+        els.sortPoolBody.appendChild(card);
+      });
+      clearSortSelection();
+      if (els.shortPrompt) {
+        els.shortPrompt.value = "";
+      }
       updateCounters();
       setStep(0);
       setScreen("quiz");
@@ -2896,24 +3023,7 @@
     els.nextButton.addEventListener("click", nextStep);
     els.restartButton.addEventListener("click", restartQuiz);
 
-    [
-      els.mapPurpose,
-      els.mapContext,
-      els.mapFeature,
-      els.mapSecurity,
-      els.mapCost,
-      els.order1,
-      els.order2,
-      els.order3,
-      els.order4,
-      els.order5
-    ].forEach((field) => {
-      field.addEventListener("change", updateCounters);
-    });
-
-    document.querySelectorAll('input[name="issues"]').forEach((field) => {
-      field.addEventListener("change", updateCounters);
-    });
+    els.shortPrompt.addEventListener("input", updateCounters);
 
     els.shareButton.addEventListener("click", async () => {
       const shareText = els.shareButton.dataset.report || "APEX 간단테스트 결과를 확인해보세요.";
@@ -2932,6 +3042,7 @@
     });
 
     createSupabaseClient();
+    bindSortInteractions();
     updateCounters();
     createHeroMotion();
     setStep(0);
