@@ -1875,14 +1875,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase-config.js"></script>
   <script>
-    const benchmarkScores = [
-      18.2, 21.4, 24.8, 27.5, 30.1, 31.9, 34.2, 35.6, 37.7, 39.8,
-      41.2, 42.5, 43.8, 45.1, 46.7, 47.9, 49.4, 50.7, 51.6, 52.9,
-      54.1, 55.4, 56.2, 57.3, 58.1, 59.2, 60.3, 61.5, 62.1, 63.4,
-      64.8, 65.2, 66.4, 67.6, 68.8, 69.4, 70.1, 71.6, 72.5, 73.3,
-      74.4, 75.6, 76.3, 77.1, 78.4, 79.2, 80.4, 81.7, 82.5, 83.1,
-      84.2, 85.6, 86.1, 87.4, 88.3, 89.1, 90.2, 91.4, 92.1, 93.5
-    ];
     const SHARE_BASE_URL = "https://seohyunyang0.github.io/apex-simple-test/";
     const SUPABASE_CONFIG = window.SUPABASE_CONFIG || null;
 
@@ -2293,13 +2285,10 @@
       };
     }
 
-    function computePercentile(rankingScore) {
-      const synthetic = [...benchmarkScores, rankingScore].sort((a, b) => b - a);
-      const rank = synthetic.findIndex((score) => score === rankingScore) + 1;
-      const empirical = (rank / synthetic.length) * 100;
-      const curve = 100 - (1 / (1 + Math.exp(-(rankingScore - 62) / 9))) * 100;
-      const blended = (empirical * 0.42) + (curve * 0.58);
-      return clamp(Math.round(blended * 10) / 10, 1.0, 99.9);
+    function computePercentile(totalScore) {
+      const normalized = clamp(totalScore, 0, 100) / 100;
+      const topPercent = 99 - (normalized * 98);
+      return clamp(Math.round(topPercent * 10) / 10, 1.0, 99.0);
     }
 
     function getSummary(percentile, total) {
@@ -2932,13 +2921,7 @@
       const part4 = shortPrompt.score;
       const total = Math.round((part1 + part2 + part3 + part4) * 10) / 10;
       const roundedTotal = Math.round(total);
-      const verificationSub = sorting.matches + shortPrompt.keywords + (q6 === 10 ? 1 : 0);
-      const rankingScore =
-        total +
-        (part3 / 1000) +
-        (part4 / 10000) +
-        (verificationSub / 100000);
-      const percentile = computePercentile(rankingScore);
+      const percentile = computePercentile(total);
       const topBadge = percentile <= 7 ? '<span class="top-badge">TOP 7%</span>' : "";
       const profile = getTierProfile(total);
       const snapshot = getAreaSnapshot(part1, part2, part3, part4);
@@ -2971,7 +2954,7 @@
       renderList(els.insightList, buildInsights(percentile, part1, part2, part3, part4));
 
       els.benchmarkNote.textContent =
-        "이 버전은 정적 HTML 8문항 간이테스트입니다. 결과는 브라우저 내 휴리스틱 채점과 벤치마크 분포를 바탕으로 계산됩니다. 정식 운영 시 실제 응답 데이터로 퍼센타일을 교체하면 더 정교해집니다.";
+        "이 버전은 정적 HTML 8문항 간이테스트입니다. 퍼센타일은 총점을 기준으로 100점=상위 1%, 0점=상위 99%가 되도록 계산됩니다. 정식 운영 시 실제 응답 데이터 기반 퍼센타일로 교체하면 더 정교해집니다.";
 
       setScreen("result");
 
