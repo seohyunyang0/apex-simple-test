@@ -9,25 +9,92 @@
     name="description"
     content="8문항으로 확인하는 AI 활용 수준 테스트. 점수와 상위 퍼센타일로 내 AI 실력을 진단하세요."
   />
+
+  <!-- ═════════════════════════════════════════════════════════════
+       APEX Design System · v11 적용 (2026-05-29)
+       토큰 출처: /APEX/Final design guide/tokens/
+       정책: 텍스트 내용 일체 미수정 (voice/tone 미적용)
+       정책: 골드 절대 없음 (모두 Proof Blue 계열로 대체)
+       ═════════════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Space Grotesk (Latin·숫자) — 우선 적용 -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <!-- Pretendard Variable Web (한글 전용) — cdn.jsdelivr -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+
   <style>
-    :root {
-      --bg: #edf4ff;
-      --bg-strong: #dce9ff;
-      --surface: rgba(250, 252, 255, 0.9);
-      --surface-strong: #ffffff;
-      --ink: #10213f;
-      --muted: #5a6d8f;
-      --line: rgba(16, 33, 63, 0.12);
-      --brand: #0450c3;
-      --brand-strong: #023987;
-      --accent: #2a7fff;
-      --gold: #7aa7ff;
-      --shadow: 0 22px 60px rgba(19, 52, 108, 0.12);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+    /* ═════════════════════════════════════════════════════════════
+       UNICODE-RANGE 트릭 — Pretendard를 한글 글리프만 담당하도록 제한
+       → 결과: "내 AI 스킬"에서 "AI"는 Space Grotesk, "내 스킬"은 Pretendard
+       범위: 한글 자모 + 한글 음절 + 한글 호환 자모 + 호환 음절
+       ═════════════════════════════════════════════════════════════ */
+    @font-face {
+      font-family: 'PretendardK';
+      font-weight: 400 700;
+      font-style: normal;
+      font-display: swap;
+      src:
+        url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations'),
+        local('Pretendard Variable'),
+        local('Pretendard');
+      unicode-range:
+        U+AC00-D7A3,    /* 한글 음절 */
+        U+1100-11FF,    /* 한글 자모 */
+        U+3130-318F,    /* 한글 호환 자모 */
+        U+A960-A97F,    /* 한글 자모 확장-A */
+        U+D7B0-D7FF;    /* 한글 자모 확장-B */
     }
+
+    /* Space Grotesk가 영문/숫자 우선 적용되도록 fallback에 PretendardK만 사용
+       (Pretendard Variable을 폰트 chain에 두면 Latin도 Pretendard로 렌더되므로 제거) */
+    :root {
+      /* ── APEX Color Tokens (Light Mode) ─────────────── */
+      --bg:             #F7F8FA;         /* APEX surface */
+      --bg-strong:      #ECF1FF;         /* APEX nav bg */
+      --surface:        rgba(255, 255, 255, 0.95);
+      --surface-strong: #FFFFFF;         /* APEX card */
+      --ink:            #1E293B;         /* APEX text */
+      --muted:          #3A4F68;         /* APEX text-muted */
+      --line:           #C2D5E5;         /* APEX border */
+      --brand:          #1A6FEF;         /* ★ APEX Proof Blue */
+      --brand-strong:   #0E3B80;         /* APEX blue-deep */
+      --accent:         #4A8EFF;         /* APEX blue-hi */
+      --gold:           #4A8EFF;         /* GOLD 폐기 (2026-05-29) — 모두 blue-hi로 대체 · 사용자 정책 "골드 절대 없음" */
+      --shadow:         0 8px 24px rgba(26, 111, 239, 0.16);
+
+      /* ── APEX Radius Tokens (12px = ★ DD-009/053 카드·CTA 표준) ── */
+      --radius-xl:      16px;
+      --radius-lg:      12px;            /* ★ 카드·CTA 기본 */
+      --radius-md:      8px;             /* Exam Standard 버튼 */
+      --radius-sm:      6px;
+
+      /* ── APEX Extended Tokens ──────────────────────── */
+      --apex-navy:        #0E1929;
+      --apex-navy-dark:   #0D0D0F;
+      --apex-card:        #FFFFFF;
+      --apex-surface-alt: #F4F6F8;
+      --apex-text-light:  #94A3B8;
+      --apex-blue-muted:  rgba(26, 111, 239, 0.12);
+      --apex-blue-border: rgba(26, 111, 239, 0.25);
+      --apex-success:     #059669;
+      --apex-warning:     #D97706;
+      --apex-error:       #DC2626;
+
+      /* ── Typography (DD-014 Scale · DD-016 Eyebrow 12px Space Grotesk) ──
+         unicode-range 트릭: 영문/숫자는 Space Grotesk만, 한글만 PretendardK
+         Pretendard Variable을 chain에서 제거 (Latin도 Pretendard로 렌더되는 문제 방지) */
+      --font-display: 'Space Grotesk', 'PretendardK', sans-serif;
+      --font-body:    'Space Grotesk', 'PretendardK', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    /* ── 한국어 wrap 글로벌 (DDR DD-007) ────────────────── */
+    :where(p, h1, h2, h3, h4, h5, h6, li, dd, dt, blockquote, figcaption, caption, summary) {
+      word-break: keep-all;
+      text-wrap: pretty;
+    }
+    .apex-allow-break { word-break: normal !important; }
 
     * {
       box-sizing: border-box;
@@ -40,8 +107,46 @@
     body {
       margin: 0;
       color: var(--ink);
-      background: linear-gradient(180deg, #f7fbff 0%, #e8f1ff 100%);
-      font-family: "SUIT Variable", "Pretendard Variable", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: linear-gradient(180deg, #F7F8FA 0%, #ECF1FF 100%);
+      font-family: var(--font-body);
+      font-feature-settings: 'tnum' 1;
+    }
+
+    /* ── APEX 시그니처: 숫자·코드는 Space Grotesk + tabular-nums (DD-015) ── */
+    .tabular, [class*="score"], [class*="percent"], [class*="number"] {
+      font-family: var(--font-display);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Hero 헤드라인은 Space Grotesk + 한글 Pretendard 자동 분기 ── */
+    .hero h1, .hero h2, h1.hero-title, .hero-copy h1 {
+      font-family: var(--font-display) !important;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Eyebrow 표준 (DD-016 v11 통일) ──────────────────── */
+    .pill, .badge, .eyebrow, [class*="-eyebrow"], [class*="chip"] {
+      font-family: var(--font-display);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Primary 버튼: APEX Proof Blue + 12px radius + DD-035 shadow ── */
+    .button-primary {
+      box-shadow: 0 8px 24px rgba(26, 111, 239, 0.25) !important;
+      transition: transform 150ms cubic-bezier(0.2, 0, 0, 1), box-shadow 150ms !important;
+    }
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(26, 111, 239, 0.35) !important;
+    }
+    .button-primary:active {
+      transform: scale(0.97);
+    }
+
+    /* ── 포커스 ring (DDR DD-013 다크 적응) ─────────────── */
+    *:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
     }
 
     button,
@@ -807,7 +912,7 @@
       letter-spacing: -0.03em;
       color: var(--ink);
       font-weight: 800;
-      max-width: 24ch;
+      /* 웹에서는 카피 카드 폭 전체를 써서 한 줄로 출력 (모바일은 좁아 자연 줄바꿈) */
     }
 
     .top-badge {
@@ -826,7 +931,10 @@
       font-size: 18px;
       line-height: 1.65;
       color: var(--muted);
-      max-width: 46ch;
+    }
+    /* 웹(데스크탑)에서는 요약문을 한 줄로. 태블릿 이하는 자연 줄바꿈하여 오버플로 방지 */
+    @media (min-width: 901px) {
+      .result-summary { white-space: nowrap; }
     }
 
     .result-poster-card {
@@ -863,13 +971,15 @@
     .result-poster-art {
       position: relative;
       z-index: 1;
-      min-height: 500px;
+      min-height: 0;
+      width: 100%;
+      height: 100%;
     }
 
     .result-poster-art svg {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
     }
 
     .result-copy-card {
@@ -1110,6 +1220,10 @@
       color: var(--muted);
       line-height: 1.7;
       font-size: 14px;
+    }
+    /* 안내문: 웹은 문장(마침표)마다 줄바꿈, 모바일은 자연 흐름 */
+    @media (max-width: 640px) {
+      #benchmarkNote br { display: none; }
     }
 
     .footer-actions {
@@ -1412,6 +1526,1539 @@
       }
 
     }
+
+    /* ═════════════════════════════════════════════════════════════
+       APEX UXUI FIX (2026-05-29) — 캡쳐 분석 후 자율 수정
+       C1·C2·C3·C4 + M1·M2·M5·M6·M7
+       텍스트 변경 없음 (HTML 미수정 · 보이스/톤 미적용)
+       ═════════════════════════════════════════════════════════════ */
+
+    :root {
+      /* M1: blob/glow용 별도 soft accent (옛 #7aa7ff 역할 복원) */
+      --accent-soft: rgba(74, 142, 255, 0.28);
+      --accent-soft-strong: rgba(26, 111, 239, 0.18);
+    }
+
+    /* ── C2: 메인 CTA gradient APEX Proof Blue로 교체 ─────────── */
+    .button-hero {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0)) padding-box,
+        linear-gradient(135deg, #0E3B80 0%, #1A6FEF 40%, #4A8EFF 100%) border-box !important;
+      box-shadow:
+        0 20px 40px rgba(26, 111, 239, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    }
+
+    /* ── C1: Hero CTA 사이즈 강화 (lg 56px) ─────────────────── */
+    .button-hero {
+      min-height: 56px !important;
+      padding: 16px 32px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.005em;
+      border-radius: 14px !important;
+    }
+
+    /* C1·모바일: Hero CTA 풀폭 + 사이즈 통일 (DD-008) */
+    @media (max-width: 640px) {
+      .button-hero {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 52px !important;
+        padding: 14px 20px !important;
+        font-size: 15px !important;
+      }
+    }
+
+    /* ── button-primary gradient도 APEX 통일 (Q1 "다음" 등) ── */
+    .button-primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%) !important;
+      box-shadow: 0 8px 24px rgba(26, 111, 239, 0.30) !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      min-height: 44px;
+    }
+
+    /* ── C3: 옵션 카드 affordance 강화 ──────────────────────── */
+    .option {
+      border: 2px solid var(--line) !important;        /* 항상 2px (DD-033 토글 금지) */
+      background: var(--apex-card) !important;          /* white surface */
+      transition:
+        border-color 150ms cubic-bezier(0.2, 0, 0, 1),
+        background 150ms cubic-bezier(0.2, 0, 0, 1),
+        box-shadow 150ms cubic-bezier(0.2, 0, 0, 1) !important;
+    }
+
+    .option:hover {
+      border-color: var(--accent) !important;
+      background: var(--surface-strong) !important;
+      transform: none !important;                      /* 1px↔2px 토글 시프트 방지 */
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.08);
+    }
+
+    .option:has(input:checked),
+    .option.is-selected {
+      border-color: var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      box-shadow: 0 0 0 3px rgba(26, 111, 239, 0.12), 0 4px 12px rgba(26, 111, 239, 0.10) !important;
+    }
+
+    /* option-mark — 선택 시 brand solid (DD-028 affordance 강화) */
+    .option-mark {
+      border: 2px solid var(--line) !important;
+      background: var(--apex-card) !important;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .option:hover .option-mark {
+      border-color: var(--accent) !important;
+    }
+
+    .option input:checked + .option-mark {
+      border-color: var(--brand) !important;
+      background: var(--brand) !important;
+      box-shadow: inset 0 0 0 4px var(--apex-card), 0 0 0 2px var(--brand) !important;
+    }
+
+    /* sort-card 동일 처리 (Part 2 분류형 문항) */
+    .sort-card {
+      border: 2px solid var(--line) !important;
+      background: var(--apex-card) !important;
+    }
+    .sort-card:hover {
+      border-color: var(--accent) !important;
+      background: var(--surface-strong) !important;
+    }
+    .sort-card.is-selected {
+      border-color: var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      box-shadow: 0 0 0 3px rgba(26, 111, 239, 0.12) !important;
+    }
+
+    /* ── C4: 모바일 본문 가독성 (DD-038 한국어 본문 최소 16px) ── */
+    @media (max-width: 640px) {
+      .hero-copy p, .lead, .helper {
+        font-size: 15px !important;
+        line-height: 1.55 !important;
+      }
+      /* Case 문항 등 메타 텍스트 */
+      .question-meta, .meta, .small-meta, .question-caption,
+      [class*="meta"], [class*="-caption"] {
+        font-size: 12.5px !important;
+        line-height: 1.5 !important;
+      }
+      .option {
+        padding: 18px 16px 18px 56px !important;
+        min-height: 72px !important;
+        font-size: 15px !important;
+        line-height: 1.55 !important;
+      }
+    }
+
+    /* ── 랜딩 Hero: 카드 테두리·그림자·라운드 제거, 배경을 화면 전체로
+          (웹·모바일 공통). body 그라디언트가 풀블리드로 깔린다. ───────── */
+    .hero.screen {
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+    /* 랜딩일 때 그리드 텍스처를 화면 전체로 확장 (중앙 radial mask 유지) */
+    .hero.screen::before {
+      inset: -50vh -50vw !important;
+      mask-image: radial-gradient(circle at 50% 38%, black 0%, black 28%, transparent 70%) !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 38%, black 0%, black 28%, transparent 70%) !important;
+    }
+    /* 모바일: 히어로가 뷰포트를 꽉 채워 그라디언트·그리드가 풀스크린이 되도록.
+       (.page 상하 padding 32px 보정) 콘텐츠는 세로 중앙 정렬. */
+    @media (max-width: 900px) {
+      .hero.screen.active {
+        flex: 1 1 auto;
+        min-height: calc(100vh - 32px);
+        min-height: calc(100dvh - 32px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+
+    /* ── M5: 진행률·카운터 분리 (Desktop Q1 줄바꿈 해소) ───── */
+    .progress-row, [class*="progress-head"], [class*="step-head"] {
+      align-items: flex-start;
+    }
+
+    /* ── M6: 영문·숫자에 Space Grotesk 강제 우선 ─────────────── */
+    .hero-copy h1 {
+      font-family: 'Space Grotesk', 'Pretendard', 'Pretendard Variable', sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.025em !important;
+    }
+
+    /* M7: Hero 헤드라인 사이즈 clamp ────────────────────────── */
+    .hero-copy h1 {
+      font-size: clamp(32px, 5vw, 52px) !important;
+      line-height: 1.12 !important;
+    }
+    @media (max-width: 640px) {
+      .hero-copy h1 {
+        font-size: clamp(28px, 8vw, 36px) !important;
+      }
+    }
+
+    /* ── 숫자 영역 Space Grotesk + tabular-nums (DD-015) ───── */
+    .progress-counter, .question-counter,
+    [class*="counter"], [class*="step-num"], [class*="score-value"],
+    .hero-copy h1 + p strong {
+      font-family: 'Space Grotesk', monospace !important;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Hero blob/glow 톤 복원 (M1: --gold amber 문제) ──── */
+    [style*="rgba(122, 167, 255"],
+    [style*="rgba(212, 162, 74"] {
+      /* 인라인 옛 gold 사용처가 amber로 보일 경우 강제 보정 */
+      background-color: var(--accent-soft) !important;
+    }
+
+    /* ── 라이센스 헤더 카드(SVG nearby), Hero 모션 컬러 ─── */
+    .hero-motion, .hero-crosshair {
+      filter: hue-rotate(0deg) saturate(1.15);
+    }
+
+    /* ── Hero 컨테이너 모바일 빈 영역 해소 (M4) ─────────── */
+    @media (max-width: 640px) {
+      .page {
+        padding: 12px 0 24px !important;
+        min-height: auto !important;
+        justify-content: flex-start !important;
+      }
+      .hero {
+        border-radius: 20px !important;
+        padding: 24px 20px !important;
+      }
+    }
+
+    /* ── 옵션 컨테이너 gap M3 grid 정합 ─────────────────── */
+    .options {
+      gap: 12px !important;
+    }
+
+    /* ── 포커스 ring 강화 (a11y) ──────────────────────────── */
+    .option:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       2차 보정 — 1차 캡쳐 후 발견된 미적용 항목
+       ──────────────────────────────────────────────────────── */
+
+    /* ── Mobile Hero CTA 풀폭 (hero-actions = inline-flex 였음) ─── */
+    @media (max-width: 640px) {
+      .hero-actions {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: stretch !important;
+      }
+      .hero-actions .button-hero {
+        flex: 1;
+        width: 100% !important;
+      }
+    }
+
+    /* ── step-top 모바일 정합 (PART chip + Case 메타 분리) ── */
+    .step-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .step-top .step-tag {
+      flex-shrink: 0;
+    }
+    .step-top small {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      max-width: 60%;
+    }
+    @media (max-width: 640px) {
+      .step-top {
+        flex-direction: column;
+      }
+      .step-top small {
+        max-width: 100%;
+        font-size: 12.5px;
+      }
+    }
+
+    /* ── question-title · question-copy 가독성 강화 ──────── */
+    .question-title {
+      font-family: var(--font-display);
+      font-weight: 700 !important;
+      letter-spacing: -0.02em;
+      line-height: 1.25 !important;
+    }
+    /* 긴 Latin 토큰 포함 제목 — wider max-width로 2줄 보장 (PART 3 환각 등) */
+    .question-title.qt-wide { max-width: 38ch !important; }
+    /* 모바일 전용 줄바꿈 — 데스크탑 hide */
+    .qbr-m { display: none; }
+    @media (max-width: 640px) {
+      .qbr-m { display: inline; }
+      .question-title.qt-wide { max-width: none !important; }
+    }
+    @media (max-width: 640px) {
+      .question-title {
+        font-size: 22px !important;
+        line-height: 1.3 !important;
+      }
+      .question-copy {
+        font-size: 14.5px !important;
+        line-height: 1.6 !important;
+      }
+    }
+
+    /* ── progress-label "1/8" 우측 — Space Grotesk + tabular ─── */
+    .progress-label {
+      font-family: 'Space Grotesk', monospace !important;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+      color: var(--muted) !important;
+    }
+
+    /* ── progress-fill APEX gradient ──────────────────────── */
+    .progress-fill {
+      background: linear-gradient(90deg, var(--brand), var(--accent)) !important;
+    }
+
+    /* ── progress-bar bg 토큰 정합 ────────────────────────── */
+    .progress-bar {
+      background: var(--apex-surface-alt) !important;
+    }
+
+    /* ── step-tag (PART 1 chip) APEX pill 표준 (DD-016) ──── */
+    .step-tag {
+      font-family: 'Space Grotesk', monospace !important;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: var(--apex-blue-muted) !important;
+      color: var(--brand) !important;
+      border: 1px solid var(--apex-blue-border) !important;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+    }
+
+    /* ── 모바일 viewport에 카드 풀폭 + 빈 공간 압축 ──────── */
+    @media (max-width: 640px) {
+      .page {
+        width: 100% !important;
+        padding: 8px 16px 24px !important;
+      }
+      .hero, .panel {
+        border-radius: 16px !important;
+      }
+    }
+
+    /* ── 모바일 "다음" 등 navigation 풀폭 (Q1 하단) ───────── */
+    /* .actions(퀴즈 네비)에만 flex 분할 적용. 결과 화면 .footer-actions 버튼은
+       .button{width:100%}로 풀폭 스택되어 텍스트 줄바꿈을 방지한다. */
+    @media (max-width: 640px) {
+      .actions .button-primary, .actions .button-secondary {
+        flex: 1;
+        min-height: 48px !important;
+        font-size: 15px !important;
+      }
+      .footer-actions .button {
+        width: 100% !important;
+        white-space: nowrap;
+      }
+    }
+
+    /* ── Hero motion blob: --gold amber → soft blue 복원 ── */
+    .hero-motion::before, .hero-motion::after {
+      filter: hue-rotate(-15deg);
+    }
+
+    /* ════════════════════════════════════════════════════════
+       3차 보정 (2026-05-29 사용자 추가 요청)
+       · 골드 완전 제거 (Latin/숫자 Space Grotesk + 한글 PretendardK)
+       · 마우스 커서 따라다니는 효과 제거
+       · 그래픽 요소 제거 (그라디언트만 유지)
+       · 선택 시 이중라인 제거 (굵은 라인 하나만)
+       · 결과 페이지 정돈
+       ──────────────────────────────────────────────────────── */
+
+    /* ① Hero h1 / question-title font-family 새 chain 적용 ── */
+    .hero-copy h1, .question-title {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+    }
+
+    /* ② 마우스 커서 추적 그래픽 효과 — 완전 제거 ────────────── */
+    .hero-crosshair { display: none !important; }
+    .hero-motion { display: none !important; }
+    .hero-motion::before, .hero-motion::after { content: none !important; }
+
+    /* ③ Hero 배경 — 단순 그라디언트만 (블롭/오비트/노드/크로스헤어 제거) ── */
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(26, 111, 239, 0.06) 0%, rgba(74, 142, 255, 0.10) 50%, rgba(255, 255, 255, 0.95) 100%) !important;
+      isolation: isolate;
+    }
+    /* Hero 안의 모든 장식 요소 (blob, node, orbit, grain 등) 숨김 */
+    .hero > *:not(.hero-copy):not(.hero-actions) {
+      display: none !important;
+    }
+    .hero .hero-copy {
+      position: relative;
+      z-index: 1;
+    }
+    /* hero-logo는 카드 위 SVG 마크라 유지하되 그래픽 효과 없는 정적 마크로 ── */
+    .hero-logo {
+      display: flex !important;
+      justify-content: center;
+      margin-bottom: 18px;
+      background: transparent !important;
+    }
+    .hero-logo::before, .hero-logo::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    /* ④ 선택 시 이중라인 제거 → 굵은 라인 하나만 (3px) ─────── */
+    .option:has(input:checked),
+    .option.is-selected {
+      border: 3px solid var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      box-shadow: none !important;            /* ← 외부 ring 제거 (이중라인 해소) */
+    }
+    .sort-card.is-selected {
+      border: 3px solid var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      box-shadow: none !important;
+    }
+    /* hover도 단일 라인 — 굵기 변화 없이 색만 변경 (DD-033 toggle 금지) ── */
+    .option:hover {
+      border: 2px solid var(--accent) !important;
+      box-shadow: none !important;
+    }
+
+    /* option-mark도 단일 표시 — 외부 ring 제거 */
+    .option input:checked + .option-mark {
+      border: 2px solid var(--brand) !important;
+      background: var(--brand) !important;
+      box-shadow: inset 0 0 0 4px var(--apex-card) !important;
+    }
+
+    /* ⑤ 결과 페이지 정돈 — 가로 긴 컨테이너 (SVG landscape 대응) + 모든 카드 통일 폭 */
+    #resultPanel { max-width: 1040px; margin-left: auto; margin-right: auto; }
+    .result-hero,
+    .result-cta-grid,
+    .analysis-grid,
+    .score-rail {
+      max-width: 1040px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .result-hero {
+      display: grid;
+      grid-template-columns: 1fr !important;
+      gap: 20px;
+    }
+    .result-cta-grid {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 20px !important;
+    }
+    /* 모든 결과 카드 — 동일한 padding · radius · border · shadow */
+    .result-poster-card,
+    .result-copy-card,
+    .result-cta-card,
+    .result-box,
+    .score-rail {
+      padding: 24px !important;
+      border-radius: 16px !important;
+      border: 1px solid var(--line) !important;
+      background: var(--apex-card) !important;
+      box-shadow: 0 4px 16px rgba(26, 111, 239, 0.06) !important;
+    }
+    /* 결과 카드 내부 — eyebrow/kicker/pill 다음 요소 간격 통일 (라벨 ↔ 제목 ↔ 본문) */
+    .result-cta-card .eyebrow + h3,
+    .result-cta-card .result-kicker + h3 {
+      margin-top: 16px !important;
+    }
+    .result-cta-card h3 + p,
+    .result-cta-card h3 + * {
+      margin-top: 12px !important;
+    }
+    /* copy-card — kicker → pill → growth-copy 위계 명확화 */
+    .result-copy-card .result-kicker { margin-bottom: 0 !important; width: fit-content !important; align-self: flex-start !important; }
+    .result-copy-card .percentile-pill {
+      align-self: flex-start !important;
+      width: fit-content !important;
+      margin-top: 14px !important;
+    }
+    .result-copy-card .result-growth-copy { margin-top: 18px !important; line-height: 1.45 !important; }
+    .result-copy-card .result-summary { margin-top: 14px !important; }
+    .result-copy-card .result-tier-name + .percentile-pill { margin-top: 18px !important; }
+
+    /* poster — outer card를 투명화하고 shell이 단일 카드 역할 (이중 카드 제거) */
+    .result-poster-card {
+      padding: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+    .result-poster-shell {
+      padding: 0 !important;
+      border-radius: 16px !important;
+      border: 1px solid var(--line) !important;
+      box-shadow: 0 4px 16px rgba(26, 111, 239, 0.06) !important;
+    }
+    .result-poster-shell::before { display: none !important; }
+    @media (max-width: 720px) {
+      .result-cta-grid { grid-template-columns: 1fr !important; }
+    }
+
+    .result-copy-card {
+      background: var(--apex-card) !important;
+      border: 1px solid var(--line) !important;
+      border-radius: 16px !important;
+      padding: 28px !important;
+      box-shadow: 0 8px 24px rgba(26, 111, 239, 0.08) !important;
+    }
+    /* poster card — 절대 투명 (shell이 단일 카드 역할) */
+    .result-poster-card {
+      padding: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .result-poster-shell {
+      background: linear-gradient(135deg, rgba(26, 111, 239, 0.08) 0%, rgba(74, 142, 255, 0.04) 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 760 / 360;
+      width: 100%;
+    }
+    @media (max-width: 900px) {
+      .result-poster-shell { aspect-ratio: 420 / 520; }
+    }
+
+    .result-kicker {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase;
+      color: var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      border: 1px solid var(--apex-blue-border);
+      border-radius: 999px;
+      padding: 4px 12px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .result-tier-name {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+      font-size: clamp(28px, 4vw, 40px) !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.025em !important;
+      line-height: 1.15 !important;
+      color: var(--ink) !important;
+      margin: 0 0 14px !important;
+    }
+
+    .score-number {
+      font-family: 'Space Grotesk', monospace !important;
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(48px, 7vw, 72px) !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.03em !important;
+      line-height: 1 !important;
+      color: var(--brand) !important;
+      margin: 8px 0 18px !important;
+    }
+
+    .result-growth-copy,
+    .result-summary {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+      line-height: 1.65 !important;
+      color: var(--muted) !important;
+      margin: 6px 0 !important;
+    }
+    .result-summary { font-size: 14px !important; }
+    /* 성장 방법 카피 — 헤딩급으로 확대 */
+    .result-growth-copy {
+      font-size: 22px !important;
+      font-weight: 800 !important;
+      line-height: 1.4 !important;
+      color: var(--ink) !important;
+    }
+
+    .score-gauge-wrap {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .score-gauge-meta {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .score-gauge-bar {
+      width: 100%;
+      height: 10px;
+      background: var(--apex-surface-alt) !important;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .score-gauge-fill {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--accent)) !important;
+      border-radius: 999px;
+      transition: width 600ms cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    /* 결과 페이지 헤드라인 영역 후속 카드 ── */
+    .result-tier-detail,
+    .result-actions,
+    .result-share,
+    [class*="result-section"] {
+      background: var(--apex-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 16px;
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.04);
+    }
+
+    /* 결과 페이지 공유 버튼 영역도 정리 ── */
+    .share-platform {
+      border: 1px solid var(--line) !important;
+      border-radius: 10px !important;
+      padding: 12px 16px !important;
+      font-weight: 600 !important;
+      font-size: 13.5px !important;
+    }
+
+    /* ⑥ Hero 카드 outline 강조 (그래픽 요소 제거 후 위계 보강) ── */
+    .hero {
+      border: 1px solid var(--apex-blue-border) !important;
+    }
+
+    /* ⑦ 모든 amber/yellow/gold hex 잔존 위치 강제 보정 ── */
+    [style*="C8A24A"],
+    [style*="c8a24a"],
+    [style*="FBBF24"],
+    [style*="F59E0B"],
+    [style*="D97706"] {
+      color: var(--brand) !important;
+      background-color: transparent !important;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       5차 보정 (사용자 추가) — 결과 페이지 정렬·색상 재검증
+       · tier-guide-row badge 칸 너무 좁아 "41-60" 줄바꿈 발생
+       · 옛 brand color (4,80,195) → APEX Proof Blue 토큰
+       · SVG poster 시안/티얼 gradient → Proof Blue gradient (위 JS 수정 완료)
+       ──────────────────────────────────────────────────────── */
+    /* 티어 가이드 — 가로 wrap pill 그리드 (여백 최소화) */
+    .tier-guide {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 8px !important;
+      margin-top: 16px;
+    }
+    .tier-guide-row {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      grid-template-columns: none !important;
+      gap: 8px !important;
+      align-items: center;
+      font-size: 13px !important;
+      line-height: 1.4;
+      color: var(--ink) !important;
+      padding: 6px 12px 6px 6px !important;
+      background: var(--apex-surface-alt) !important;
+      border-radius: 999px !important;
+      flex: 0 0 auto;
+    }
+    .tier-guide-row strong {
+      display: inline-flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 5px 10px !important;
+      border-radius: 999px !important;
+      background: var(--apex-blue-muted) !important;
+      color: var(--brand) !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      font-family: 'Space Grotesk', monospace !important;
+      letter-spacing: 0 !important;
+      white-space: nowrap !important;
+      min-width: 0;
+    }
+    .tier-guide-row span {
+      color: var(--ink) !important;
+      font-weight: 600;
+      font-size: 13px !important;
+      white-space: nowrap;
+    }
+
+    /* 모바일 tier-guide 정합 */
+    @media (max-width: 640px) {
+      .tier-guide-row {
+        font-size: 12.5px !important;
+        padding: 5px 11px 5px 5px !important;
+      }
+      .tier-guide-row strong {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+      }
+    }
+
+    /* result-poster-shell 배경 — 시안 잔존 회피 */
+    .result-poster-shell {
+      background:
+        linear-gradient(135deg, rgba(26, 111, 239, 0.08) 0%, rgba(74, 142, 255, 0.04) 100%) !important;
+    }
+    .result-poster-shell svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       6차 보정 — PART 7 드래그 폐기 · Popover 카테고리 선택 패턴
+       · 모든 sort-card는 draggable 비활성
+       · 카드 탭 → 5 카테고리 옵션 popover/sheet 표시
+       · 선택 → 즉시 zone으로 이동
+       ──────────────────────────────────────────────────────── */
+
+    /* ════════════════════════════════════════════════════════
+       9차 보정 — PART 7 Inline Chips (Pattern C) 패턴
+       · 5장 카드 모두 한 화면 노출
+       · 각 카드 안에 5개 카테고리 칩 인라인 배치
+       · 칩 탭 = 해당 카드에 카테고리 즉시 할당
+       ──────────────────────────────────────────────────────── */
+
+    /* 칩 모드에서 zones / pool 헤더 숨김 */
+    .sort-board.apex-slider-mode .sort-pool > strong,
+    .sort-board.apex-slider-mode .sort-zones {
+      display: none !important;
+    }
+    .sort-board.apex-slider-mode .sort-pool {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      padding: 0 !important;
+      overflow: visible;
+    }
+
+    /* 카드 5장 수직 스택 */
+    .sort-board.apex-slider-mode .sort-pool-body {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .sort-board.apex-slider-mode .sort-pool-body .sort-card {
+      display: flex !important;
+      flex-direction: column;
+      flex: 1 1 auto;
+      background: var(--apex-card) !important;
+      border: 2px solid var(--line) !important;
+      border-radius: 14px !important;
+      padding: 16px 18px !important;
+      box-shadow: none !important;
+      cursor: default !important;
+      transform: none !important;
+      transition: border-color 200ms cubic-bezier(0.2, 0, 0, 1), box-shadow 200ms cubic-bezier(0.2, 0, 0, 1);
+      position: relative;
+      gap: 4px;
+    }
+    .sort-board.apex-slider-mode .sort-pool-body .sort-card.apex-classified {
+      border-color: var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+    }
+    .sort-board.apex-slider-mode .sort-card .sort-card-title {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.015em !important;
+      color: var(--ink) !important;
+      display: block !important;
+      margin-bottom: 2px;
+    }
+    .sort-board.apex-slider-mode .sort-card .sort-card-copy {
+      font-size: 13px !important;
+      line-height: 1.55 !important;
+      color: var(--muted) !important;
+      display: block !important;
+      margin-bottom: 10px;
+    }
+
+    /* 칩 그룹 (각 카드 내부) */
+    .apex-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .apex-chip {
+      padding: 7px 12px;
+      border: 1.5px solid var(--line);
+      background: var(--apex-card);
+      border-radius: 999px;
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 140ms cubic-bezier(0.2, 0, 0, 1);
+      letter-spacing: -0.005em;
+      white-space: nowrap;
+    }
+    .apex-chip:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+      background: var(--apex-card);
+    }
+    .apex-chip.is-on {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(26, 111, 239, 0.20);
+    }
+    .apex-chip.is-on:hover {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    /* 진행 표시 (간단형) */
+    .apex-chip-progress {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--apex-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .apex-chip-progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--apex-surface-alt);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0 14px;
+    }
+    .apex-chip-progress-bar i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--accent));
+      transition: width 300ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    .apex-chip-progress-meta {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .apex-chip-progress-label {
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .apex-chip { font-size: 12px; padding: 6px 10px; }
+      .sort-board.apex-slider-mode .sort-card .sort-card-title { font-size: 15px !important; }
+      .sort-board.apex-slider-mode .sort-card .sort-card-copy { font-size: 12.5px !important; }
+    }
+
+    /* 상단 진행 표시 (5 chip) */
+    .apex-slider-progress {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: var(--apex-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .apex-slider-progress-dots {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+    }
+    .apex-slider-progress-dot {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--apex-surface-alt);
+      border: 0;
+      cursor: pointer;
+      transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
+      padding: 0;
+    }
+    .apex-slider-progress-dot.is-done {
+      background: var(--brand);
+    }
+    .apex-slider-progress-dot.is-current {
+      background: linear-gradient(90deg, var(--brand), var(--accent));
+      height: 10px;
+      box-shadow: 0 0 0 3px rgba(26, 111, 239, 0.15);
+    }
+    .apex-slider-progress-dot:hover {
+      transform: scaleY(1.4);
+    }
+    .apex-slider-progress-meta {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    /* 5 카테고리 옵션 그리드 (반응형) */
+    .apex-slider-options {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) {
+      .apex-slider-options {
+        grid-template-columns: 1fr 1fr;
+      }
+      .apex-slider-options .apex-slider-option:last-child:nth-child(5) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .apex-slider-option {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 16px 18px 16px 54px;
+      border: 2px solid var(--line);
+      background: var(--apex-card);
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+      min-height: 64px;
+      position: relative;
+    }
+    /* PART 1-6과 동일한 radio 원형 affordance */
+    .apex-slider-option::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: var(--apex-card);
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    .apex-slider-option:hover {
+      border-color: var(--brand);
+      background: var(--apex-blue-muted);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.10);
+    }
+    .apex-slider-option:hover::before {
+      border-color: var(--brand);
+    }
+    .apex-slider-option:active {
+      transform: scale(0.98);
+    }
+    .apex-slider-option .apex-slider-option-name {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .apex-slider-option .apex-slider-option-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    /* 현재 카드가 이미 이 카테고리에 있을 경우 */
+    .apex-slider-option.is-current {
+      border-color: var(--brand);
+      background: var(--apex-blue-muted);
+    }
+    .apex-slider-option.is-current::before {
+      border-color: var(--brand);
+      background: var(--brand);
+      box-shadow: inset 0 0 0 4px var(--apex-card), 0 0 0 2px var(--brand);
+    }
+
+    /* "분류할 항목으로 되돌리기" 옵션 */
+    .apex-slider-option.apex-slider-option-pool {
+      border: 2px dashed var(--line);
+      background: transparent;
+      margin-top: 4px;
+    }
+    .apex-slider-option.apex-slider-option-pool .apex-slider-option-name {
+      color: var(--muted);
+    }
+    .apex-slider-option.apex-slider-option-pool:hover {
+      border-color: var(--muted);
+      background: var(--apex-surface-alt);
+    }
+
+    /* 상단 진행 표시 모바일 */
+    @media (max-width: 640px) {
+      .apex-slider-progress {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+      .apex-slider-progress-meta {
+        font-size: 11.5px;
+      }
+      .apex-slider-option {
+        padding: 14px 16px;
+        min-height: 60px;
+      }
+    }
+
+    /* 슬라이더 모드 — 드래그 관련 텍스트 / 풀이방식 배너 / 잔존 헬퍼 숨김 */
+    .question-step[data-step="6"].active .helper#sortingHelper { display: none; }
+    .question-step[data-step="6"].active .scenario { display: none; }
+    .question-step[data-step="6"].active .step-top small { display: none; }
+    /* pool 옵션(분류 취소)에는 radio 원형 제거 */
+    .apex-slider-option.apex-slider-option-pool::before { display: none; }
+    .apex-slider-option.apex-slider-option-pool { padding-left: 18px; }
+    /* 슬라이더 모드 — popover 코드 잔존 충돌 차단 */
+    .sort-board.apex-slider-mode + .apex-popover-overlay,
+    .sort-board.apex-slider-mode ~ .apex-popover-overlay {
+      display: none !important;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       7차 보정 — 버튼 radius 통일 + SNS 공유 컬러 정합
+       · APEX 가이드 DD-009/053 — 모든 버튼·CTA radius 12px (--radius-lg)
+       · DD-084 imagery-style — 강한 컬러 wash 금지, APEX 통일 톤
+       · 5 SNS 버튼: white bg + APEX border + brand text 만 (식별성 텍스트로)
+       ──────────────────────────────────────────────────────── */
+
+    /* ① 모든 버튼 radius 12px 강제 통일 (이전/다음/공유/재시작 등) */
+    .button,
+    .button-primary,
+    .button-secondary,
+    .button-hero,
+    .actions .button,
+    .result-actions .button,
+    .share-platform {
+      border-radius: var(--radius-lg) !important;  /* 12px */
+    }
+
+    /* ② 버튼 padding·height 통일 (작은 차이 제거) */
+    .button {
+      padding: 14px 24px !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.005em !important;
+      min-height: 48px;
+      box-sizing: border-box;
+    }
+
+    /* button-secondary (이전·다시 테스트하기) — APEX ghost 표준 */
+    .button-secondary {
+      background: var(--apex-card) !important;
+      color: var(--brand) !important;
+      border: 1px solid var(--apex-blue-border) !important;
+      box-shadow: 0 2px 6px rgba(26, 111, 239, 0.06) !important;
+    }
+    .button-secondary:hover {
+      background: var(--apex-blue-muted) !important;
+      border-color: var(--brand) !important;
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.10) !important;
+    }
+
+    /* button-primary (다음·공유용 리포트 복사) — APEX Proof Blue gradient */
+    .button-primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%) !important;
+      color: #ffffff !important;
+      border: 0 !important;
+      box-shadow: 0 8px 24px rgba(26, 111, 239, 0.28) !important;
+    }
+    .button-primary:hover {
+      box-shadow: 0 12px 32px rgba(26, 111, 239, 0.36) !important;
+      transform: translateY(-1px) !important;
+    }
+    .button-primary:active {
+      transform: scale(0.98) !important;
+    }
+
+    /* ③ SNS 공유 버튼 통일 — 5색 wash 제거, APEX 단일 톤 */
+    .share-platform,
+    .share-platform[data-platform="kakao"],
+    .share-platform[data-platform="naver"],
+    .share-platform[data-platform="facebook"],
+    .share-platform[data-platform="instagram"],
+    .share-platform[data-platform="linkedin"] {
+      background: var(--apex-card) !important;
+      color: var(--ink) !important;
+      border: 1px solid var(--line) !important;
+      box-shadow: 0 2px 6px rgba(26, 111, 239, 0.04) !important;
+      min-height: 48px !important;
+      padding: 12px 16px !important;
+      font-weight: 600 !important;
+      font-size: 14px !important;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1) !important;
+    }
+    .share-platform:hover {
+      background: var(--apex-blue-muted) !important;
+      border-color: var(--brand) !important;
+      color: var(--brand) !important;
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.12) !important;
+      transform: translateY(-1px);
+    }
+
+    /* sort-card draggable 시각 단서 제거 */
+    .sort-card {
+      cursor: pointer !important;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .sort-card:active {
+      transform: scale(0.98);
+    }
+
+    /* tap-to-select 이전 시각 hints 제거 (popover로 대체) */
+    .sort-board.has-selected-card .sort-zones .sort-zone {
+      animation: none !important;
+      border: 1px solid var(--line) !important;
+      background: var(--apex-card) !important;
+    }
+    .sort-board.has-selected-card .sort-zones .sort-zone .sort-zone-body:empty::after {
+      content: none !important;
+    }
+    .sort-card.is-selected::after {
+      display: none !important;       /* 체크 아이콘 popover 패턴에서는 불필요 */
+    }
+    .sort-card.is-selected {
+      border: 2px solid var(--line) !important;
+      background: var(--apex-card) !important;
+      transform: none !important;
+    }
+
+    /* ── Popover Overlay (배경) ────────────────────────── */
+    .apex-popover-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(14, 25, 41, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: apex-fade-in 200ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    @keyframes apex-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── Popover Sheet ──────────────────────────────────── */
+    .apex-popover {
+      background: var(--apex-card);
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(14, 25, 41, 0.30);
+      width: min(440px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      padding: 18px;
+      animation: apex-pop-up 280ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    @keyframes apex-pop-up {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Popover 헤더 (선택된 카드 미리보기) */
+    .apex-popover-card-preview {
+      background: var(--apex-blue-muted);
+      border: 2px solid var(--brand);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .apex-popover-card-preview .apex-popover-card-title {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .apex-popover-card-preview .apex-popover-card-copy {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* Popover 닫기 버튼 (✕ 아이콘만 · 텍스트 X) */
+    .apex-popover-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--apex-card);
+      cursor: pointer;
+      font-family: 'Space Grotesk', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+    }
+    .apex-popover-close:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    /* Popover 옵션 그리드 */
+    .apex-popover-options {
+      display: grid;
+      gap: 8px;
+    }
+    .apex-popover-option {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 14px 16px;
+      border: 2px solid var(--line);
+      background: var(--apex-card);
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+      font: inherit;
+    }
+    .apex-popover-option:hover {
+      border-color: var(--brand);
+      background: var(--apex-blue-muted);
+      transform: translateX(2px);
+    }
+    .apex-popover-option:active {
+      transform: scale(0.98);
+    }
+    .apex-popover-option .apex-popover-name {
+      font-family: 'Space Grotesk', 'PretendardK', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .apex-popover-option .apex-popover-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    /* 이미 배치된 카드의 현재 카테고리 표시 */
+    .apex-popover-option[data-current="true"] {
+      border-color: var(--brand);
+      background: var(--apex-blue-muted);
+    }
+    .apex-popover-option[data-current="true"]::after {
+      content: "✓";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 800;
+      color: var(--brand);
+      font-size: 18px;
+    }
+    .apex-popover-option {
+      position: relative;
+    }
+
+    /* Pool 복귀 옵션 (구분선 위 + dashed border) */
+    .apex-popover-option.apex-popover-pool {
+      border: 2px dashed var(--line);
+      background: transparent;
+      margin-top: 6px;
+    }
+    .apex-popover-option.apex-popover-pool:hover {
+      border-color: var(--muted);
+      background: var(--apex-surface-alt);
+    }
+
+    /* ── 모바일 Bottom Sheet 패턴 ─────────────────────── */
+    @media (max-width: 640px) {
+      .apex-popover-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .apex-popover {
+        width: 100%;
+        max-height: 88vh;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+        animation: apex-slide-up 320ms cubic-bezier(0.2, 0, 0, 1);
+      }
+      @keyframes apex-slide-up {
+        from { transform: translateY(100%); }
+        to   { transform: translateY(0); }
+      }
+      .apex-popover::before {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--line);
+        margin: 0 auto 14px;
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       4차 보정 (2026-05-29) — PART 7 모바일 분류 UX 개선
+       문제: 드래그가 모바일에서 불편
+       해결: Tap-to-Select 패턴 시각 강화 (JS는 이미 구현됨)
+            + 카드 선택 시 zones 자동 강조 + 모바일 자동 스크롤
+       ──────────────────────────────────────────────────────── */
+
+    /* ── 선택된 sort-card: 매우 명확한 단일 라인 ───────────── */
+    .sort-card.is-selected {
+      border: 4px solid var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      box-shadow: none !important;
+      transform: scale(1.015);
+      transition: all 200ms cubic-bezier(0.2, 0, 0, 1) !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 선택된 카드 우상단에 체크 아이콘 (텍스트 X · symbol만) */
+    .sort-card.is-selected::after {
+      content: "✓";
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 28px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(26, 111, 239, 0.30);
+      animation: apex-pop 200ms cubic-bezier(0.2, 0, 0, 1.2);
+    }
+
+    @keyframes apex-pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── 카드 선택되면 모든 zones 강조 (탭 가능 시각화) ───── */
+    .sort-board:has(.sort-card.is-selected) .sort-zone {
+      border: 2px dashed var(--brand) !important;
+      background: rgba(26, 111, 239, 0.04) !important;
+      animation: apex-zone-pulse 1.8s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    .sort-board:has(.sort-card.is-selected) .sort-zone:hover,
+    .sort-board:has(.sort-card.is-selected) .sort-zone.is-active {
+      border: 3px solid var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+      animation: none;
+      transform: scale(1.01);
+    }
+
+    @keyframes apex-zone-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(26, 111, 239, 0); }
+      50%      { box-shadow: 0 0 0 4px rgba(26, 111, 239, 0.10); }
+    }
+
+    /* zone strong (카테고리 이름) — 강조 */
+    .sort-board:has(.sort-card.is-selected) .sort-zone strong {
+      color: var(--brand) !important;
+    }
+
+    /* zone empty 상태 hint 표시 화살표 — 텍스트 변경 없음 (CSS ::before에 ↓ 추가) */
+    .sort-board:has(.sort-card.is-selected) .sort-zone .sort-zone-body:empty {
+      position: relative;
+    }
+    .sort-board:has(.sort-card.is-selected) .sort-zone .sort-zone-body:empty::after {
+      content: "↓";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand);
+      animation: apex-arrow-bounce 1.2s ease-in-out infinite;
+    }
+
+    @keyframes apex-arrow-bounce {
+      0%, 100% { transform: translate(-50%, -50%); }
+      50%      { transform: translate(-50%, -30%); }
+    }
+
+    /* ── 모바일 PART 7 레이아웃 개선 (sticky 제거) ────────── */
+    @media (max-width: 640px) {
+      .sort-board {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .sort-pool {
+        background: var(--apex-card);
+        padding: 14px !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(26, 111, 239, 0.04);
+        border: 1px solid var(--line);
+      }
+      .sort-pool-body {
+        display: grid;
+        gap: 10px;
+      }
+      .sort-card {
+        padding: 14px 16px !important;
+        font-size: 14.5px !important;
+        min-height: 60px;
+        text-align: left;
+      }
+      .sort-card.is-selected::after {
+        top: -8px;
+        right: -8px;
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+        line-height: 24px;
+      }
+      .sort-zones {
+        display: grid;
+        gap: 10px;
+      }
+      .sort-zone {
+        padding: 14px !important;
+        border-radius: 12px;
+        min-height: 90px;
+      }
+      .sort-zone strong {
+        font-size: 14px !important;
+        font-weight: 700;
+      }
+      .sort-zone small {
+        font-size: 12px !important;
+        line-height: 1.5;
+      }
+    }
+
+    /* ── 카드 선택 시 zones 강조 강화 (JS 클래스 적용 — :has() fallback) ── */
+    .sort-board.has-selected-card .sort-zones .sort-zone {
+      border: 2px dashed var(--brand) !important;
+      background: rgba(26, 111, 239, 0.06) !important;
+      animation: apex-zone-pulse 1.8s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .sort-board.has-selected-card .sort-zones .sort-zone strong {
+      color: var(--brand) !important;
+      font-weight: 700;
+    }
+    .sort-board.has-selected-card .sort-zones .sort-zone:hover {
+      background: var(--apex-blue-muted) !important;
+      border: 3px solid var(--brand) !important;
+      animation: none;
+      transform: scale(1.01);
+    }
+    .sort-board.has-selected-card .sort-zones .sort-zone .sort-zone-body:empty {
+      position: relative;
+    }
+    .sort-board.has-selected-card .sort-zones .sort-zone .sort-zone-body:empty::after {
+      content: "↓";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--brand);
+      animation: apex-arrow-bounce 1.2s ease-in-out infinite;
+    }
+
+    /* zone에 이미 배치된 카드는 is-selected 영향 안 받게 */
+    .sort-zone .sort-card.is-selected {
+      border: 3px solid var(--brand) !important;
+    }
+    .sort-zone .sort-card.is-selected::after {
+      display: none !important;
+    }
+
+    /* ── 배치 완료된 카드 (zone 안에 있을 때) — 컴팩트 ────── */
+    .sort-zone .sort-card {
+      padding: 10px 14px !important;
+      font-size: 13.5px !important;
+      min-height: 0 !important;
+      border: 2px solid var(--apex-blue-border) !important;
+      background: var(--apex-card) !important;
+      transform: none !important;
+    }
+    .sort-zone .sort-card:hover {
+      border-color: var(--brand) !important;
+      background: var(--apex-blue-muted) !important;
+    }
+    .sort-zone .sort-card.is-selected::after {
+      display: none !important;
+    }
+    .sort-zone .sort-card.is-selected {
+      border: 3px solid var(--brand) !important;
+      transform: none !important;
+    }
+
   </style>
 </head>
 <body>
@@ -1514,7 +3161,7 @@
             <div class="step-tag">PART 3 · 환각 검증</div>
             <small>상황판단형 문항. Hallucination 리스크를 실제로 구분하는지 봅니다.</small>
           </div>
-          <h2 class="question-title">'AI 환각(Hallucination)' 현상에 대한 설명으로 가장 정확한 것은?</h2>
+          <h2 class="question-title qt-wide">'AI 환각(Hallucination)' <br class="qbr-m">현상에 대한 설명으로<br>가장 정확한 것은?</h2>
           <p class="question-copy">
             연구팀이 AI에게 시장 규모와 교수 연구 인용까지 포함된 답변을 받았습니다. 아래 설명 중 가장 정확한 정의를 고르세요.
           </p>
@@ -1547,7 +3194,7 @@
             <div class="step-tag">PART 4 · 전문가 검토</div>
             <small>Case 문항. 전문가 검토 없는 AI 의존 리스크를 봅니다.</small>
           </div>
-          <h2 class="question-title">AI 법률 자문 결과만 믿고 계약을 진행하려 할 때, 가장 적절한 대응은?</h2>
+          <h2 class="question-title qt-wide">AI 법률 자문 결과만 믿고 <br class="qbr-m">계약을 진행하려 할 때,<br>가장 적절한 대응은?</h2>
           <div class="scenario">
             <strong>상황</strong>
             <p class="question-copy" style="margin-bottom: 0;">
@@ -1616,7 +3263,7 @@
             <div class="step-tag">PART 6 · 보도자료 검증</div>
             <small>상황판단형 문항. 검증 없는 대외 발신의 리스크를 판단합니다.</small>
           </div>
-          <h2 class="question-title">AI가 만든 보도자료 문구를 검증 없이 외부 배포하려 할 때 가장 큰 문제는 무엇일까요?</h2>
+          <h2 class="question-title qt-wide">AI가 만든 보도자료 문구를 <br class="qbr-m">검증 없이 외부 배포하려 할 때<br>가장 큰 문제는 무엇일까요?</h2>
           <div class="scenario">
             <strong>상황</strong>
             <p class="question-copy" style="margin-bottom: 0;">
@@ -1652,7 +3299,7 @@
             <div class="step-tag">PART 7 · 리스크 분류</div>
             <small>카드를 끌어 가장 알맞은 판단 카테고리로 분류하세요.</small>
           </div>
-          <h2 class="question-title">아래 5개 판단 요소를 가장 적절한 카테고리로 끌어 분류하세요.</h2>
+          <h2 class="question-title qt-wide">아래 5개 판단 요소를 <br class="qbr-m">가장 적절한 카테고리로<br>끌어 분류하세요.</h2>
           <div class="scenario">
             <strong>풀이 방식</strong>
             <p class="question-copy" style="margin-bottom: 0;">
@@ -1721,7 +3368,7 @@
             <div class="step-tag">PART 8 · 초단문 프롬프트</div>
             <small>15자 이내로 핵심 제약을 얼마나 간결하게 쓰는지 봅니다.</small>
           </div>
-          <h2 class="question-title">재무 데이터 분석 요청 앞에 붙일 안전 제약 프롬프트를 15자 이내로 써보세요.</h2>
+          <h2 class="question-title qt-wide">재무 데이터 분석 요청 앞에 붙일 <br class="qbr-m">안전 제약 프롬프트를<br>15자 이내로 써보세요.</h2>
           <div class="scenario">
             <strong>조건</strong>
             <p class="question-copy" style="margin-bottom: 0;">
@@ -1946,6 +3593,8 @@
       } else if (name === "result") {
         els.resultPanel.classList.add("active");
       }
+      // 화면 전환(시작·결과·재시작) 시 상단으로 이동
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function showToast(message) {
@@ -2093,13 +3742,24 @@
       els.prevButton.style.visibility = currentStep === 0 ? "hidden" : "visible";
       els.nextButton.textContent = currentStep === steps.length - 1 ? "결과 보기" : "다음";
       els.quizError.style.display = "none";
+      // 문항 전환 시 상단으로 자동 이동 (모바일에서 새 문항을 처음부터 보이게)
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function getCheckedValue(name) {
       return document.querySelector(`input[name="${name}"]:checked`)?.value || null;
     }
 
+    // 슬라이더 모드 분류 저장소 (DOM이 아닌 객체로 추적)
+    const apexSliderCats = {};
+    function apexIsSliderMode() {
+      return !!document.querySelector('.sort-board.apex-slider-mode');
+    }
+
     function getSortAssignments() {
+      if (apexIsSliderMode()) {
+        return { ...apexSliderCats };
+      }
       const assignments = {};
       sortZones.forEach((zone) => {
         const category = zone.dataset.category;
@@ -2130,6 +3790,9 @@
     function clearSortSelection() {
       selectedSortCardId = null;
       sortCards.forEach((card) => card.classList.remove("is-selected"));
+      // [APEX UXUI] sort-board의 has-selected-card 클래스도 함께 해제
+      const board = document.querySelector('.sort-board');
+      if (board) board.classList.remove('has-selected-card');
     }
 
     function findSortCard(cardId) {
@@ -2139,6 +3802,23 @@
     function moveSortCard(cardId, targetCategory = "") {
       const card = findSortCard(cardId);
       if (!card) {
+        return;
+      }
+
+      // 슬라이더 모드: DOM 이동 없이 map만 갱신 (1 카테고리 당 1 카드 보장)
+      if (apexIsSliderMode()) {
+        if (!targetCategory) {
+          delete apexSliderCats[cardId];
+        } else {
+          Object.keys(apexSliderCats).forEach((id) => {
+            if (apexSliderCats[id] === targetCategory && id !== cardId) {
+              delete apexSliderCats[id];
+            }
+          });
+          apexSliderCats[cardId] = targetCategory;
+        }
+        clearSortSelection();
+        updateCounters();
         return;
       }
 
@@ -2168,56 +3848,394 @@
       }
     }
 
-    function bindSortInteractions() {
+    // [APEX UXUI · 라운드 6] 드래그 폐기 → Popover 카테고리 선택 패턴
+    function openCategoryPopover(card) {
+      // 기존 popover 제거
+      document.querySelector(".apex-popover-overlay")?.remove();
+
+      const cardId = card.dataset.itemId;
+      const currentZone = card.closest(".sort-zone");
+      const currentCategory = currentZone?.dataset.category || "";
+
+      // 카드의 title/copy 추출
+      const cardTitle = card.querySelector(".sort-card-title")?.textContent || "";
+      const cardCopy = card.querySelector(".sort-card-copy")?.textContent || "";
+
+      const overlay = document.createElement("div");
+      overlay.className = "apex-popover-overlay";
+
+      const popover = document.createElement("div");
+      popover.className = "apex-popover";
+      popover.style.position = "relative";
+
+      // 닫기 버튼 (✕)
+      const closeBtn = document.createElement("button");
+      closeBtn.className = "apex-popover-close";
+      closeBtn.type = "button";
+      closeBtn.setAttribute("aria-label", "닫기");
+      closeBtn.innerHTML = "✕";
+      closeBtn.addEventListener("click", () => overlay.remove());
+      popover.appendChild(closeBtn);
+
+      // 카드 미리보기
+      const preview = document.createElement("div");
+      preview.className = "apex-popover-card-preview";
+      preview.innerHTML = `
+        <div class="apex-popover-card-title">${cardTitle.replace(/</g, "&lt;")}</div>
+        <div class="apex-popover-card-copy">${cardCopy.replace(/</g, "&lt;")}</div>
+      `;
+      popover.appendChild(preview);
+
+      // 5 카테고리 옵션
+      const optionsWrap = document.createElement("div");
+      optionsWrap.className = "apex-popover-options";
+
+      sortZones.forEach((zone) => {
+        const cat = zone.dataset.category;
+        const name = zone.querySelector("strong")?.textContent || "";
+        const desc = zone.querySelector("small")?.textContent || "";
+
+        const opt = document.createElement("button");
+        opt.className = "apex-popover-option";
+        opt.type = "button";
+        if (cat === currentCategory && currentCategory) opt.dataset.current = "true";
+        opt.innerHTML = `
+          <span class="apex-popover-name">${name.replace(/</g, "&lt;")}</span>
+          <span class="apex-popover-desc">${desc.replace(/</g, "&lt;")}</span>
+        `;
+        opt.addEventListener("click", () => {
+          moveSortCard(cardId, cat);
+          overlay.remove();
+        });
+        optionsWrap.appendChild(opt);
+      });
+
+      // Pool로 돌리기 (이미 zone에 있는 경우만)
+      if (currentCategory) {
+        const poolOpt = document.createElement("button");
+        poolOpt.className = "apex-popover-option apex-popover-pool";
+        poolOpt.type = "button";
+        const poolName = els.sortPool.querySelector("strong")?.textContent || "분류할 항목";
+        poolOpt.innerHTML = `
+          <span class="apex-popover-name">↩ ${poolName.replace(/</g, "&lt;")}</span>
+          <span class="apex-popover-desc">아직 분류하지 않은 상태로 되돌리기</span>
+        `;
+        poolOpt.addEventListener("click", () => {
+          moveSortCard(cardId, "");
+          overlay.remove();
+        });
+        optionsWrap.appendChild(poolOpt);
+      }
+
+      popover.appendChild(optionsWrap);
+      overlay.appendChild(popover);
+
+      // 외곽 클릭 / Escape 키로 닫기
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.remove();
+      });
+      const escHandler = (e) => {
+        if (e.key === "Escape") {
+          overlay.remove();
+          document.removeEventListener("keydown", escHandler);
+        }
+      };
+      document.addEventListener("keydown", escHandler);
+
+      document.body.appendChild(overlay);
+    }
+
+    // ════════════════════════════════════════════════════════
+    // [APEX UXUI · 라운드 8] Vertical Slider (Card-Wizard) 패턴
+    // ════════════════════════════════════════════════════════
+    let apexCurrentSortIdx = 0;
+
+    function getCategoryOfCard(card) {
+      if (apexIsSliderMode()) {
+        return apexSliderCats[card.dataset.itemId] || "";
+      }
+      const zone = card.closest(".sort-zone");
+      return zone?.dataset.category || "";
+    }
+
+    function renderApexSlider() {
+      // Pattern C: Inline Chips — 5장 카드 수직 스택 + 카드별 5 chip
+      const board = document.querySelector(".sort-board");
+      if (!board) return;
+      board.classList.add("apex-slider-mode");
+
+      // 이전 라운드 잔존 UI 제거 (캐러셀 nav, 슬라이더 진행, 옵션 grid)
+      document.querySelectorAll(".apex-h-nav, .apex-slider-progress, .apex-slider-options").forEach(el => el.remove());
+
+      // 모든 카드를 sortPool에 모으기 (DOM zone 이동 없음 — apexSliderCats가 진실)
+      const pool = document.getElementById("sortPoolBody");
       sortCards.forEach((card) => {
-        card.addEventListener("dragstart", (event) => {
-          const cardId = card.dataset.itemId;
-          selectedSortCardId = cardId;
-          card.classList.add("is-dragging");
-          if (event.dataTransfer) {
-            event.dataTransfer.effectAllowed = "move";
-            event.dataTransfer.setData("text/plain", cardId);
-          }
-        });
+        if (card.parentElement !== pool) pool.appendChild(card);
+      });
 
-        card.addEventListener("dragend", () => {
-          card.classList.remove("is-dragging");
-          setDropActive(els.sortPool, false);
-          sortZones.forEach((zone) => setDropActive(zone, false));
-        });
+      // 각 카드에 칩 그룹 주입 + classified 클래스 토글
+      sortCards.forEach((card) => {
+        const currentCat = getCategoryOfCard(card);
+        card.classList.toggle("apex-classified", !!currentCat);
 
-        card.addEventListener("click", () => {
-          const alreadySelected = selectedSortCardId === card.dataset.itemId;
-          clearSortSelection();
-          if (!alreadySelected) {
-            selectedSortCardId = card.dataset.itemId;
-            card.classList.add("is-selected");
-          }
+        let chips = card.querySelector(".apex-chips");
+        if (!chips) {
+          chips = document.createElement("div");
+          chips.className = "apex-chips";
+          card.appendChild(chips);
+        }
+        chips.innerHTML = sortZones.map((z) => {
+          const cat = z.dataset.category;
+          const name = (z.querySelector("strong")?.textContent || "").replace(/</g, "&lt;");
+          const isOn = cat === currentCat;
+          return `<button type="button" class="apex-chip ${isOn ? "is-on" : ""}" data-cat="${cat}">${name}</button>`;
+        }).join("");
+
+        chips.querySelectorAll(".apex-chip").forEach((chip) => {
+          chip.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const cat = chip.dataset.cat;
+            const wasOn = chip.classList.contains("is-on");
+            moveSortCard(card.dataset.itemId, wasOn ? "" : cat);
+            renderApexSlider();
+            const allDone = sortCards.every((c) => getCategoryOfCard(c));
+            if (allDone) {
+              const btn = document.getElementById("nextButton");
+              if (btn) {
+                btn.focus();
+                btn.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+          });
         });
       });
 
-      const dropTargets = [els.sortPool, ...sortZones];
-      dropTargets.forEach((target) => {
-        const category = target === els.sortPool ? "" : target.dataset.category;
-        target.addEventListener("dragover", (event) => {
-          event.preventDefault();
-          setDropActive(target, true);
-        });
-        target.addEventListener("dragleave", () => {
-          setDropActive(target, false);
-        });
-        target.addEventListener("drop", (event) => {
-          event.preventDefault();
-          const cardId = event.dataTransfer?.getData("text/plain") || selectedSortCardId;
-          moveSortCard(cardId, category);
-          setDropActive(target, false);
-        });
-        target.addEventListener("click", () => {
-          if (selectedSortCardId) {
-            moveSortCard(selectedSortCardId, category);
+      // 진행 표시 (board 위)
+      renderApexChipProgress();
+    }
+
+    function renderApexChipProgress() {
+      const board = document.querySelector(".sort-board");
+      if (!board) return;
+      let progress = board.parentNode.querySelector(".apex-chip-progress");
+      if (!progress) {
+        progress = document.createElement("div");
+        progress.className = "apex-chip-progress";
+        progress.innerHTML = `
+          <span class="apex-chip-progress-label">분류 진행</span>
+          <div class="apex-chip-progress-bar"><i></i></div>
+          <span class="apex-chip-progress-meta">0 / 5</span>
+        `;
+        board.parentNode.insertBefore(progress, board);
+      }
+      const done = sortCards.filter((c) => getCategoryOfCard(c)).length;
+      const pct = (done / sortCards.length) * 100;
+      progress.querySelector(".apex-chip-progress-bar i").style.width = `${pct}%`;
+      progress.querySelector(".apex-chip-progress-meta").textContent = `${done} / ${sortCards.length}`;
+    }
+
+    function scrollToApexCurrent() {
+      const pool = document.getElementById("sortPoolBody");
+      const card = sortCards[apexCurrentSortIdx];
+      if (!pool || !card) return;
+      // scroll-snap이 자동 정렬 — scrollTo로 정확한 위치
+      requestAnimationFrame(() => {
+        const target = card.offsetLeft - pool.offsetLeft - (pool.offsetWidth - card.offsetWidth) / 2;
+        pool.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+      });
+    }
+
+    function renderApexNavButtons() {
+      const board = document.querySelector(".sort-board");
+      let nav = board.parentNode.querySelector(".apex-h-nav");
+      if (!nav) {
+        nav = document.createElement("div");
+        nav.className = "apex-h-nav";
+        nav.innerHTML = `
+          <button type="button" class="apex-h-nav-btn apex-h-prev" aria-label="이전 카드">←</button>
+          <span class="apex-h-nav-counter"><strong>1</strong> / 5</span>
+          <button type="button" class="apex-h-nav-btn apex-h-next" aria-label="다음 카드">→</button>
+        `;
+        board.parentNode.insertBefore(nav, board);
+        nav.querySelector(".apex-h-prev").addEventListener("click", () => {
+          if (apexCurrentSortIdx > 0) {
+            apexCurrentSortIdx--;
+            renderApexSlider();
           }
         });
+        nav.querySelector(".apex-h-next").addEventListener("click", () => {
+          if (apexCurrentSortIdx < sortCards.length - 1) {
+            apexCurrentSortIdx++;
+            renderApexSlider();
+          }
+        });
+      }
+      nav.querySelector(".apex-h-prev").disabled = apexCurrentSortIdx === 0;
+      nav.querySelector(".apex-h-next").disabled = apexCurrentSortIdx === sortCards.length - 1;
+      const counter = nav.querySelector(".apex-h-nav-counter");
+      counter.innerHTML = `<strong>${apexCurrentSortIdx + 1}</strong> / ${sortCards.length}`;
+    }
+
+    function bindApexScrollSync() {
+      const pool = document.getElementById("sortPoolBody");
+      if (!pool || pool.dataset.scrollBound) return;
+      pool.dataset.scrollBound = "1";
+      let scrollTimer;
+      pool.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          if (!document.querySelector('.question-step[data-step="6"].active')) return;
+          const center = pool.scrollLeft + pool.offsetWidth / 2;
+          let closestIdx = 0;
+          let closestDist = Infinity;
+          sortCards.forEach((c, i) => {
+            if (c.parentElement !== pool) return;
+            const cardCenter = c.offsetLeft + c.offsetWidth / 2 - pool.offsetLeft;
+            const dist = Math.abs(cardCenter - center);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closestIdx = i;
+            }
+          });
+          if (closestIdx !== apexCurrentSortIdx) {
+            apexCurrentSortIdx = closestIdx;
+            sortCards.forEach((card, i) => {
+              card.classList.toggle("apex-slider-current", i === apexCurrentSortIdx);
+            });
+            renderApexProgress();
+            renderApexCategoryOptions();
+            renderApexNavButtons();
+          }
+        }, 120);
       });
+    }
+
+    function renderApexProgress() {
+      let progress = document.querySelector(".apex-slider-progress");
+      if (!progress) {
+        progress = document.createElement("div");
+        progress.className = "apex-slider-progress";
+        const board = document.querySelector(".sort-board");
+        board.parentNode.insertBefore(progress, board);
+      }
+
+      const total = sortCards.length;
+      const done = sortCards.filter((c) => getCategoryOfCard(c)).length;
+
+      const dots = sortCards.map((card, i) => {
+        const isDone = !!getCategoryOfCard(card);
+        const isCurrent = i === apexCurrentSortIdx;
+        return `<button type="button" class="apex-slider-progress-dot ${isDone ? "is-done" : ""} ${isCurrent ? "is-current" : ""}" data-idx="${i}" aria-label="카드 ${i + 1}"></button>`;
+      }).join("");
+
+      progress.innerHTML = `
+        <div class="apex-slider-progress-dots">${dots}</div>
+        <div class="apex-slider-progress-meta">${done} / ${total} 분류</div>
+      `;
+
+      // 진행 dot 클릭 = 그 카드로 점프
+      progress.querySelectorAll(".apex-slider-progress-dot").forEach((dot) => {
+        dot.addEventListener("click", () => {
+          apexCurrentSortIdx = parseInt(dot.dataset.idx, 10);
+          renderApexSlider();
+        });
+      });
+    }
+
+    function renderApexCategoryOptions() {
+      let optionsWrap = document.querySelector(".apex-slider-options");
+      if (!optionsWrap) {
+        optionsWrap = document.createElement("div");
+        optionsWrap.className = "apex-slider-options";
+        // sort-board 안에, sort-pool 다음에 삽입
+        const pool = document.querySelector(".sort-pool");
+        pool.parentNode.insertBefore(optionsWrap, pool.nextSibling);
+      }
+
+      const currentCard = sortCards[apexCurrentSortIdx];
+      const currentCategory = getCategoryOfCard(currentCard);
+
+      const buttons = sortZones.map((zone) => {
+        const cat = zone.dataset.category;
+        const name = zone.querySelector("strong")?.textContent || "";
+        const desc = zone.querySelector("small")?.textContent || "";
+        const isCurrent = cat === currentCategory && currentCategory;
+        return `
+          <button type="button" class="apex-slider-option ${isCurrent ? "is-current" : ""}" data-cat="${cat}">
+            <span class="apex-slider-option-name">${name.replace(/</g, "&lt;")}</span>
+            <span class="apex-slider-option-desc">${desc.replace(/</g, "&lt;")}</span>
+          </button>
+        `;
+      }).join("");
+
+      // 이미 zone에 있으면 "pool로 되돌리기" 옵션 추가
+      const poolBtn = currentCategory
+        ? `<button type="button" class="apex-slider-option apex-slider-option-pool" data-cat="">
+            <span class="apex-slider-option-name">↩ 분류 취소 (분류할 항목으로)</span>
+            <span class="apex-slider-option-desc">현재 분류를 해제하고 미분류 상태로</span>
+           </button>`
+        : "";
+
+      optionsWrap.innerHTML = buttons + poolBtn;
+
+      optionsWrap.querySelectorAll(".apex-slider-option").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const cat = btn.dataset.cat;
+          moveSortCard(currentCard.dataset.itemId, cat);
+          renderApexProgress();
+          // 자동 다음 카드 — 단, 분류 해제(pool) 또는 같은 카테고리 클릭은 advance X
+          if (cat && cat !== currentCategory) {
+            // 앞으로 미분류 카드 우선, 없으면 뒤에서 미분류 검색, 마지막엔 next
+            const forwardUnclassified = sortCards.slice(apexCurrentSortIdx + 1).findIndex(c => !getCategoryOfCard(c));
+            if (forwardUnclassified !== -1) {
+              apexCurrentSortIdx = apexCurrentSortIdx + 1 + forwardUnclassified;
+            } else {
+              const anyUnclassified = sortCards.findIndex(c => !getCategoryOfCard(c));
+              if (anyUnclassified !== -1) {
+                apexCurrentSortIdx = anyUnclassified;
+              } else if (apexCurrentSortIdx < sortCards.length - 1) {
+                apexCurrentSortIdx++;
+              }
+            }
+            // 다 분류했으면 "다음" 버튼 강조
+            const allDone = sortCards.every((c) => getCategoryOfCard(c));
+            if (allDone) {
+              const nextBtn = document.getElementById("nextButton");
+              if (nextBtn) {
+                nextBtn.focus();
+                nextBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+          }
+          renderApexSlider();
+        });
+      });
+    }
+
+    function bindSortInteractions() {
+      // 드래그 완전 차단
+      sortCards.forEach((card) => {
+        card.setAttribute("draggable", "false");
+        card.addEventListener("dragstart", (event) => event.preventDefault());
+      });
+
+      bindApexScrollSync();
+
+      // PART 7이 active가 되면 슬라이더 init — 단, p7 .active 토글만 관찰 (재귀 방지)
+      let p7WasActive = false;
+      const p7Elem = document.querySelector('.question-step[data-step="6"]');
+      if (p7Elem) {
+        const observer = new MutationObserver(() => {
+          const isActive = p7Elem.classList.contains("active");
+          if (isActive && !p7WasActive) renderApexSlider();
+          p7WasActive = isActive;
+        });
+        observer.observe(p7Elem, { attributes: true, attributeFilter: ["class"] });
+        if (p7Elem.classList.contains("active")) {
+          p7WasActive = true;
+          renderApexSlider();
+        }
+      }
     }
 
     function validateStep(stepIndex) {
@@ -2664,48 +4682,110 @@
     }
 
     function buildResultPoster(profile, total, percentile) {
+      // 데스크탑(>900px): landscape 760×360 (gauge 좌 + score chip 우)
+      // 모바일·태블릿(≤900px): portrait 420×520 (gauge 위 + score chip 아래)
+      const isNarrow = window.matchMedia('(max-width: 900px)').matches;
+      return isNarrow
+        ? buildResultPosterPortrait(profile, total, percentile)
+        : buildResultPosterLandscape(profile, total, percentile);
+    }
+
+    function buildResultPosterLandscape(profile, total, percentile) {
       const safeRange = escapeHtml(profile.rangeLabel);
       const safeName = escapeHtml(profile.name);
       const score = Math.round(total);
       const percentileValue = percentile.toFixed(1);
       const gaugePercent = clamp(score, 0, 100);
-      const arcLength = 439.82;
-      const progressLength = (arcLength * gaugePercent) / 100;
+
+      return `
+        <svg viewBox="0 0 760 360" role="img" aria-label="${escapeHtml(profile.name)}">
+          <defs>
+            <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F7F8FA" />
+              <stop offset="100%" stop-color="#ECF1FF" />
+            </linearGradient>
+            <linearGradient id="gaugeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0E3B80" />
+              <stop offset="50%" stop-color="#1A6FEF" />
+              <stop offset="100%" stop-color="#4A8EFF" />
+            </linearGradient>
+            <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(26, 111, 239, 0.18)" />
+            </filter>
+          </defs>
+          <rect x="0" y="0" width="760" height="360" rx="16" fill="url(#panelBg)" />
+
+          <!-- Top header (spanning) -->
+          <text x="50" y="68" fill="#1E293B" font-size="22" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">AI 활용 점수</text>
+          <text x="50" y="92" fill="#3A4F68" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${safeRange}</text>
+          <text x="710" y="68" text-anchor="end" fill="#3A4F68" font-size="13" font-weight="700" font-family="Pretendard, sans-serif">리드 검증형 결과</text>
+
+          <!-- Divider -->
+          <line x1="388" y1="118" x2="388" y2="320" stroke="rgba(26,111,239,0.12)" stroke-width="1.5" stroke-dasharray="4 6" />
+
+          <!-- LEFT — Gauge -->
+          <g filter="url(#gaugeShadow)">
+            <path d="M75 270 A110 110 0 0 1 295 270" fill="none" stroke="#C2D5E5" stroke-width="36" stroke-linecap="round" pathLength="100" />
+            <path d="M75 270 A110 110 0 0 1 295 270" fill="none" stroke="url(#gaugeStroke)" stroke-width="36" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
+          </g>
+          <text x="185" y="220" text-anchor="middle" fill="#3A4F68" font-size="20" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
+          <text x="185" y="262" text-anchor="middle" fill="#1A6FEF" font-size="34" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
+          <text x="185" y="296" text-anchor="middle" fill="#1E293B" font-size="16" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
+
+          <!-- RIGHT — Score block + Chips -->
+          <rect x="412" y="138" width="300" height="84" rx="16" fill="#F7F8FA" stroke="rgba(26,111,239,0.16)" stroke-width="2" />
+          <text x="436" y="186" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">결과 점수</text>
+          <text x="688" y="188" text-anchor="end" fill="#1A6FEF" font-size="28" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">${score} / 100</text>
+
+          <rect x="412" y="244" width="142" height="36" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
+          <text x="483" y="267" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">정량 점수 기반</text>
+          <rect x="570" y="244" width="142" height="36" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
+          <text x="641" y="267" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">퍼센타일 비교</text>
+        </svg>
+      `;
+    }
+
+    function buildResultPosterPortrait(profile, total, percentile) {
+      const safeRange = escapeHtml(profile.rangeLabel);
+      const safeName = escapeHtml(profile.name);
+      const score = Math.round(total);
+      const percentileValue = percentile.toFixed(1);
+      const gaugePercent = clamp(score, 0, 100);
 
       return `
         <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
           <defs>
             <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f8fbff" />
-              <stop offset="100%" stop-color="#deebff" />
+              <stop offset="0%" stop-color="#F7F8FA" />
+              <stop offset="100%" stop-color="#ECF1FF" />
             </linearGradient>
             <linearGradient id="gaugeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#0cb4d4" />
-              <stop offset="100%" stop-color="#18c7a7" />
+              <stop offset="0%" stop-color="#0E3B80" />
+              <stop offset="50%" stop-color="#1A6FEF" />
+              <stop offset="100%" stop-color="#4A8EFF" />
             </linearGradient>
             <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(15, 63, 127, 0.16)" />
+              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(26, 111, 239, 0.20)" />
             </filter>
           </defs>
-          <rect x="10" y="10" width="400" height="500" rx="34" fill="url(#panelBg)" />
-          <rect x="28" y="28" width="364" height="464" rx="28" fill="rgba(255,255,255,0.86)" stroke="rgba(4,80,195,0.12)" stroke-width="2" />
-          <text x="54" y="76" fill="#10213f" font-size="28" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">AI 활용 점수</text>
-          <text x="54" y="106" fill="#5a6d8f" font-size="14" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeRange}</text>
-          <text x="366" y="76" text-anchor="end" fill="#5a6d8f" font-size="14" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">리드 검증형 결과</text>
+          <rect x="0" y="0" width="420" height="520" rx="16" fill="url(#panelBg)" />
+          <text x="54" y="76" fill="#1E293B" font-size="28" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">AI 활용 점수</text>
+          <text x="54" y="106" fill="#3A4F68" font-size="14" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${safeRange}</text>
+          <text x="366" y="76" text-anchor="end" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">리드 검증형 결과</text>
           <g filter="url(#gaugeShadow)">
-            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="#d4dfef" stroke-width="44" stroke-linecap="round" pathLength="${arcLength}" />
-            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="url(#gaugeStroke)" stroke-width="44" stroke-linecap="round" pathLength="${arcLength}" stroke-dasharray="${progressLength} ${arcLength}" />
+            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="#C2D5E5" stroke-width="44" stroke-linecap="round" pathLength="100" />
+            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="url(#gaugeStroke)" stroke-width="44" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
           </g>
-          <text x="210" y="214" text-anchor="middle" fill="#667a9e" font-size="24" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${score}점</text>
-          <text x="210" y="266" text-anchor="middle" fill="#10213f" font-size="40" font-weight="900" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">상위 ${percentileValue}%</text>
-          <text x="210" y="302" text-anchor="middle" fill="#5a6d8f" font-size="17" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${safeName}</text>
-          <rect x="56" y="344" width="308" height="72" rx="20" fill="#f6f9ff" stroke="rgba(4,80,195,0.12)" stroke-width="2" />
-          <text x="92" y="387" fill="#5a6d8f" font-size="15" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">결과 점수</text>
-          <text x="328" y="388" text-anchor="end" fill="#10213f" font-size="28" font-weight="900" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">${score} / 100</text>
-          <rect x="56" y="434" width="142" height="34" rx="17" fill="#edf4ff" />
-          <text x="127" y="456" text-anchor="middle" fill="#0450c3" font-size="14" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">정량 점수 기반</text>
-          <rect x="222" y="434" width="142" height="34" rx="17" fill="#edf4ff" />
-          <text x="293" y="456" text-anchor="middle" fill="#0450c3" font-size="14" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, sans-serif">퍼센타일 비교</text>
+          <text x="210" y="214" text-anchor="middle" fill="#3A4F68" font-size="24" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
+          <text x="210" y="266" text-anchor="middle" fill="#1A6FEF" font-size="40" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
+          <text x="210" y="302" text-anchor="middle" fill="#1E293B" font-size="17" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
+          <rect x="56" y="344" width="308" height="72" rx="16" fill="#F7F8FA" stroke="rgba(26,111,239,0.16)" stroke-width="2" />
+          <text x="92" y="387" fill="#3A4F68" font-size="15" font-weight="700" font-family="Pretendard, sans-serif">결과 점수</text>
+          <text x="328" y="388" text-anchor="end" fill="#1A6FEF" font-size="28" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">${score} / 100</text>
+          <rect x="56" y="434" width="142" height="34" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
+          <text x="127" y="456" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">정량 점수 기반</text>
+          <rect x="222" y="434" width="142" height="34" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
+          <text x="293" y="456" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">퍼센타일 비교</text>
         </svg>
       `;
     }
@@ -2905,6 +4985,15 @@
       });
     }
 
+    // 포스터(게이지) 재렌더용 — 데스크탑↔모바일 폭 전환 시 landscape/portrait SVG 갱신
+    let lastPosterArgs = null;
+    window.matchMedia('(max-width: 900px)').addEventListener('change', () => {
+      if (lastPosterArgs && els.resultPanel.classList.contains('active')) {
+        const { profile, total, percentile } = lastPosterArgs;
+        els.resultPosterArt.innerHTML = buildResultPoster(profile, total, percentile);
+      }
+    });
+
     function showResult() {
       const q1 = scoreQuestion("q1", "a");
       const q2 = scoreQuestion("q2", "a");
@@ -2936,6 +5025,7 @@
       els.scoreGaugeValue.textContent = `${roundedTotal} / 100`;
       els.scoreGaugeFill.style.width = `${roundedTotal}%`;
       els.scoreGaugeMarker.style.left = `${gaugePosition}%`;
+      lastPosterArgs = { profile, total, percentile };
       els.resultPosterArt.innerHTML = buildResultPoster(profile, total, percentile);
       els.resultDetail.innerHTML = buildResultDetail(profile, total, snapshot);
 
@@ -2953,8 +5043,10 @@
       renderList(els.actionList, buildActions(part1, part2, part3, part4));
       renderList(els.insightList, buildInsights(percentile, part1, part2, part3, part4));
 
-      els.benchmarkNote.textContent =
-        "이 버전은 정적 HTML 8문항 간이테스트입니다. 퍼센타일은 총점을 기준으로 100점=상위 1%, 0점=상위 99%가 되도록 계산됩니다. 정식 운영 시 실제 응답 데이터 기반 퍼센타일로 교체하면 더 정교해집니다.";
+      els.benchmarkNote.innerHTML =
+        "이 버전은 정적 HTML 8문항 간이테스트입니다.<br>" +
+        "퍼센타일은 총점을 기준으로 100점=상위 1%, 0점=상위 99%가 되도록 계산됩니다.<br>" +
+        "정식 운영 시 실제 응답 데이터 기반 퍼센타일로 교체하면 더 정교해집니다.";
 
       setScreen("result");
 
