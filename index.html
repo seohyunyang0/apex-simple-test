@@ -2044,7 +2044,7 @@
       width: 100%;
     }
     @media (max-width: 900px) {
-      .result-poster-shell { aspect-ratio: 420 / 520; }
+      .result-poster-shell { aspect-ratio: 420 / 360; }
     }
 
     .result-kicker {
@@ -3399,7 +3399,6 @@
             <div class="result-kicker" id="resultTierRange">0-40점 구간</div>
             <h2 class="result-tier-name" id="resultTierName">AI 스타터</h2>
             <div class="score-number" id="displayScore">0점</div>
-            <div class="percentile-pill" id="percentileText">상위 0.0%</div>
             <p class="result-growth-copy" id="growthCopy">상위 0.0%에서 상위 1%로 성장할 수 있는 방법</p>
             <p class="result-summary" id="summaryText"></p>
             <div class="score-gauge-wrap">
@@ -3540,7 +3539,6 @@
       shortPrompt: document.getElementById("shortPrompt"),
       shortPromptHelper: document.getElementById("shortPromptHelper"),
       displayScore: document.getElementById("displayScore"),
-      percentileText: document.getElementById("percentileText"),
       summaryText: document.getElementById("summaryText"),
       resultPosterArt: document.getElementById("resultPosterArt"),
       resultTierRange: document.getElementById("resultTierRange"),
@@ -4690,102 +4688,136 @@
         : buildResultPosterLandscape(profile, total, percentile);
     }
 
+    function buildGaugeGeometry(cx, cy, radius, percent) {
+      const startDeg = 200;
+      const sweepDeg = 220;
+      const point = (deg) => {
+        const rad = (deg * Math.PI) / 180;
+        return { x: cx + radius * Math.cos(rad), y: cy - radius * Math.sin(rad) };
+      };
+      const start = point(startDeg);
+      const end = point(startDeg - sweepDeg);
+      const knob = point(startDeg - (sweepDeg * percent) / 100);
+      const arcPath = `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} A ${radius} ${radius} 0 1 1 ${end.x.toFixed(1)} ${end.y.toFixed(1)}`;
+      return { arcPath, start, end, knob };
+    }
+
+    // 결과 포스터 게이지 채움 모션 (0 → 점수, ease-out)
+    function animateResultGauge() {
+      const svg = els.resultPosterArt.querySelector("svg[data-gauge-percent]");
+      if (!svg) return;
+      const progress = svg.querySelector(".gauge-progress");
+      const knob = svg.querySelector(".gauge-knob");
+      if (!progress || !knob) return;
+      const cx = parseFloat(svg.dataset.gaugeCx);
+      const cy = parseFloat(svg.dataset.gaugeCy);
+      const radius = parseFloat(svg.dataset.gaugeR);
+      const target = parseFloat(svg.dataset.gaugePercent);
+      const setFrame = (value) => {
+        progress.setAttribute("stroke-dasharray", `${value} 100`);
+        const point = buildGaugeGeometry(cx, cy, radius, value).knob;
+        knob.setAttribute("cx", point.x.toFixed(1));
+        knob.setAttribute("cy", point.y.toFixed(1));
+      };
+      const run = () => {
+        const duration = 1200;
+        let startTime = null;
+        const tick = (now) => {
+          if (startTime === null) startTime = now;
+          const t = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setFrame(target * eased);
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      setFrame(0);
+      // 포스터가 화면에 보이는 순간 시작 — 로드 직후 안 보이는 동안 끝나버리는 문제 방지
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            window.setTimeout(run, 150);
+          }
+        }, { threshold: 0.3 });
+        observer.observe(svg);
+      } else {
+        run();
+      }
+    }
+
     function buildResultPosterLandscape(profile, total, percentile) {
-      const safeRange = escapeHtml(profile.rangeLabel);
       const safeName = escapeHtml(profile.name);
       const score = Math.round(total);
       const percentileValue = percentile.toFixed(1);
       const gaugePercent = clamp(score, 0, 100);
+      const gauge = buildGaugeGeometry(380, 240, 140, gaugePercent);
+      const pillWidth = profile.name.length * 14 + 48;
+      const pillX = (380 - pillWidth / 2).toFixed(1);
 
       return `
-        <svg viewBox="0 0 760 360" role="img" aria-label="${escapeHtml(profile.name)}">
+        <svg viewBox="0 0 760 360" role="img" aria-label="${escapeHtml(profile.name)}" data-gauge-cx="380" data-gauge-cy="240" data-gauge-r="140" data-gauge-percent="${gaugePercent}">
           <defs>
             <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#F7F8FA" />
               <stop offset="100%" stop-color="#ECF1FF" />
             </linearGradient>
-            <linearGradient id="gaugeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#0E3B80" />
-              <stop offset="50%" stop-color="#1A6FEF" />
-              <stop offset="100%" stop-color="#4A8EFF" />
-            </linearGradient>
-            <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(26, 111, 239, 0.18)" />
-            </filter>
           </defs>
           <rect x="0" y="0" width="760" height="360" rx="16" fill="url(#panelBg)" />
+          <image href="./assets/Favicon_5.svg" x="50" y="40" width="28" height="28" />
+          <text x="86" y="62" fill="#0E3B80" font-size="18" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.02em">APEX</text>
+          <text x="710" y="62" text-anchor="end" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">AI 활용 점수</text>
 
-          <!-- Top header (spanning) -->
-          <text x="50" y="68" fill="#1E293B" font-size="22" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">AI 활용 점수</text>
-          <text x="50" y="92" fill="#3A4F68" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${safeRange}</text>
-          <text x="710" y="68" text-anchor="end" fill="#3A4F68" font-size="13" font-weight="700" font-family="Pretendard, sans-serif">리드 검증형 결과</text>
+          <!-- Gauge arc + knob -->
+          <path d="${gauge.arcPath}" fill="none" stroke="#E2E8F2" stroke-width="14" stroke-linecap="round" pathLength="100" />
+          <path class="gauge-progress" d="${gauge.arcPath}" fill="none" stroke="#1A6FEF" stroke-width="14" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
+          <circle class="gauge-knob" cx="${gauge.knob.x.toFixed(1)}" cy="${gauge.knob.y.toFixed(1)}" r="10" fill="#FFFFFF" stroke="#1A6FEF" stroke-width="5" />
+          <text x="${gauge.start.x.toFixed(1)}" y="${(gauge.start.y + 30).toFixed(1)}" text-anchor="middle" fill="#8A97A8" font-size="14" font-weight="600" font-family="'Space Grotesk', Pretendard, sans-serif">0</text>
+          <text x="${gauge.end.x.toFixed(1)}" y="${(gauge.end.y + 30).toFixed(1)}" text-anchor="middle" fill="#8A97A8" font-size="14" font-weight="600" font-family="'Space Grotesk', Pretendard, sans-serif">100</text>
 
-          <!-- Divider -->
-          <line x1="388" y1="118" x2="388" y2="320" stroke="rgba(26,111,239,0.12)" stroke-width="1.5" stroke-dasharray="4 6" />
-
-          <!-- LEFT — Gauge -->
-          <g filter="url(#gaugeShadow)">
-            <path d="M75 270 A110 110 0 0 1 295 270" fill="none" stroke="#C2D5E5" stroke-width="36" stroke-linecap="round" pathLength="100" />
-            <path d="M75 270 A110 110 0 0 1 295 270" fill="none" stroke="url(#gaugeStroke)" stroke-width="36" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
-          </g>
-          <text x="185" y="220" text-anchor="middle" fill="#3A4F68" font-size="20" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
-          <text x="185" y="262" text-anchor="middle" fill="#1A6FEF" font-size="34" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
-          <text x="185" y="296" text-anchor="middle" fill="#1E293B" font-size="16" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
-
-          <!-- RIGHT — Score block + Chips -->
-          <rect x="412" y="138" width="300" height="84" rx="16" fill="#F7F8FA" stroke="rgba(26,111,239,0.16)" stroke-width="2" />
-          <text x="436" y="186" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">결과 점수</text>
-          <text x="688" y="188" text-anchor="end" fill="#1A6FEF" font-size="28" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">${score} / 100</text>
-
-          <rect x="412" y="244" width="142" height="36" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
-          <text x="483" y="267" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">정량 점수 기반</text>
-          <rect x="570" y="244" width="142" height="36" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
-          <text x="641" y="267" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">퍼센타일 비교</text>
+          <!-- Center content: score / percentile / tier pill -->
+          <text x="380" y="190" text-anchor="middle" fill="#3A4F68" font-size="16" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
+          <text x="380" y="244" text-anchor="middle" fill="#111827" font-size="40" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
+          <rect x="${pillX}" y="262" width="${pillWidth}" height="34" rx="17" fill="rgba(26,111,239,0.10)" />
+          <text x="380" y="284" text-anchor="middle" fill="#1A6FEF" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
         </svg>
       `;
     }
 
     function buildResultPosterPortrait(profile, total, percentile) {
-      const safeRange = escapeHtml(profile.rangeLabel);
       const safeName = escapeHtml(profile.name);
       const score = Math.round(total);
       const percentileValue = percentile.toFixed(1);
       const gaugePercent = clamp(score, 0, 100);
+      const gauge = buildGaugeGeometry(210, 240, 130, gaugePercent);
+      const pillWidth = profile.name.length * 14 + 44;
+      const pillX = (210 - pillWidth / 2).toFixed(1);
 
       return `
-        <svg viewBox="0 0 420 520" role="img" aria-label="${escapeHtml(profile.name)}">
+        <svg viewBox="0 0 420 360" role="img" aria-label="${escapeHtml(profile.name)}" data-gauge-cx="210" data-gauge-cy="240" data-gauge-r="130" data-gauge-percent="${gaugePercent}">
           <defs>
             <linearGradient id="panelBg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#F7F8FA" />
               <stop offset="100%" stop-color="#ECF1FF" />
             </linearGradient>
-            <linearGradient id="gaugeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#0E3B80" />
-              <stop offset="50%" stop-color="#1A6FEF" />
-              <stop offset="100%" stop-color="#4A8EFF" />
-            </linearGradient>
-            <filter id="gaugeShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="rgba(26, 111, 239, 0.20)" />
-            </filter>
           </defs>
-          <rect x="0" y="0" width="420" height="520" rx="16" fill="url(#panelBg)" />
-          <text x="54" y="76" fill="#1E293B" font-size="28" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">AI 활용 점수</text>
-          <text x="54" y="106" fill="#3A4F68" font-size="14" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${safeRange}</text>
-          <text x="366" y="76" text-anchor="end" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">리드 검증형 결과</text>
-          <g filter="url(#gaugeShadow)">
-            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="#C2D5E5" stroke-width="44" stroke-linecap="round" pathLength="100" />
-            <path d="M70 286 A140 140 0 0 1 350 286" fill="none" stroke="url(#gaugeStroke)" stroke-width="44" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
-          </g>
-          <text x="210" y="214" text-anchor="middle" fill="#3A4F68" font-size="24" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
-          <text x="210" y="266" text-anchor="middle" fill="#1A6FEF" font-size="40" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
-          <text x="210" y="302" text-anchor="middle" fill="#1E293B" font-size="17" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
-          <rect x="56" y="344" width="308" height="72" rx="16" fill="#F7F8FA" stroke="rgba(26,111,239,0.16)" stroke-width="2" />
-          <text x="92" y="387" fill="#3A4F68" font-size="15" font-weight="700" font-family="Pretendard, sans-serif">결과 점수</text>
-          <text x="328" y="388" text-anchor="end" fill="#1A6FEF" font-size="28" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">${score} / 100</text>
-          <rect x="56" y="434" width="142" height="34" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
-          <text x="127" y="456" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">정량 점수 기반</text>
-          <rect x="222" y="434" width="142" height="34" rx="12" fill="rgba(26,111,239,0.10)" stroke="rgba(26,111,239,0.25)" stroke-width="1" />
-          <text x="293" y="456" text-anchor="middle" fill="#1A6FEF" font-size="13" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.04em">퍼센타일 비교</text>
+          <rect x="0" y="0" width="420" height="360" rx="16" fill="url(#panelBg)" />
+          <image href="./assets/Favicon_5.svg" x="36" y="32" width="26" height="26" />
+          <text x="69" y="52" fill="#0E3B80" font-size="17" font-weight="800" font-family="'Space Grotesk', Pretendard, sans-serif" letter-spacing="0.02em">APEX</text>
+          <text x="384" y="52" text-anchor="end" fill="#3A4F68" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">AI 활용 점수</text>
+
+          <!-- Gauge arc + knob -->
+          <path d="${gauge.arcPath}" fill="none" stroke="#E2E8F2" stroke-width="14" stroke-linecap="round" pathLength="100" />
+          <path class="gauge-progress" d="${gauge.arcPath}" fill="none" stroke="#1A6FEF" stroke-width="14" stroke-linecap="round" pathLength="100" stroke-dasharray="${gaugePercent} 100" />
+          <circle class="gauge-knob" cx="${gauge.knob.x.toFixed(1)}" cy="${gauge.knob.y.toFixed(1)}" r="10" fill="#FFFFFF" stroke="#1A6FEF" stroke-width="5" />
+          <text x="${gauge.start.x.toFixed(1)}" y="${(gauge.start.y + 30).toFixed(1)}" text-anchor="middle" fill="#8A97A8" font-size="13" font-weight="600" font-family="'Space Grotesk', Pretendard, sans-serif">0</text>
+          <text x="${gauge.end.x.toFixed(1)}" y="${(gauge.end.y + 30).toFixed(1)}" text-anchor="middle" fill="#8A97A8" font-size="13" font-weight="600" font-family="'Space Grotesk', Pretendard, sans-serif">100</text>
+
+          <!-- Center content: score / percentile / tier pill -->
+          <text x="210" y="190" text-anchor="middle" fill="#3A4F68" font-size="15" font-weight="700" font-family="'Space Grotesk', Pretendard, sans-serif">${score}점</text>
+          <text x="210" y="242" text-anchor="middle" fill="#111827" font-size="38" font-weight="900" font-family="'Space Grotesk', Pretendard, sans-serif">상위 ${percentileValue}%</text>
+          <rect x="${pillX}" y="260" width="${pillWidth}" height="32" rx="16" fill="rgba(26,111,239,0.10)" />
+          <text x="210" y="281" text-anchor="middle" fill="#1A6FEF" font-size="14" font-weight="700" font-family="Pretendard, sans-serif">${safeName}</text>
         </svg>
       `;
     }
@@ -4994,24 +5026,11 @@
       }
     });
 
-    function showResult() {
-      const q1 = scoreQuestion("q1", "a");
-      const q2 = scoreQuestion("q2", "a");
-      const q3 = scoreQuestion("q3", "d");
-      const q4 = scoreQuestion("q4", "c");
-      const q5 = scoreQuestion("q5", "c");
-      const q6 = scoreQuestion("q6", "c");
-      const sorting = scoreSorting();
-      const shortPrompt = scoreShortPrompt();
-
-      const part1 = q1 + q4;
-      const part2 = q2 + q3 + q5;
-      const part3 = q6 + sorting.score;
-      const part4 = shortPrompt.score;
+    // 채점 결과 → 결과 화면 렌더링 (showResult·프리뷰 공용)
+    function renderResult(part1, part2, part3, part4) {
       const total = Math.round((part1 + part2 + part3 + part4) * 10) / 10;
       const roundedTotal = Math.round(total);
       const percentile = computePercentile(total);
-      const topBadge = percentile <= 7 ? '<span class="top-badge">TOP 7%</span>' : "";
       const profile = getTierProfile(total);
       const snapshot = getAreaSnapshot(part1, part2, part3, part4);
       const gaugePosition = clamp(roundedTotal, 1.5, 98.5);
@@ -5019,7 +5038,6 @@
       els.resultTierRange.textContent = profile.rangeLabel;
       els.resultTierName.textContent = profile.name;
       els.displayScore.textContent = `${roundedTotal}점`;
-      els.percentileText.innerHTML = `상위 ${percentile.toFixed(1)}% ${topBadge}`;
       els.growthCopy.textContent = `상위 ${percentile.toFixed(1)}%에서 상위 1%로 성장할 수 있는 방법`;
       els.summaryText.textContent = getSummary(percentile, total);
       els.scoreGaugeValue.textContent = `${roundedTotal} / 100`;
@@ -5027,6 +5045,7 @@
       els.scoreGaugeMarker.style.left = `${gaugePosition}%`;
       lastPosterArgs = { profile, total, percentile };
       els.resultPosterArt.innerHTML = buildResultPoster(profile, total, percentile);
+      animateResultGauge();
       els.resultDetail.innerHTML = buildResultDetail(profile, total, snapshot);
 
       els.rail1.style.width = `${(part1 / 20) * 100}%`;
@@ -5052,6 +5071,34 @@
 
       const shareReport = buildShareReport(profile, total, percentile, snapshot);
       els.shareButton.dataset.report = shareReport;
+      return { total, percentile, profile, snapshot };
+    }
+
+    // 결과 화면 프리뷰 — ?preview=86 처럼 점수만으로 결과 확인 (문제 풀이·DB 저장 없음)
+    function showResultPreview(targetTotal) {
+      const total = clamp(Math.round(targetTotal * 10) / 10, 0, 100);
+      const part1 = Math.round(total * 0.2 * 10) / 10;
+      const part2 = Math.round(total * 0.3 * 10) / 10;
+      const part3 = Math.round(total * 0.4 * 10) / 10;
+      const part4 = clamp(Math.round((total - part1 - part2 - part3) * 10) / 10, 0, 10);
+      renderResult(part1, part2, part3, part4);
+    }
+
+    function showResult() {
+      const q1 = scoreQuestion("q1", "a");
+      const q2 = scoreQuestion("q2", "a");
+      const q3 = scoreQuestion("q3", "d");
+      const q4 = scoreQuestion("q4", "c");
+      const q5 = scoreQuestion("q5", "c");
+      const q6 = scoreQuestion("q6", "c");
+      const sorting = scoreSorting();
+      const shortPrompt = scoreShortPrompt();
+
+      const part1 = q1 + q4;
+      const part2 = q2 + q3 + q5;
+      const part3 = q6 + sorting.score;
+      const part4 = shortPrompt.score;
+      const { total, percentile, profile, snapshot } = renderResult(part1, part2, part3, part4);
       saveResultToSupabase(
         buildSupabasePayload({
           total,
@@ -5151,6 +5198,12 @@
     createHeroMotion();
     setStep(0);
     setScreen("landing");
+
+    // 결과 화면 프리뷰 모드 (?preview=점수, 값 없으면 86) — 디자인 확인용
+    const previewParam = new URLSearchParams(window.location.search).get("preview");
+    if (previewParam !== null) {
+      showResultPreview(parseFloat(previewParam) || 86);
+    }
   </script>
 </body>
 </html>
