@@ -3799,16 +3799,11 @@
         return;
       }
 
-      // 슬라이더 모드: DOM 이동 없이 map만 갱신 (1 카테고리 당 1 카드 보장)
+      // 슬라이더 모드: DOM 이동 없이 map만 갱신
       if (apexIsSliderMode()) {
         if (!targetCategory) {
           delete apexSliderCats[cardId];
         } else {
-          Object.keys(apexSliderCats).forEach((id) => {
-            if (apexSliderCats[id] === targetCategory && id !== cardId) {
-              delete apexSliderCats[id];
-            }
-          });
           apexSliderCats[cardId] = targetCategory;
         }
         clearSortSelection();
