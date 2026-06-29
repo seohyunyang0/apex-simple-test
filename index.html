@@ -2853,6 +2853,250 @@
       }
     }
 
+    .coupon-modal-overlay[hidden] {
+      display: none !important;
+    }
+
+    .coupon-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(14, 25, 41, 0.52);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: apex-fade-in 200ms cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .coupon-modal {
+      width: min(920px, 100%);
+      padding: 18px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(234, 242, 255, 0.94)),
+        var(--surface);
+      border: 1px solid rgba(26, 111, 239, 0.16);
+      box-shadow: 0 28px 80px rgba(14, 25, 41, 0.26);
+    }
+
+    .coupon-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .coupon-modal-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(4, 80, 195, 0.08);
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .coupon-close {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      transition: border-color 150ms ease, color 150ms ease, transform 150ms ease;
+    }
+
+    .coupon-close:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+      transform: translateY(-1px);
+    }
+
+    .coupon-ticket {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 168px;
+      min-height: 290px;
+      border-radius: 30px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 88%, rgba(26, 111, 239, 0.08) 0, rgba(26, 111, 239, 0.08) 18%, transparent 18.5%),
+        radial-gradient(circle at 88% 14%, rgba(26, 111, 239, 0.08) 0, rgba(26, 111, 239, 0.08) 20%, transparent 20.5%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(236, 244, 255, 0.94));
+      border: 2px solid rgba(26, 111, 239, 0.92);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+        0 18px 48px rgba(26, 111, 239, 0.14);
+    }
+
+    .coupon-ticket-main,
+    .coupon-ticket-stub {
+      position: relative;
+      padding: 34px 34px 30px;
+    }
+
+    .coupon-ticket-main::after,
+    .coupon-ticket-stub::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #F7F8FA 0%, #ECF1FF 100%);
+      transform: translateY(-50%);
+      box-shadow: inset 0 0 0 1px rgba(26, 111, 239, 0.12);
+    }
+
+    .coupon-ticket-main::after {
+      left: -28px;
+    }
+
+    .coupon-ticket-stub {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(26, 111, 239, 0.08), rgba(74, 142, 255, 0.12));
+      border-left: 2px dashed rgba(26, 111, 239, 0.42);
+    }
+
+    .coupon-ticket-stub::before {
+      right: -28px;
+    }
+
+    .coupon-ticket-title {
+      margin-top: 16px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+      color: var(--brand);
+      font-weight: 900;
+    }
+
+    .coupon-ticket-title strong {
+      display: block;
+      color: var(--brand);
+    }
+
+    .coupon-ticket-copy {
+      margin-top: 20px;
+      max-width: 18ch;
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.5;
+      color: var(--brand);
+      font-weight: 500;
+    }
+
+    .coupon-ticket-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .coupon-pass-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--brand-strong);
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(26, 111, 239, 0.1);
+    }
+
+    .coupon-pass-badge strong {
+      color: var(--brand);
+    }
+
+    .coupon-star {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 2px dashed rgba(26, 111, 239, 0.58);
+      color: var(--brand);
+      font-size: 42px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .coupon-stub-copy {
+      color: var(--brand-strong);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .coupon-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .coupon-modal-actions .button,
+    .coupon-modal-actions .cta-link {
+      width: auto;
+      min-width: 176px;
+    }
+
+    @media (max-width: 720px) {
+      .coupon-modal {
+        padding: 14px;
+        border-radius: 24px;
+      }
+
+      .coupon-ticket {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+
+      .coupon-ticket-main,
+      .coupon-ticket-stub {
+        padding: 24px 22px;
+      }
+
+      .coupon-ticket-main::after,
+      .coupon-ticket-stub::before {
+        display: none;
+      }
+
+      .coupon-ticket-stub {
+        border-left: 0;
+        border-top: 2px dashed rgba(26, 111, 239, 0.42);
+      }
+
+      .coupon-ticket-copy {
+        max-width: none;
+      }
+
+      .coupon-modal-actions {
+        flex-direction: column;
+      }
+
+      .coupon-modal-actions .button,
+      .coupon-modal-actions .cta-link {
+        width: 100%;
+      }
+    }
+
     /* ════════════════════════════════════════════════════════
        4차 보정 (2026-05-29) — PART 7 모바일 분류 UX 개선
        문제: 드래그가 모바일에서 불편
@@ -3362,18 +3606,19 @@
 
         <div class="question-step" data-step="7">
           <div class="step-top">
-            <div class="step-tag">PART 8 · 초단문 프롬프트</div>
-            <small>15자 이내로 핵심 제약을 얼마나 간결하게 쓰는지 봅니다.</small>
+            <div class="step-tag">PART 8 · 사실 검토</div>
+            <small>APEX Part 3 기반 실전형 문항. AI가 만든 그럴듯한 정보를 검증하는지 봅니다.</small>
           </div>
-          <h2 class="question-title qt-wide">재무 데이터 분석 요청 앞에 붙일 <br class="qbr-m">안전 제약 프롬프트를<br>15자 이내로 써보세요.</h2>
+          <h2 class="question-title qt-wide">AI가 쓴 기업 소개서에서 <br class="qbr-m">사실 오류·과장 표현을<br>3개 이상 찾아 적어보세요.</h2>
           <div class="scenario">
-            <strong>조건</strong>
+            <strong>GENERAL-A-07 기반</strong>
             <p class="question-copy" style="margin-bottom: 0;">
-              비식별, 민감정보 제외, 근거 중심 중 최소 1개 이상의 핵심 제약을 담아주세요. 예: "비식별로 분석", "출처만 요약", "민감정보 제외"
+              AI 소개서에는 "디지노바는 1985년 설립된 나스닥 상장사이며 직원 500명, 연매출 1조 원 이상, 노벨 경제학상 수상 창업자가 이끈다"고 적혀 있습니다.
+              실제 정보는 "2015년 설립된 비상장 스타트업, 직원 50명, 연매출 약 80억 원"입니다. 무엇이 왜 문제인지 적어주세요.
             </p>
           </div>
-          <textarea id="shortPrompt" maxlength="15" placeholder="예: 비식별로 분석"></textarea>
-          <div class="helper" id="shortPromptHelper">현재 0 / 15자</div>
+          <textarea id="shortPrompt" maxlength="320" placeholder="예: 설립연도와 상장 여부가 실제 정보와 다르고, 직원 수·매출도 과장되어 있어 사실 검증이 필요합니다."></textarea>
+          <div class="helper" id="shortPromptHelper">현재 0 / 320자</div>
         </div>
 
         <div class="error" id="quizError"></div>
@@ -3511,6 +3756,31 @@
     </section>
   </div>
 
+  <div class="coupon-modal-overlay" id="couponModalOverlay" hidden>
+    <div class="coupon-modal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
+      <div class="coupon-modal-head">
+        <div class="coupon-modal-kicker">APEX Pass Reward</div>
+        <button class="coupon-close" id="couponCloseButton" type="button" aria-label="할인권 닫기">✕</button>
+      </div>
+      <div class="coupon-ticket">
+        <div class="coupon-ticket-main">
+          <div class="coupon-pass-badge">현재 결과 <strong id="couponScoreLabel">60점</strong> · 응시 기준 통과</div>
+          <h2 class="coupon-ticket-title" id="couponModalTitle">간단 테스트 60점을 통과한<br><strong>당신에게 드리는 APEX 90% 응시 할인권!</strong></h2>
+          <p class="coupon-ticket-copy">내 AI 활용능력을 정량적으로 증명하는 유일한 인증시험, APEX</p>
+          <p class="coupon-ticket-note">점수와 상위 퍼센타일 결과를 본 뒤, 정식 APEX 소개 페이지로 바로 이어질 수 있게 준비해두었습니다.</p>
+        </div>
+        <div class="coupon-ticket-stub" aria-hidden="true">
+          <div class="coupon-star">★</div>
+          <div class="coupon-stub-copy">APEX<br>90% OFF</div>
+        </div>
+      </div>
+      <div class="coupon-modal-actions">
+        <a class="button button-primary cta-link" id="couponPrimaryButton" href="https://scaila.kr/apex" target="_blank" rel="noreferrer">APEX 보러가기</a>
+        <button class="button button-secondary" id="couponDismissButton" type="button">나중에 보기</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast">복사되었습니다.</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3533,6 +3803,10 @@
       sortingHelper: document.getElementById("sortingHelper"),
       shortPrompt: document.getElementById("shortPrompt"),
       shortPromptHelper: document.getElementById("shortPromptHelper"),
+      couponModalOverlay: document.getElementById("couponModalOverlay"),
+      couponCloseButton: document.getElementById("couponCloseButton"),
+      couponDismissButton: document.getElementById("couponDismissButton"),
+      couponScoreLabel: document.getElementById("couponScoreLabel"),
       displayScore: document.getElementById("displayScore"),
       summaryText: document.getElementById("summaryText"),
       resultPosterArt: document.getElementById("resultPosterArt"),
@@ -3569,6 +3843,7 @@
     const sortZoneBodies = sortZones.map((zone) => zone.querySelector(".sort-zone-body"));
     let supabaseClient = null;
     let selectedSortCardId = null;
+    let couponTimer = null;
 
     const steps = [...document.querySelectorAll(".question-step")];
     const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
@@ -3775,7 +4050,7 @@
         els.sortingHelper.textContent = `현재 ${placedCount} / 8개 배치`;
       }
       if (els.shortPromptHelper) {
-        els.shortPromptHelper.textContent = `현재 ${shortPromptLength} / 15자`;
+        els.shortPromptHelper.textContent = `현재 ${shortPromptLength} / 320자`;
       }
     }
 
@@ -4237,10 +4512,13 @@
       if (stepIndex === 7) {
         const value = els.shortPrompt.value.trim();
         if (!value) {
-          return "15자 이내 초단문 프롬프트를 입력해 주세요.";
+          return "사실 오류와 과장 표현을 3개 이상 적어주세요.";
         }
-        if (value.length > 15) {
-          return "프롬프트는 15자 이내로 작성해 주세요.";
+        if (value.length < 24) {
+          return "조금 더 구체적으로, 무엇이 왜 문제인지 적어주세요.";
+        }
+        if (value.length > 320) {
+          return "답변은 320자 이내로 작성해 주세요.";
         }
       }
 
@@ -4273,19 +4551,57 @@
       };
     }
 
-    function scoreShortPrompt() {
+    function scoreFactCheck() {
       const value = els.shortPrompt.value.trim();
-      const hasSecurity = /비식별|민감정보|실명제외|익명/.test(value);
-      const hasEvidence = /근거|출처|검증/.test(value);
-      const hasLimit = /제외|금지|만|기반/.test(value);
-      const keywords = [hasSecurity, hasEvidence, hasLimit].filter(Boolean).length;
-      const conciseBonus = value.length <= 12 ? 1 : 0;
-      const score = clamp((keywords * 5) + conciseBonus, 0, 10);
+      const mismatchPattern = /오류|다르|허위|실제|문제|과장|아니|아님|불일치/;
+      const supportPattern = /확인.?불가|근거|허위|과장|문제|검증|비현실|맞지|무리|불가/;
+      const yearIssue = /1985|2015|설립.?연도|설립년/.test(value) && mismatchPattern.test(value);
+      const listingIssue = /나스닥|상장|비상장/.test(value) && mismatchPattern.test(value);
+      const scaleIssue = /직원|500명|50명|매출|1조|80억/.test(value) && /오류|다르|허위|실제|문제|과장|근거|부풀/.test(value);
+      const founderIssue = /노벨|창업자|CEO/.test(value) && supportPattern.test(value);
+      const claimIssue = /3배|99\.?9|Fortune|15억|AGI|120개국|정부|양자컴퓨팅|계약/.test(value) && supportPattern.test(value);
+      const issueBuckets = [yearIssue, listingIssue, scaleIssue, founderIssue, claimIssue].filter(Boolean).length;
+      const score = clamp(issueBuckets * 2, 0, 10);
 
       return {
         score,
-        keywords
+        issueBuckets
       };
+    }
+
+    function openCouponModal(total) {
+      if (!els.couponModalOverlay || total < 60) {
+        return;
+      }
+      els.couponScoreLabel.textContent = `${Math.round(total)}점`;
+      els.couponModalOverlay.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCouponModal() {
+      if (!els.couponModalOverlay) {
+        return;
+      }
+      els.couponModalOverlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function clearCouponTimer() {
+      if (couponTimer) {
+        window.clearTimeout(couponTimer);
+        couponTimer = null;
+      }
+    }
+
+    function scheduleCouponModal(total) {
+      clearCouponTimer();
+      if (total < 60) {
+        return;
+      }
+      couponTimer = window.setTimeout(() => {
+        openCouponModal(total);
+        couponTimer = null;
+      }, 15000);
     }
 
     function computePercentile(totalScore) {
@@ -5079,13 +5395,15 @@
       const q5 = scoreQuestion("q5", "c");
       const q6 = scoreQuestion("q6", "c");
       const sorting = scoreSorting();
-      const shortPrompt = scoreShortPrompt();
+      const factCheck = scoreFactCheck();
 
       const part1 = q1 + q4;
       const part2 = q2 + q3 + q5;
       const part3 = q6 + sorting.score;
-      const part4 = shortPrompt.score;
+      const part4 = factCheck.score;
       const { total, percentile, profile, snapshot } = renderResult(part1, part2, part3, part4);
+      closeCouponModal();
+      scheduleCouponModal(total);
       saveResultToSupabase(
         buildSupabasePayload({
           total,
@@ -5104,8 +5422,8 @@
           part4: {
             score: part4,
             subs: {
-              promptKeywords: shortPrompt.keywords,
-              promptLength: els.shortPrompt.value.trim().length
+              issueBuckets: factCheck.issueBuckets,
+              answerLength: els.shortPrompt.value.trim().length
             }
           }
         })
@@ -5139,6 +5457,8 @@
     }
 
     function restartQuiz() {
+      clearCouponTimer();
+      closeCouponModal();
       ["q1", "q2", "q3", "q4", "q5", "q6"].forEach((name) => {
         document.querySelectorAll(`input[name="${name}"]`).forEach((input) => {
           input.checked = false;
@@ -5160,8 +5480,20 @@
     els.prevButton.addEventListener("click", prevStep);
     els.nextButton.addEventListener("click", nextStep);
     els.restartButton.addEventListener("click", restartQuiz);
+    els.couponCloseButton?.addEventListener("click", closeCouponModal);
+    els.couponDismissButton?.addEventListener("click", closeCouponModal);
 
     els.shortPrompt.addEventListener("input", updateCounters);
+    els.couponModalOverlay?.addEventListener("click", (event) => {
+      if (event.target === els.couponModalOverlay) {
+        closeCouponModal();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && els.couponModalOverlay && !els.couponModalOverlay.hidden) {
+        closeCouponModal();
+      }
+    });
 
     els.shareButton.addEventListener("click", async () => {
       const shareText = els.shareButton.dataset.report || "APEX 간단테스트 결과를 확인해보세요.";
