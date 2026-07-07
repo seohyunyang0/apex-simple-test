@@ -728,6 +728,7 @@
       box-shadow: 0 10px 22px rgba(19, 52, 108, 0.06);
       cursor: grab;
       transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, opacity 160ms ease;
+      position: relative;
     }
 
     .sort-card:hover {
@@ -743,6 +744,20 @@
       border-color: rgba(4, 80, 195, 0.52);
       background: rgba(232, 242, 255, 0.96);
       box-shadow: 0 14px 28px rgba(4, 80, 195, 0.12);
+    }
+
+    .sort-card.is-selected::after {
+      content: "선택됨";
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
     .sort-card.is-dragging {
@@ -763,6 +778,70 @@
       color: var(--muted);
       line-height: 1.6;
       font-size: 14px;
+    }
+
+    .sort-pool-hint {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .review-table-wrap {
+      margin-top: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid rgba(16, 33, 63, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .review-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .review-table th,
+    .review-table td {
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(16, 33, 63, 0.08);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .review-table th {
+      background: rgba(26, 111, 239, 0.08);
+      color: var(--brand-strong);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .review-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .review-table .case-no {
+      width: 44px;
+      text-align: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: var(--brand);
+    }
+
+    .review-table .verified {
+      color: var(--apex-success);
+      font-weight: 800;
+    }
+
+    .review-table .risk {
+      color: var(--apex-error);
+      font-weight: 800;
     }
 
     .sort-zones {
@@ -3540,85 +3619,117 @@
 
         <div class="question-step" data-step="6">
           <div class="step-top">
-            <div class="step-tag">PART 7 · 데이터 보안 분류</div>
-            <small>아래 8개 데이터를 AI에 입력 가능한 것과<br>절대 입력 불가능한 것으로 분류하세요.</small>
+            <div class="step-tag">PART 7 · AI 에이전트의 정의</div>
+            <small>설명문에서 부정확하거나 과장된 내용을 모두 선택하세요.</small>
           </div>
-          <h2 class="question-title qt-wide">아래 8개 데이터를 AI에 입력 가능한 것과<br>절대 입력 불가능한 것으로 분류하세요.</h2>
+          <h2 class="question-title qt-wide">다음은 사내 교육 자료의 'AI 에이전트' 설명이며 부정확하거나 과장된 내용을 모두 선택하세요.</h2>
           <div class="scenario">
-            <strong>판단 기준</strong>
+            <strong>프롬프트</strong>
             <p class="question-copy" style="margin-bottom: 0;">
-              이미 공개된 정보거나 특정 정보가 없는 일반 요청은 입력 가능합니다. 반면 개인정보, 기업기밀, NDA 대상 문서는 절대 입력 불가입니다.
+              AI 에이전트는 사용자의 목표를 이해하고 스스로 계획을 수립하여 작업을 수행하는 AI 시스템입니다. 에이전트는 웹 검색, 파일 관리, 코드 실행 등 외부 도구를 연결하여 다단계 작업을 자율적으로 처리합니다.
+              <br><br>
+              2026년 현재 대부분의 기업이 AI 에이전트를 전사 업무에 도입하여 인간 감독 없이 완전 자율 운영하고 있습니다. Anthropic의 Claude는 Computer Use 기능으로 사용자의 컴퓨터를 직접 조작할 수 있으며, OpenAI의 Operator는 웹 브라우저를 자율적으로 조작하여 예약, 구매 등의 작업을 수행합니다.
+              <br><br>
+              에이전트 AI의 자율성이 높아질수록 인간의 감독은 불필요해집니다.
             </p>
           </div>
           <div class="sort-board">
             <div class="sort-pool" id="sortPool">
-              <strong>분류할 항목</strong>
+              <strong>문제점 선택</strong>
+              <span class="sort-pool-hint">해당되는 항목을 모두 선택하세요.</span>
               <div class="sort-pool-body" id="sortPoolBody">
-                <button class="sort-card" type="button" draggable="true" data-item-id="trend_report">
-                  <span class="sort-card-title">업계 트렌드 요약</span>
-                  <span class="sort-card-copy">공개된 업계 트렌드 보고서 요약</span>
+                <button class="sort-card" type="button" data-item-id="enterprise_autonomy">
+                  <span class="sort-card-title">대부분의 기업이 AI 에이전트를 전사 업무에 도입하여 인간 감독 없이 완전 자율 운영됩니다.</span>
                 </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="payroll">
-                  <span class="sort-card-title">급여 명세서</span>
-                  <span class="sort-card-copy">직원 주민등록번호가 포함된 급여 자료</span>
+                <button class="sort-card" type="button" data-item-id="no_supervision">
+                  <span class="sort-card-title">에이전트 AI의 자율성이 높아질수록 인간의 감독은 불필요해집니다.</span>
                 </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="press_release">
-                  <span class="sort-card-title">공식 보도자료</span>
-                  <span class="sort-card-copy">회사 홈페이지에 이미 게시된 공식 보도자료</span>
+                <button class="sort-card" type="button" data-item-id="tool_use">
+                  <span class="sort-card-title">에이전트는 웹 검색, 파일 관리, 코드 실행 등 외부 도구를 연결하여 다단계 작업을 자율적으로 처리합니다.</span>
                 </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="client_contact">
-                  <span class="sort-card-title">고객 연락처·계약금</span>
-                  <span class="sort-card-copy">고객사 담당자 연락처와 계약 금액</span>
+                <button class="sort-card" type="button" data-item-id="official_check">
+                  <span class="sort-card-title">Claude Computer Use라는 기능이 실제 존재하는 기능과 제품인지 공식 발표 내용과 대조해봐야 합니다.</span>
                 </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="generic_email">
-                  <span class="sort-card-title">일반 이메일 요청</span>
-                  <span class="sort-card-copy">특정 정보가 없는 일반적인 작성 요청</span>
+                <button class="sort-card" type="button" data-item-id="agent_definition">
+                  <span class="sort-card-title">사용자의 목표를 이해하고 스스로 계획을 수립한다는 것은 에이전트 AI의 기본 정의에 부합하는 설명입니다.</span>
                 </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="sales_secret">
-                  <span class="sort-card-title">미공개 매출·영업비밀</span>
-                  <span class="sort-card-copy">미공개 분기 매출 데이터와 영업 기밀</span>
-                </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="wiki">
-                  <span class="sort-card-title">위키 개념 설명</span>
-                  <span class="sort-card-copy">위키피디아에 공개된 일반 개념 설명</span>
-                </button>
-                <button class="sort-card" type="button" draggable="true" data-item-id="nda_design">
-                  <span class="sort-card-title">NDA 기술 설계서</span>
-                  <span class="sort-card-copy">NDA 대상 프로젝트 설계 문서</span>
-                </button>
-              </div>
-            </div>
-            <div class="sort-zones">
-              <div class="sort-zone" data-category="allowed">
-                <strong>입력 가능</strong>
-                <small>공개·일반 데이터. 유출돼도 피해가 없는 정보</small>
-                <div class="sort-zone-body"></div>
-              </div>
-              <div class="sort-zone" data-category="blocked">
-                <strong>절대 입력 불가</strong>
-                <small>기밀·개인정보. 유출되면 피해가 발생하는 정보</small>
-                <div class="sort-zone-body"></div>
               </div>
             </div>
           </div>
-          <div class="helper" id="sortingHelper">현재 0 / 8개 배치</div>
+          <div class="helper" id="sortingHelper">현재 0 / 5개 선택</div>
         </div>
 
         <div class="question-step" data-step="7">
           <div class="step-top">
-            <div class="step-tag">PART 8 · 사실 검토</div>
-            <small>APEX Part 3 기반 실전형 문항. AI가 만든 그럴듯한 정보를 검증하는지 봅니다.</small>
+            <div class="step-tag">PART 8 · 프롬프트 직접 작성</div>
+            <small>AI 경영 보고서의 환각 리스크를 관리하고 팩트체크 프로세스를 수립하는지 봅니다.</small>
           </div>
-          <h2 class="question-title qt-wide">AI가 쓴 기업 소개서에서 <br class="qbr-m">사실 오류·과장 표현을<br>3개 이상 찾아 적어보세요.</h2>
+          <h2 class="question-title qt-wide">아래 사례를 분석하고, AI 생성 경영 보고서의 환각 리스크를 방지하기 위한 팩트체크 프로세스를 수립하세요.</h2>
           <div class="scenario">
-            <strong>GENERAL-A-07 기반</strong>
+            <strong>시나리오</strong>
             <p class="question-copy" style="margin-bottom: 0;">
-              AI 소개서에는 "디지노바는 1985년 설립된 나스닥 상장사이며 직원 500명, 연매출 1조 원 이상, 노벨 경제학상 수상 창업자가 이끈다"고 적혀 있습니다.
-              실제 정보는 "2015년 설립된 비상장 스타트업, 직원 50명, 연매출 약 80억 원"입니다. 무엇이 왜 문제인지 적어주세요.
+              당신은 컨설팅 기업 '비즈인사이트'의 경영기획팀 대리입니다. 최근 팀원들이 Perplexity, Claude, GPT-5.4로 작성한 클라이언트 보고서에서 허구의 인용과 잘못된 시장 수치가 발견되어 신뢰 문제가 커졌습니다. 팀장은 "AI가 만든 내용을 무조건 불신하는 것도 문제이고, 그대로 믿는 것도 문제"라며, 실제 오류와 정상 인용을 구분할 수 있는 팩트체크 프로세스를 만들라고 지시했습니다. 즉 이번 과제는 환각을 잡아내는 것과 동시에, 검증된 정상 데이터는 불필요하게 제거하지 않는 균형 잡힌 품질관리 체계를 세우는 것입니다.
             </p>
           </div>
-          <textarea id="shortPrompt" maxlength="320" placeholder="예: 설립연도와 상장 여부가 실제 정보와 다르고, 직원 수·매출도 과장되어 있어 사실 검증이 필요합니다."></textarea>
-          <div class="helper" id="shortPromptHelper">현재 0 / 320자</div>
+          <div class="scenario">
+            <strong>설계 과제</strong>
+            <ol class="question-copy" style="margin: 0; padding-left: 18px;">
+              <li>어떤 사례가 환각이고 정상 데이터인지 구분하세요.</li>
+              <li>AI 환각 유형과 발생 원인을 분류하세요.</li>
+              <li>오류를 잡아내되 검증된 정상 데이터는 유지할 수 있는 3단계 팩트체크 프로세스를 설계하세요.</li>
+              <li>출처 검증 체크리스트와 납품 전 품질 인증 기준을 제시하세요.</li>
+              <li>재발 방지를 위한 프롬프트 전략, 교육, 운영 문화 개선안을 정리하세요.</li>
+            </ol>
+          </div>
+          <div class="scenario">
+            <strong>검토 사례</strong>
+            <div class="review-table-wrap" role="region" aria-label="AI 생성 보고서 검토 사례 표" tabindex="0">
+              <table class="review-table">
+                <thead>
+                  <tr>
+                    <th scope="col">건</th>
+                    <th scope="col">AI 생성 내용</th>
+                    <th scope="col">실제 확인 결과</th>
+                    <th scope="col">영향</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="case-no">1</td>
+                    <td>"국내 SaaS 시장 2025년 8.2조 원 (한국경영학회 2025 보고서)"</td>
+                    <td>해당 보고서 실존하지 않음</td>
+                    <td class="risk">클라이언트 데이터 신뢰 실추</td>
+                  </tr>
+                  <tr>
+                    <td class="case-no">2</td>
+                    <td>"A사 2024년 매출 3,200억 원"</td>
+                    <td>실제 매출 2,850억 원 (공시 기준)</td>
+                    <td class="risk">오류 수치로 경쟁 분석 왜곡</td>
+                  </tr>
+                  <tr>
+                    <td class="case-no">3</td>
+                    <td>"시장 점유율 1위 B사 35%"</td>
+                    <td>B사 점유율 28%, 1위는 C사(31%)</td>
+                    <td class="risk">경쟁 구도 분석 완전 오류</td>
+                  </tr>
+                  <tr>
+                    <td class="case-no">4</td>
+                    <td>"2025년 국내 SaaS 시장 5.8조 원 (과학기술정보통신부 2025 디지털산업 실태조사)"</td>
+                    <td>해당 보고서는 실존하며 수치 정확</td>
+                    <td class="verified">검증 완료</td>
+                  </tr>
+                  <tr>
+                    <td class="case-no">5</td>
+                    <td>"D사 직원 수 1,200명, 2023년 기준"</td>
+                    <td>실제 D사 직원 수 1,200명 확인(사업보고서 기재)</td>
+                    <td class="verified">검증 완료</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <textarea id="shortPrompt" maxlength="2000" placeholder="예: 사례 1~3은 허구 인용·수치 왜곡·사실 관계 오류로 분류하고, 사례 4~5는 검증 완료된 정상 데이터로 유지합니다. 자동 검증, 교차 확인, 전문가 검토의 3단계 팩트체크와 출처 검증 기준을 설계합니다."></textarea>
+          <div class="helper" id="shortPromptHelper">현재 0 / 2000자</div>
         </div>
 
         <div class="error" id="quizError"></div>
@@ -3690,12 +3801,12 @@
             <strong id="part2ScoreLabel">0 / 30</strong>
           </div>
           <div class="score-row">
-            <span>보안 분류</span>
+            <span>에이전트 검증</span>
             <div class="rail"><i id="rail3" style="width: 0%;"></i></div>
             <strong id="part3ScoreLabel">0 / 40</strong>
           </div>
           <div class="score-row">
-            <span>사실 검증</span>
+            <span>팩트체크 체계</span>
             <div class="rail"><i id="rail4" style="width: 0%;"></i></div>
             <strong id="part4ScoreLabel">0 / 10</strong>
           </div>
@@ -4025,21 +4136,15 @@
     }
 
     function getSortAssignments() {
-      if (apexIsSliderMode()) {
-        return { ...apexSliderCats };
-      }
       const assignments = {};
-      sortZones.forEach((zone) => {
-        const category = zone.dataset.category;
-        zone.querySelectorAll(".sort-card").forEach((card) => {
-          assignments[card.dataset.itemId] = category;
-        });
+      sortCards.forEach((card) => {
+        assignments[card.dataset.itemId] = card.classList.contains("is-selected");
       });
       return assignments;
     }
 
     function getPlacedSortCount() {
-      return Object.keys(getSortAssignments()).length;
+      return Object.values(getSortAssignments()).filter(Boolean).length;
     }
 
     function updateCounters() {
@@ -4047,10 +4152,10 @@
       const shortPromptLength = els.shortPrompt.value.trim().length;
 
       if (els.sortingHelper) {
-        els.sortingHelper.textContent = `현재 ${placedCount} / 8개 배치`;
+        els.sortingHelper.textContent = `현재 ${placedCount} / 5개 선택`;
       }
       if (els.shortPromptHelper) {
-        els.shortPromptHelper.textContent = `현재 ${shortPromptLength} / 320자`;
+        els.shortPromptHelper.textContent = `현재 ${shortPromptLength} / 2000자`;
       }
     }
 
@@ -4470,29 +4575,14 @@
     }
 
     function bindSortInteractions() {
-      // 드래그 완전 차단
       sortCards.forEach((card) => {
         card.setAttribute("draggable", "false");
         card.addEventListener("dragstart", (event) => event.preventDefault());
-      });
-
-      bindApexScrollSync();
-
-      // PART 7이 active가 되면 슬라이더 init — 단, p7 .active 토글만 관찰 (재귀 방지)
-      let p7WasActive = false;
-      const p7Elem = document.querySelector('.question-step[data-step="6"]');
-      if (p7Elem) {
-        const observer = new MutationObserver(() => {
-          const isActive = p7Elem.classList.contains("active");
-          if (isActive && !p7WasActive) renderApexSlider();
-          p7WasActive = isActive;
+        card.addEventListener("click", () => {
+          card.classList.toggle("is-selected");
+          updateCounters();
         });
-        observer.observe(p7Elem, { attributes: true, attributeFilter: ["class"] });
-        if (p7Elem.classList.contains("active")) {
-          p7WasActive = true;
-          renderApexSlider();
-        }
-      }
+      });
     }
 
     function validateStep(stepIndex) {
@@ -4504,21 +4594,21 @@
       }
 
       if (stepIndex === 6) {
-        if (getPlacedSortCount() !== 8) {
-          return "8개 항목 모두 카테고리 분류를 선택해주세요.";
+        if (getPlacedSortCount() === 0) {
+          return "부정확하거나 과장된 내용을 1개 이상 선택해 주세요.";
         }
       }
 
       if (stepIndex === 7) {
         const value = els.shortPrompt.value.trim();
         if (!value) {
-          return "사실 오류와 과장 표현을 3개 이상 적어주세요.";
+          return "팩트체크 프로세스를 작성해 주세요.";
         }
-        if (value.length < 24) {
-          return "조금 더 구체적으로, 무엇이 왜 문제인지 적어주세요.";
+        if (value.length < 80) {
+          return "사례 구분과 검증 절차가 드러나도록 조금 더 구체적으로 작성해 주세요.";
         }
-        if (value.length > 320) {
-          return "답변은 320자 이내로 작성해 주세요.";
+        if (value.length > 2000) {
+          return "답변은 2000자 이내로 작성해 주세요.";
         }
       }
 
@@ -4531,41 +4621,64 @@
 
     function scoreSorting() {
       const assignments = getSortAssignments();
-      const correct = {
-        trend_report: "allowed",
-        payroll: "blocked",
-        press_release: "allowed",
-        client_contact: "blocked",
-        generic_email: "allowed",
-        sales_secret: "blocked",
-        wiki: "allowed",
-        nda_design: "blocked"
-      };
-      const matches = Object.entries(correct).reduce((count, [itemId, category]) => {
-        return count + (assignments[itemId] === category ? 1 : 0);
-      }, 0);
+      const correctIds = ["enterprise_autonomy", "no_supervision"];
+      const selectedIds = Object.entries(assignments)
+        .filter(([, selected]) => selected)
+        .map(([itemId]) => itemId);
+      const truePositives = selectedIds.filter((itemId) => correctIds.includes(itemId)).length;
+      const falsePositives = selectedIds.filter((itemId) => !correctIds.includes(itemId)).length;
+      const missed = correctIds.length - truePositives;
+      const raw = truePositives * 15 - falsePositives * 6 - missed * 5;
+      const score = clamp(raw, 0, 30);
 
       return {
-        score: Math.round(((matches / 8) * 30) * 10) / 10,
-        matches
+        score,
+        matches: truePositives,
+        falsePositives,
+        selectedIds
       };
     }
 
     function scoreFactCheck() {
       const value = els.shortPrompt.value.trim();
-      const mismatchPattern = /오류|다르|허위|실제|문제|과장|아니|아님|불일치/;
-      const supportPattern = /확인.?불가|근거|허위|과장|문제|검증|비현실|맞지|무리|불가/;
-      const yearIssue = /1985|2015|설립.?연도|설립년/.test(value) && mismatchPattern.test(value);
-      const listingIssue = /나스닥|상장|비상장/.test(value) && mismatchPattern.test(value);
-      const scaleIssue = /직원|500명|50명|매출|1조|80억/.test(value) && /오류|다르|허위|실제|문제|과장|근거|부풀/.test(value);
-      const founderIssue = /노벨|창업자|CEO/.test(value) && supportPattern.test(value);
-      const claimIssue = /3배|99\.?9|Fortune|15억|AGI|120개국|정부|양자컴퓨팅|계약/.test(value) && supportPattern.test(value);
-      const issueBuckets = [yearIssue, listingIssue, scaleIssue, founderIssue, claimIssue].filter(Boolean).length;
-      const score = clamp(issueBuckets * 2, 0, 10);
+      const hallucinationCases = [
+        /사례\s*1|허구.?인용|실존하지|존재하지|한국경영학회/,
+        /사례\s*2|수치.?왜곡|3,?200|2850|2,?850|매출/,
+        /사례\s*3|사실.?관계|점유율|35|28|31|순위/
+      ].filter((pattern) => pattern.test(value)).length;
+      const normalCases = /사례\s*4|사례\s*5|정상.?데이터|검증.?완료|실존.?보고서|사업보고서|유지/.test(value);
+      const separatesNormal = normalCases && /구분|유지|제거하지|정상/.test(value);
+      const causes = /허구.?인용|수치.?왜곡|사실.?관계|원인|오래된 데이터|추정치|유사 기업/.test(value);
+      const autoCheck = /자동.?검증|자동.?검색|요검증|태그/.test(value);
+      const crossCheck = /교차.?확인|원문|PDF|공시|공식.?통계|1차.?출처|DART/.test(value);
+      const expertReview = /전문가.?검토|팀장|산업 담당자|최종.?검토|승인/.test(value);
+      const qualityGate = /체크리스트|품질.?인증|납품.?보류|검증률|미확인/.test(value);
+      const prevention = /프롬프트|출처미확인|교육|운영.?문화|재발.?방지|사례.?공유/.test(value);
+
+      let level = 1;
+      if (hallucinationCases >= 2 && /팩트체크|검증|확인/.test(value)) {
+        level = 2;
+      }
+      if (
+        hallucinationCases >= 3 &&
+        separatesNormal &&
+        causes &&
+        autoCheck &&
+        crossCheck &&
+        expertReview &&
+        qualityGate &&
+        prevention
+      ) {
+        level = 3;
+      }
+      const scoreByLevel = { 1: 3, 2: 6, 3: 10 };
 
       return {
-        score,
-        issueBuckets
+        score: scoreByLevel[level],
+        level,
+        hallucinationCases,
+        separatesNormal,
+        processChecks: [causes, autoCheck, crossCheck, expertReview, qualityGate, prevention].filter(Boolean).length
       };
     }
 
@@ -4615,10 +4728,10 @@
         return "AI를 단순히 써보는 수준을 넘어, 위험 판단과 데이터 보안 기준을 구조적으로 이해하는 상위권에 가깝습니다.";
       }
       if (percentile <= 20) {
-        return "활용 수준이 높습니다. 특히 보안·개념 이해는 좋고, 사실 검증과 데이터 분류 기준을 더 다듬으면 더 올라갈 수 있습니다.";
+        return "활용 수준이 높습니다. 특히 보안·개념 이해는 좋고, 에이전트 설명 검증과 팩트체크 프로세스를 더 다듬으면 더 올라갈 수 있습니다.";
       }
       if (percentile <= 45) {
-        return "AI 활용은 익숙하지만, 아직 데이터 보안 분류와 사실 검증 감각에서 상위권과 차이가 납니다.";
+        return "AI 활용은 익숙하지만, 아직 AI 에이전트 설명 검증과 경영 보고서 팩트체크 설계에서 상위권과 차이가 납니다.";
       }
       if (total < 45) {
         return "AI를 써보긴 했지만 아직 보안 판단, 환각 이해, 데이터 입력 허용 기준을 체계적으로 익힐 필요가 있습니다.";
@@ -4636,10 +4749,10 @@
         list.push("역할 부여, 환각, 구독 티어처럼 AI 활용의 핵심 개념 이해가 탄탄합니다.");
       }
       if (part3 >= 28) {
-        list.push("대외 발신 검증과 데이터 보안 분류에서 무엇을 넣어도 되는지, 절대 안 되는지를 분명히 구분할 수 있습니다.");
+        list.push("AI 에이전트 설명에서 정의에 맞는 내용과 과장된 자율성 표현을 구분할 수 있습니다.");
       }
       if (part4 >= 8) {
-        list.push("짧은 프롬프트 안에도 핵심 제약을 압축해 넣는 감각이 좋습니다.");
+        list.push("환각 사례와 정상 데이터를 구분하고, 자동 검증·교차 확인·전문가 검토를 구조적으로 설계할 수 있습니다.");
       }
 
       return list.slice(0, 2);
@@ -4655,10 +4768,10 @@
         list.push("역할 부여, 환각, 구독 티어 같은 기본 개념에서 혼동이 남아 있을 수 있습니다.");
       }
       if (part3 <= 18) {
-        list.push("공개 데이터와 기밀·개인정보를 구분하는 기준이 아직 흔들릴 수 있습니다.");
+        list.push("AI 에이전트의 실제 기능과 과장된 완전 자율 운영 주장을 구분하는 기준이 아직 흔들릴 수 있습니다.");
       }
       if (part4 <= 4) {
-        list.push("짧은 제약 프롬프트에 핵심 조건을 압축해서 넣는 감각을 더 키울 필요가 있습니다.");
+        list.push("환각 사례를 일부 찾더라도 정상 데이터 유지와 검증 역할 분리까지 구조화하는 연습이 필요합니다.");
       }
 
       return list.slice(0, 2);
@@ -4674,14 +4787,14 @@
         actions.push("역할 부여, 환각, 티어 구분처럼 헷갈리기 쉬운 개념은 한 번 표로 정리해 두면 실무 판단 정확도가 빨리 올라갑니다.");
       }
       if (part3 <= 24) {
-        actions.push("AI 입력 전에는 `공개 정보인가? 개인정보인가? 기밀인가? NDA 대상인가?` 네 질문으로 먼저 분류해보세요.");
+        actions.push("AI 에이전트 설명을 볼 때는 `실제 공개 기능인가? 현재 도입률을 과장하지 않았나? 인간 감독을 제거한다고 말하지 않나?`를 먼저 확인해보세요.");
       }
       if (part4 <= 6) {
-        actions.push("짧은 프롬프트를 쓸 때도 `비식별`, `검증`, `출처`처럼 안전 제약 키워드 하나는 반드시 넣어보세요.");
+        actions.push("팩트체크 답안에는 `오류 사례`, `정상 사례`, `자동 검증`, `교차 확인`, `전문가 검토`를 각각 분리해 적어보세요.");
       }
 
       if (actions.length < 3) {
-        actions.push("정답만 외우기보다 `보안`, `전문가 검토`, `사실 검증`, `입력 허용 기준` 네 축으로 스스로 설명해보는 연습이 도움이 됩니다.");
+        actions.push("정답만 외우기보다 `보안`, `전문가 검토`, `에이전트 기능 검증`, `팩트체크 프로세스` 네 축으로 스스로 설명해보는 연습이 도움이 됩니다.");
       }
 
       return actions.slice(0, 3);
@@ -4691,17 +4804,17 @@
       const items = [];
 
       if (part3 >= part1 && part3 >= part2 && part3 >= part4) {
-        items.push("이번 결과는 단일 지식보다 `어떤 데이터는 넣고 어떤 데이터는 절대 막아야 하는지`를 구분하는 판단에서 가장 크게 갈립니다.");
+        items.push("이번 결과는 단일 지식보다 AI 에이전트 설명에서 실제 기능과 과장된 완전 자율 운영 주장을 구분하는 판단에서 크게 갈립니다.");
       } else if (part1 >= part2 && part1 >= part3 && part1 >= part4) {
-        items.push("보안과 전문가 검토 원칙은 비교적 강하지만, 실제 데이터 입력 허용선 판단에서 점수 차이가 벌어질 수 있습니다.");
+        items.push("보안과 전문가 검토 원칙은 비교적 강하지만, 에이전트·보고서 검증처럼 최신 AI 활용 맥락에서 점수 차이가 벌어질 수 있습니다.");
       } else {
-        items.push("기초 개념 이해와 짧은 제약 프롬프트 설계 감각의 균형이 현재 점수에 영향을 주고 있습니다.");
+        items.push("기초 개념 이해와 팩트체크 프로세스 설계 감각의 균형이 현재 점수에 영향을 주고 있습니다.");
       }
 
       if (percentile <= 12) {
         items.push("상위권은 정답만 맞히는 것을 넘어, 어떤 데이터는 넣고 어떤 데이터는 막아야 하는지 기준을 명확히 갖고 있습니다.");
       } else if (percentile <= 35) {
-        items.push("상위권과의 차이는 보통 사실 검증 디테일과 데이터 입력 허용선을 얼마나 체계적으로 기억하는지에서 벌어집니다.");
+        items.push("상위권과의 차이는 보통 정상 데이터까지 유지하는 균형 잡힌 팩트체크 체계를 얼마나 체계적으로 설명하는지에서 벌어집니다.");
       } else {
         items.push("점수 차이는 AI를 많이 써본 경험 자체보다, 위험 상황을 어디서 멈추고 무엇을 확인할지 아는지에서 생깁니다.");
       }
@@ -4794,8 +4907,8 @@
       const areas = [
         { label: "보안·법률 판단", ratio: part1 / 20 },
         { label: "프롬프트·환각 이해", ratio: part2 / 30 },
-        { label: "검증·보안 분류", ratio: part3 / 40 },
-        { label: "초단문 프롬프트 감각", ratio: part4 / 10 }
+        { label: "에이전트 설명 검증", ratio: part3 / 40 },
+        { label: "팩트체크 체계 설계", ratio: part4 / 10 }
       ].sort((a, b) => b.ratio - a.ratio);
 
       return {
@@ -5422,7 +5535,10 @@
           part4: {
             score: part4,
             subs: {
-              issueBuckets: factCheck.issueBuckets,
+              level: factCheck.level,
+              hallucinationCases: factCheck.hallucinationCases,
+              separatesNormal: factCheck.separatesNormal,
+              processChecks: factCheck.processChecks,
               answerLength: els.shortPrompt.value.trim().length
             }
           }
