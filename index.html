@@ -3480,8 +3480,8 @@
     }
 
     .halfway-nudge {
-      width: min(100%, 520px);
-      margin: 24px auto -8px;
+      width: 100%;
+      margin: 0 0 2px;
       display: grid;
       justify-items: start;
       gap: 10px;
@@ -3535,6 +3535,27 @@
       border-width: 10px 8px 0 0;
       border-color: #f4ff00 transparent transparent transparent;
       transform: rotate(8deg);
+    }
+
+    .action-secondary {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .actions {
+      align-items: flex-end;
+    }
+
+    .action-secondary .button {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .action-secondary {
+        width: 100%;
+      }
     }
 
     @media (max-width: 640px) {
@@ -3923,13 +3944,14 @@
 
         <div class="error" id="quizError"></div>
 
-        <div class="halfway-nudge" id="halfwayNudge" hidden aria-live="polite">
-          <span class="halfway-nudge-mark" aria-hidden="true"><img src="./assets/Favicon_5.svg" alt="" /></span>
-          <strong class="halfway-nudge-copy">벌써 절반까지 오셨어요!</strong>
-        </div>
-
         <div class="actions">
-          <button class="button button-secondary" id="prevButton" type="button">이전</button>
+          <div class="action-secondary">
+            <div class="halfway-nudge" id="halfwayNudge" hidden aria-live="polite">
+              <span class="halfway-nudge-mark" aria-hidden="true"><img src="./assets/Favicon_5.svg" alt="" /></span>
+              <strong class="halfway-nudge-copy">벌써 절반까지 오셨어요!</strong>
+            </div>
+            <button class="button button-secondary" id="prevButton" type="button">이전</button>
+          </div>
           <button class="button button-primary" id="nextButton" type="button">다음</button>
         </div>
       </section>
