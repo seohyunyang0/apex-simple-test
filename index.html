@@ -3578,6 +3578,209 @@
       }
     }
 
+    /* Figma · 결과 나오고 5초 후 팝업 노출 */
+    .coupon-modal-overlay {
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.58);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .coupon-modal.apex-event-modal {
+      width: min(537px, 100%);
+      max-height: calc(100vh - 32px);
+      padding: 0;
+      overflow: auto;
+      border: 0;
+      border-radius: 20px;
+      background: #f1f5f9;
+      box-shadow: 0 28px 80px rgba(14, 25, 41, 0.32);
+    }
+
+    .apex-event-body {
+      padding: 30px 34px 22px;
+      text-align: center;
+    }
+
+    .apex-event-kicker {
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .apex-event-title {
+      margin-top: 12px;
+      color: #000;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.32;
+      letter-spacing: -0.04em;
+    }
+
+    .apex-event-title strong {
+      display: block;
+      color: var(--brand);
+    }
+
+    .apex-event-subtitle {
+      margin-top: 20px;
+      color: #111;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .apex-event-envelope {
+      position: relative;
+      width: min(318px, 86%);
+      height: 256px;
+      margin: 18px auto 12px;
+    }
+
+    .apex-event-envelope-back {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 178px;
+      background: var(--brand);
+      clip-path: polygon(50% 0, 100% 55%, 100% 100%, 0 100%, 0 55%);
+    }
+
+    .apex-event-coupon {
+      position: absolute;
+      z-index: 2;
+      top: 50px;
+      left: 50%;
+      width: min(270px, 86%);
+      height: 168px;
+      padding: 22px 12px 10px;
+      transform: translateX(-50%);
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(14, 25, 41, 0.16);
+    }
+
+    .apex-event-coupon span {
+      display: block;
+      color: #111;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .apex-event-coupon strong {
+      display: block;
+      margin-top: 4px;
+      color: #000;
+      font-family: var(--font-display);
+      font-size: 78px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .apex-event-envelope-front {
+      position: absolute;
+      z-index: 3;
+      inset: auto 0 0;
+      height: 144px;
+      background:
+        linear-gradient(155deg, rgba(255,255,255,0.5) 0 50%, transparent 50%) left / 50% 100% no-repeat,
+        linear-gradient(205deg, rgba(255,255,255,0.38) 0 50%, transparent 50%) right / 50% 100% no-repeat,
+        linear-gradient(180deg, #dce8ff 0%, #2f79f0 100%);
+      clip-path: polygon(0 18%, 50% 62%, 100% 18%, 100% 100%, 0 100%);
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+
+    .apex-event-note {
+      color: #111;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .apex-event-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 74px;
+      padding: 20px 24px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      transition: background 150ms ease, transform 150ms ease;
+    }
+
+    .apex-event-cta:hover {
+      background: var(--brand-strong);
+    }
+
+    .apex-event-cta:active {
+      transform: scale(0.99);
+    }
+
+    .apex-event-cta strong {
+      color: #f4ff00;
+    }
+
+    @media (max-width: 560px) {
+      .apex-event-body {
+        padding: 20px 18px 16px;
+      }
+
+      .apex-event-kicker {
+        font-size: 10px;
+      }
+
+      .apex-event-title {
+        margin-top: 8px;
+        font-size: clamp(22px, 7.5vw, 30px);
+      }
+
+      .apex-event-subtitle {
+        margin-top: 12px;
+        font-size: 12px;
+      }
+
+      .apex-event-envelope {
+        width: min(270px, 92%);
+        height: 218px;
+        margin-top: 10px;
+      }
+
+      .apex-event-envelope-back {
+        height: 152px;
+      }
+
+      .apex-event-coupon {
+        top: 42px;
+        height: 142px;
+        padding-top: 18px;
+      }
+
+      .apex-event-coupon span {
+        font-size: 11px;
+      }
+
+      .apex-event-coupon strong {
+        font-size: 64px;
+      }
+
+      .apex-event-envelope-front {
+        height: 122px;
+      }
+
+      .apex-event-note {
+        font-size: 11px;
+      }
+
+      .apex-event-cta {
+        min-height: 66px;
+        padding: 18px 14px;
+        font-size: 16px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -4084,27 +4287,22 @@
   </div>
 
   <div class="coupon-modal-overlay" id="couponModalOverlay" hidden>
-    <div class="coupon-modal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
-      <div class="coupon-modal-head">
-        <div class="coupon-modal-kicker">APEX Pass Reward</div>
-        <button class="coupon-close" id="couponCloseButton" type="button" aria-label="할인권 닫기">✕</button>
-      </div>
-      <div class="coupon-ticket">
-        <div class="coupon-ticket-main">
-          <div class="coupon-pass-badge">현재 결과 <strong id="couponScoreLabel">60점</strong> · 응시 기준 통과</div>
-          <h2 class="coupon-ticket-title" id="couponModalTitle">간단 테스트 60점을 통과한<br><strong>당신에게 드리는 APEX 90% 응시 할인권!</strong></h2>
-          <p class="coupon-ticket-copy">내 AI 활용능력을 정량적으로 증명하는 유일한 인증시험, APEX</p>
-          <p class="coupon-ticket-note">점수와 상위 퍼센타일 결과를 본 뒤, 정식 APEX 소개 페이지로 바로 이어질 수 있게 준비해두었습니다.</p>
+    <div class="coupon-modal apex-event-modal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
+      <div class="apex-event-body">
+        <div class="apex-event-kicker">EVENT</div>
+        <h2 class="apex-event-title" id="couponModalTitle">AI가 스펙인 시대<strong>이제 APEX로 증명하세요</strong></h2>
+        <p class="apex-event-subtitle">서울대·고려대·포항공대 연구진 공동 개발<br>지금 APEX 회원가입하시면 50% 쿠폰 드려요!</p>
+        <div class="apex-event-envelope" aria-hidden="true">
+          <div class="apex-event-envelope-back"></div>
+          <div class="apex-event-coupon">
+            <span>AI 실무 역량 검사 APEX 응시 쿠폰</span>
+            <strong>50%</strong>
+          </div>
+          <div class="apex-event-envelope-front"></div>
         </div>
-        <div class="coupon-ticket-stub" aria-hidden="true">
-          <div class="coupon-star">★</div>
-          <div class="coupon-stub-copy">APEX<br>90% OFF</div>
-        </div>
+        <p class="apex-event-note">딱 1분 회원가입하고, 4회차 시험 50% 할인 혜택을 챙겨가세요!</p>
       </div>
-      <div class="coupon-modal-actions">
-        <a class="button button-primary cta-link" id="couponPrimaryButton" href="https://scaila.kr/apex" target="_blank" rel="noreferrer">APEX 보러가기</a>
-        <button class="button button-secondary" id="couponDismissButton" type="button">나중에 보기</button>
-      </div>
+      <a class="apex-event-cta" id="couponPrimaryButton" href="https://scaila.kr/apex/signup?utm_source=test&amp;utm_medium=cpc&amp;utm_campaign=apex%5E100007" target="_blank" rel="noreferrer" aria-label="APEX 보러가기"><strong>50% 쿠폰</strong>&nbsp;받고 내 AI 역량 증명하기 →</a>
     </div>
   </div>
 
@@ -4132,9 +4330,6 @@
       shortPrompt: document.getElementById("shortPrompt"),
       shortPromptHelper: document.getElementById("shortPromptHelper"),
       couponModalOverlay: document.getElementById("couponModalOverlay"),
-      couponCloseButton: document.getElementById("couponCloseButton"),
-      couponDismissButton: document.getElementById("couponDismissButton"),
-      couponScoreLabel: document.getElementById("couponScoreLabel"),
       displayScore: document.getElementById("displayScore"),
       summaryText: document.getElementById("summaryText"),
       resultPosterArt: document.getElementById("resultPosterArt"),
@@ -4911,11 +5106,10 @@
       };
     }
 
-    function openCouponModal(total) {
-      if (!els.couponModalOverlay || total < 60) {
+    function openCouponModal() {
+      if (!els.couponModalOverlay) {
         return;
       }
-      els.couponScoreLabel.textContent = `${Math.round(total)}점`;
       els.couponModalOverlay.hidden = false;
       document.body.style.overflow = "hidden";
     }
@@ -4935,15 +5129,12 @@
       }
     }
 
-    function scheduleCouponModal(total) {
+    function scheduleCouponModal() {
       clearCouponTimer();
-      if (total < 60) {
-        return;
-      }
       couponTimer = window.setTimeout(() => {
-        openCouponModal(total);
+        openCouponModal();
         couponTimer = null;
-      }, 15000);
+      }, 5000);
     }
 
     function computePercentile(totalScore) {
@@ -5745,7 +5936,7 @@
       const part4 = factCheck.score;
       const { total, percentile, profile, snapshot } = renderResult(part1, part2, part3, part4);
       closeCouponModal();
-      scheduleCouponModal(total);
+      scheduleCouponModal();
       saveResultToSupabase(
         buildSupabasePayload({
           total,
@@ -5835,9 +6026,6 @@
     els.prevButton.addEventListener("click", prevStep);
     els.nextButton.addEventListener("click", nextStep);
     els.restartButton.addEventListener("click", restartQuiz);
-    els.couponCloseButton?.addEventListener("click", closeCouponModal);
-    els.couponDismissButton?.addEventListener("click", closeCouponModal);
-
     els.shortPrompt.addEventListener("input", updateCounters);
     els.couponModalOverlay?.addEventListener("click", (event) => {
       if (event.target === els.couponModalOverlay) {
