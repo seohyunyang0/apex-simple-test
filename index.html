@@ -3481,11 +3481,11 @@
 
     .halfway-nudge {
       width: 100%;
-      margin: 0 0 2px;
-      display: grid;
-      justify-items: start;
-      gap: 10px;
-      padding-left: 10px;
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 4px 4px 8px;
     }
 
     .halfway-nudge[hidden] {
@@ -3493,9 +3493,9 @@
     }
 
     .halfway-nudge-mark {
-      width: 40px;
-      height: 40px;
-      margin-left: 64px;
+      flex: 0 0 58px;
+      width: 58px;
+      height: 58px;
       display: grid;
       place-items: center;
       border-radius: 50%;
@@ -3505,39 +3505,42 @@
     }
 
     .halfway-nudge-mark img {
-      width: 22px;
-      height: 22px;
+      width: 34px;
+      height: 34px;
       object-fit: contain;
     }
 
     .halfway-nudge-copy {
       position: relative;
-      display: inline-flex;
+      display: flex;
+      flex: 1 1 auto;
       align-items: center;
-      min-height: 38px;
-      padding: 9px 13px;
-      border-radius: 14px;
+      justify-content: center;
+      min-height: 58px;
+      padding: 15px 22px;
+      border-radius: 22px;
       background: #f4ff00;
       color: #0e3b80;
-      font-size: 12px;
+      font-size: 17px;
       font-weight: 900;
       line-height: 1.2;
-      transform: rotate(-2deg);
       box-shadow: 0 6px 14px rgba(30, 41, 60, 0.1);
+      white-space: nowrap;
     }
 
     .halfway-nudge-copy::after {
       content: "";
       position: absolute;
-      left: 24px;
-      bottom: -9px;
+      left: 28px;
+      bottom: -13px;
       border-style: solid;
-      border-width: 10px 8px 0 0;
+      border-width: 14px 11px 0 0;
       border-color: #f4ff00 transparent transparent transparent;
-      transform: rotate(8deg);
+      transform: rotate(4deg);
     }
 
     .action-secondary {
+      width: min(100%, 430px);
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -3555,6 +3558,27 @@
     @media (max-width: 640px) {
       .action-secondary {
         width: 100%;
+      }
+
+      .halfway-nudge {
+        gap: 12px;
+      }
+
+      .halfway-nudge-mark {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+      }
+
+      .halfway-nudge-mark img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .halfway-nudge-copy {
+        min-height: 54px;
+        padding: 14px 16px;
+        font-size: clamp(14px, 4.2vw, 17px);
       }
     }
 
