@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI에게 일자리 뺏길 확률, 나는 몇 %일까?</title>
+  <title>내가 AI에게 대체될 확률은 몇 %일까?</title>
   <link rel="icon" type="image/svg+xml" href="./assets/Favicon_5.svg" />
   <meta
     name="description"
-    content="8문항으로 확인하는 AI 활용 진단. 내가 AI에게 일자리를 뺏길 확률을 바로 확인해보세요."
+    content="딱 3분, 8가지 문항으로 확인하는 나의 AI 생존율 테스트."
   />
 
   <!-- ═════════════════════════════════════════════════════════════
@@ -3479,6 +3479,64 @@
       box-shadow: none !important;
     }
 
+    .halfway-nudge {
+      width: min(100%, 520px);
+      margin: 24px auto -8px;
+      display: grid;
+      justify-items: start;
+      gap: 10px;
+      padding-left: 10px;
+    }
+
+    .halfway-nudge[hidden] {
+      display: none;
+    }
+
+    .halfway-nudge-mark {
+      width: 40px;
+      height: 40px;
+      margin-left: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid rgba(194, 213, 229, 0.7);
+      box-shadow: 0 5px 12px rgba(30, 41, 60, 0.14);
+    }
+
+    .halfway-nudge-mark img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    .halfway-nudge-copy {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 9px 13px;
+      border-radius: 14px;
+      background: #f4ff00;
+      color: #0e3b80;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.2;
+      transform: rotate(-2deg);
+      box-shadow: 0 6px 14px rgba(30, 41, 60, 0.1);
+    }
+
+    .halfway-nudge-copy::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -9px;
+      border-style: solid;
+      border-width: 10px 8px 0 0;
+      border-color: #f4ff00 transparent transparent transparent;
+      transform: rotate(8deg);
+    }
+
     @media (max-width: 640px) {
       .privacy-consent {
         padding: 16px;
@@ -3511,9 +3569,11 @@
         <div class="hero-logo" aria-label="APEX 로고">
           <img src="./assets/Favicon_5.svg" alt="APEX 로고" />
         </div>
-        <h1>AI에게 일자리 뺏길 확률,<br />나는 몇 %일까?</h1>
+        <h1>내가 AI에게 대체될<br />확률은 몇 %일까?</h1>
         <p class="landing-lead">
-          내가 얼마나 AI를 잘 쓰는지, AI에게 일자리를 뺏길 확률이 얼마인지 알아보기! 8문제만에 바로 확인해보세요.
+          <strong>딱 3분!</strong><br />
+          8가지 문항으로 확인하는<br />
+          나의 AI 생존율 테스트
         </p>
         <div class="privacy-consent">
           <label class="privacy-check" for="privacyConsent">
@@ -3528,7 +3588,7 @@
         </div>
         <div class="privacy-error" id="privacyError" role="alert" aria-live="polite"></div>
         <div class="hero-actions">
-          <button class="button button-primary button-hero" id="startButton" type="button" disabled>동의하고 간이테스트 시작</button>
+          <button class="button button-primary button-hero" id="startButton" type="button" disabled>동의하고 간이테스트 START</button>
         </div>
       </div>
     </section>
@@ -3542,9 +3602,9 @@
           <div class="progress-label" id="progressLabel">1 / 8</div>
         </div>
 
-        <div class="question-step active" data-step="0">
+        <div class="question-step active" data-step="0" data-question-id="q1">
           <div class="step-top">
-            <div class="step-tag">PART 1 · 데이터 보안</div>
+            <div class="step-tag">PART 5 · 데이터 보안</div>
             <small>Case 문항. 파일 업로드와 민감정보 처리 판단을 봅니다.</small>
           </div>
           <h2 class="question-title">재무제표 PDF를 AI에 올리기 전, 가장 적절한 대응은 무엇일까요?</h2>
@@ -3575,9 +3635,9 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="1">
+        <div class="question-step" data-step="1" data-question-id="q2">
           <div class="step-top">
-            <div class="step-tag">PART 2 · 역할 부여</div>
+            <div class="step-tag">PART 1 · 역할 부여</div>
             <small>상황판단형 문항. 역할 설정이 응답 품질에 미치는 영향을 봅니다.</small>
           </div>
           <h2 class="question-title">역할 부여를 구체적으로 설정할수록 왜 더 좋을까요?</h2>
@@ -3608,9 +3668,9 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="2">
+        <div class="question-step" data-step="2" data-question-id="q3">
           <div class="step-top">
-            <div class="step-tag">PART 3 · 환각 검증</div>
+            <div class="step-tag">PART 2 · 환각 검증</div>
             <small>상황판단형 문항. Hallucination 리스크를 실제로 구분하는지 봅니다.</small>
           </div>
           <h2 class="question-title qt-wide">'AI 환각(Hallucination)' <br class="qbr-m">현상에 대한 설명으로<br>가장 정확한 것은?</h2>
@@ -3641,7 +3701,7 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="3">
+        <div class="question-step" data-step="3" data-question-id="q4">
           <div class="step-top">
             <div class="step-tag">PART 4 · 전문가 검토</div>
             <small>Case 문항. 전문가 검토 없는 AI 의존 리스크를 봅니다.</small>
@@ -3677,9 +3737,9 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="4">
+        <div class="question-step" data-step="4" data-question-id="q5">
           <div class="step-top">
-            <div class="step-tag">PART 5 · 구독 티어</div>
+            <div class="step-tag">PART 3 · 구독 티어</div>
             <small>상황판단형 문항. 유료 티어를 사업적으로 이해하는지 봅니다.</small>
           </div>
           <h2 class="question-title">'AI Ultra' 티어의 특징으로 가장 맞는 것은?</h2>
@@ -3710,7 +3770,7 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="5">
+        <div class="question-step" data-step="5" data-question-id="q6">
           <div class="step-top">
             <div class="step-tag">PART 6 · 보도자료 검증</div>
             <small>상황판단형 문항. 검증 없는 대외 발신의 리스크를 판단합니다.</small>
@@ -3746,7 +3806,7 @@
           </div>
         </div>
 
-        <div class="question-step" data-step="6">
+        <div class="question-step" data-step="6" data-question-id="part7">
           <div class="step-top">
             <div class="step-tag">PART 7 · AI 에이전트의 정의</div>
             <small>설명문에서 부정확하거나 과장된 내용을 모두 선택하세요.</small>
@@ -3788,7 +3848,7 @@
           <div class="helper" id="sortingHelper">현재 0 / 5개 선택</div>
         </div>
 
-        <div class="question-step" data-step="7">
+        <div class="question-step" data-step="7" data-question-id="part8">
           <div class="step-top">
             <div class="step-tag">PART 8 · 프롬프트 직접 작성</div>
             <small>AI 경영 보고서의 환각 리스크를 관리하고 팩트체크 프로세스를 수립하는지 봅니다.</small>
@@ -3862,6 +3922,11 @@
         </div>
 
         <div class="error" id="quizError"></div>
+
+        <div class="halfway-nudge" id="halfwayNudge" hidden aria-live="polite">
+          <span class="halfway-nudge-mark" aria-hidden="true"><img src="./assets/Favicon_5.svg" alt="" /></span>
+          <strong class="halfway-nudge-copy">벌써 절반까지 오셨어요!</strong>
+        </div>
 
         <div class="actions">
           <button class="button button-secondary" id="prevButton" type="button">이전</button>
@@ -4038,6 +4103,7 @@
       prevButton: document.getElementById("prevButton"),
       nextButton: document.getElementById("nextButton"),
       quizError: document.getElementById("quizError"),
+      halfwayNudge: document.getElementById("halfwayNudge"),
       sortPool: document.getElementById("sortPool"),
       sortPoolBody: document.getElementById("sortPoolBody"),
       sortingHelper: document.getElementById("sortingHelper"),
@@ -4087,6 +4153,13 @@
     let selectedSortCardId = null;
     let couponTimer = null;
 
+    const desiredQuestionOrder = ["q2", "q3", "q5", "q4", "q1", "q6", "part7", "part8"];
+    desiredQuestionOrder.forEach((questionId) => {
+      const step = document.querySelector(`.question-step[data-question-id="${questionId}"]`);
+      if (step) {
+        els.quizPanel.insertBefore(step, els.quizError);
+      }
+    });
     const steps = [...document.querySelectorAll(".question-step")];
     const screens = [els.landingPanel, els.quizPanel, els.resultPanel];
     let currentStep = 0;
@@ -4251,6 +4324,9 @@
       els.progressLabel.textContent = `${currentStep + 1} / ${steps.length}`;
       els.prevButton.style.visibility = currentStep === 0 ? "hidden" : "visible";
       els.nextButton.textContent = currentStep === steps.length - 1 ? "결과 보기" : "다음";
+      if (els.halfwayNudge) {
+        els.halfwayNudge.hidden = currentStep !== 3;
+      }
       els.quizError.style.display = "none";
       // 문항 전환 시 상단으로 자동 이동 (모바일에서 새 문항을 처음부터 보이게)
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -4718,8 +4794,8 @@
 
     function validateStep(stepIndex) {
       if (stepIndex >= 0 && stepIndex <= 5) {
-        const answerName = `q${stepIndex + 1}`;
-        if (!getCheckedValue(answerName)) {
+        const answerName = steps[stepIndex]?.querySelector('input[type="radio"]')?.name;
+        if (!answerName || !getCheckedValue(answerName)) {
           return `문항 ${stepIndex + 1}의 답을 선택해 주세요.`;
         }
       }
