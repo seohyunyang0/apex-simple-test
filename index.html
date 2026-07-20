@@ -5900,11 +5900,14 @@
       const reportText = els.shareButton.dataset.report || "APEX 간단테스트 결과를 확인해보세요.";
       const platformText = buildPlatformShareText(platform, reportText);
 
+      // 복사는 부가 기능, 공유창 열기가 주 동작이다.
+      // 클립보드를 거부한 브라우저에서 return하면 버튼이 통째로 죽으므로
+      // 실패를 기록만 하고 공유는 그대로 진행한다.
+      let copied = true;
       try {
         await copyText(platformText);
       } catch (_error) {
-        showToast("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
-        return;
+        copied = false;
       }
 
       const opened = shareToPlatform(platform, platformText);
@@ -5930,6 +5933,14 @@
         instagram: "인스타그램용 리포트를 복사했습니다. 스토리나 DM에 붙여넣어보세요.",
         linkedin: "링크드인 공유창을 열고 리포트도 복사했습니다."
       };
+
+      if (!copied) {
+        showToast(opened
+          ? "공유창을 열었습니다. 복사는 브라우저 권한 때문에 실패했어요."
+          : "복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+        return;
+      }
+
       showToast(messages[platform] || "공유용 리포트를 복사했습니다.");
     }
 
