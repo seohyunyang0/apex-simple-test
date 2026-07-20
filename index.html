@@ -4108,6 +4108,62 @@
       font-size: clamp(17px, 4.2vw, 20px);
     }
 
+    /* 공유 버튼 = 로고만. 텍스트가 사라지므로 접근성 이름은 aria-label이 담당하고,
+       로고(40px)보다 큰 48px 히트 영역을 줘서 터치 타깃 기준(44px)을 넘긴다. */
+    /* flex+wrap이면 390px에서 가용폭 270px < 필요폭 277px라 4/1로 깨진다.
+       5등분 그리드로 두고 칸 안에서 버튼이 줄어들게 해서 항상 한 줄을 유지한다. */
+    #resultPanel .share-platforms {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(6px, 2vw, 12px);
+      justify-items: center;
+      max-width: 300px;   /* 넓은 화면에서 과하게 벌어지지 않게 */
+    }
+
+    #resultPanel .share-platform {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 48px;
+      height: auto;
+      aspect-ratio: 1;
+      min-width: 0 !important;
+      min-height: 0 !important;   /* 레거시 .button의 min-height:48px가 정사각형을 깬다 */
+      flex: 0 0 auto !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 12px !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      transition: transform 140ms ease, background 140ms ease;
+    }
+
+    #resultPanel .share-platform img {
+      width: 84%;
+      height: 84%;
+      max-width: 40px;
+      max-height: 40px;
+      display: block;
+      pointer-events: none;   /* 클릭이 항상 버튼으로 가도록 */
+    }
+
+    #resultPanel .share-platform:hover {
+      background: rgba(16, 33, 63, 0.07) !important;
+      transform: translateY(-1px);
+    }
+
+    #resultPanel .share-platform:active { transform: scale(0.94); }
+
+    /* 좁은 화면에서는 CTA 카드 여백을 줄여 로고 5개가 44px를 유지할 폭을 확보한다 */
+    @media (max-width: 400px) {
+      #resultPanel .result-cta-card { padding: 16px !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #resultPanel .share-platform { transition: none; }
+    }
+
     /* ── 액션 버튼 ───────────────────────────────────────────── */
     #resultPanel .rx-actions {
       display: flex;
@@ -4644,11 +4700,21 @@
               <div>
                 <strong>공유용 리포트 만들기</strong>
                 <div class="share-platforms">
-                  <button class="button share-platform" data-share-platform="kakao" data-platform="kakao" type="button">카카오</button>
-                  <button class="button share-platform" data-share-platform="naver" data-platform="naver" type="button">네이버</button>
-                  <button class="button share-platform" data-share-platform="facebook" data-platform="facebook" type="button">페이스북</button>
-                  <button class="button share-platform" data-share-platform="instagram" data-platform="instagram" type="button">인스타그램</button>
-                  <button class="button share-platform" data-share-platform="linkedin" data-platform="linkedin" type="button">링크드인</button>
+                  <button class="button share-platform" data-share-platform="kakao" data-platform="kakao" type="button" aria-label="카카오로 공유">
+                    <img src="./assets/share/kakao.png" alt="" width="40" height="40" loading="lazy" decoding="async" />
+                  </button>
+                  <button class="button share-platform" data-share-platform="naver" data-platform="naver" type="button" aria-label="네이버로 공유">
+                    <img src="./assets/share/naver.png" alt="" width="40" height="40" loading="lazy" decoding="async" />
+                  </button>
+                  <button class="button share-platform" data-share-platform="facebook" data-platform="facebook" type="button" aria-label="페이스북으로 공유">
+                    <img src="./assets/share/facebook.png" alt="" width="40" height="40" loading="lazy" decoding="async" />
+                  </button>
+                  <button class="button share-platform" data-share-platform="instagram" data-platform="instagram" type="button" aria-label="인스타그램으로 공유">
+                    <img src="./assets/share/instagram.png" alt="" width="40" height="40" loading="lazy" decoding="async" />
+                  </button>
+                  <button class="button share-platform" data-share-platform="linkedin" data-platform="linkedin" type="button" aria-label="링크드인으로 공유">
+                    <img src="./assets/share/linkedin.svg" alt="" width="40" height="40" loading="lazy" decoding="async" />
+                  </button>
                 </div>
               </div>
             </div>
