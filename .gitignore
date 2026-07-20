@@ -1,1 +1,4 @@
 .gstack/
+
+# 배포용 산출물 (tools/build-standalone-preview.py로 재생성)
+dist/
