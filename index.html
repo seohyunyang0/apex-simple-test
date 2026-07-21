@@ -4787,6 +4787,14 @@
   <script src="./supabase-config.js"></script>
   <script>
     const SHARE_BASE_URL = "https://seohyunyang0.github.io/apex-simple-test/";
+
+    // 등급별 공유 링크. /r/t3.html 같은 정적 페이지에 등급별 og 태그가 박혀 있어
+    // 카톡 썸네일에 "친구가 주의 나왔대"가 그대로 뜬다. 사람은 즉시 테스트로 넘어간다.
+    function shareUrlFor(profile) {
+      return profile && profile.tierKey
+        ? `${SHARE_BASE_URL}r/${profile.tierKey}.html`
+        : SHARE_BASE_URL;
+    }
     const SUPABASE_CONFIG = window.SUPABASE_CONFIG || null;
 
     const els = {
@@ -5871,7 +5879,7 @@
         `다음 점프 포인트: ${snapshot.weakest.label}`,
         `요약: ${getSummary(percentile, total)}`,
         `다음 액션: ${nextAction}`,
-        `테스트 링크: ${SHARE_BASE_URL}`
+        `테스트 링크: ${shareUrlFor(profile)}`
       ].join("\n");
     }
 
@@ -5986,7 +5994,11 @@
     }
 
     function shareToPlatform(platform, text) {
-      const encodedUrl = encodeURIComponent(SHARE_BASE_URL);
+      const currentTier = els.resultPanel.dataset.tier;
+      const shareUrl = currentTier
+        ? `${SHARE_BASE_URL}r/${currentTier}.html`
+        : SHARE_BASE_URL;
+      const encodedUrl = encodeURIComponent(shareUrl);
       const encodedTitle = encodeURIComponent("APEX 간단테스트 결과");
       const encodedText = encodeURIComponent(text);
 
@@ -6019,7 +6031,9 @@
         sharePending = navigator.share({
           title: "APEX 간단테스트 결과",
           text: platformText,
-          url: SHARE_BASE_URL
+          url: els.resultPanel.dataset.tier
+            ? `${SHARE_BASE_URL}r/${els.resultPanel.dataset.tier}.html`
+            : SHARE_BASE_URL
         }).then(() => true, () => false);
       }
 
