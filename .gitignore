@@ -2,3 +2,7 @@
 
 # 배포용 산출물 (tools/build-standalone-preview.py로 재생성)
 dist/
+
+# 내부 검수용 하네스 — Pages에 공개되지 않도록 저장소에서 제외
+# (로컬에서는 계속 사용 가능, 전달용은 tools/build-standalone-preview.py)
+preview.html
