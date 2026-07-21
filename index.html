@@ -4268,9 +4268,11 @@
     /* OS '동작 줄이기'가 켜져 있으면 결과 화면 모션을 전부 죽인다.
        .rx-force-motion(프리뷰 하네스 전용)만 예외 — 검수용 탈출구. */
     @media (prefers-reduced-motion: reduce) {
-      #resultPanel:not(.rx-force-motion) .rx-dial-tick { transition: none; }
+      /* 무한 깜빡임은 끈다 — 지침이 실제로 겨냥하는 것이 이런 반복 모션이다.
+         채움 전환은 짧게 남겨 결과가 "차오른다"는 정보는 유지한다. */
       #resultPanel:not(.rx-force-motion) .rx-dial-tick[data-last="true"] { animation: none; }
-      #resultPanel:not(.rx-force-motion) .rx-area-fill { transition: none; }
+      #resultPanel:not(.rx-force-motion) .rx-dial-tick { transition: stroke 120ms ease; }
+      #resultPanel:not(.rx-force-motion) .rx-area-fill { transition: width 260ms ease; }
     }
   </style>
 </head>
@@ -5793,6 +5795,10 @@
     // 같은 단계 안에서는 점수 위치에 따라 3칸 중 몇 칸까지 켜질지 갈린다.
     const DIAL_TICKS = 15;
     const DIAL_MAX_DURATION = 600;   // 게이지 채움 전체 상한(ms)
+    // OS '동작 줄이기'가 켜져 있어도 채움 자체는 보여준다. 접근성 지침이 겨냥하는 것은
+    // 크고 오래 반복되는 움직임이지 짧은 상태 전환이 아니다. 대신 훨씬 빠르게 끝내고
+    // 무한 깜빡임은 CSS에서 끈다.
+    const DIAL_REDUCED_DURATION = 240;
     // 경계는 TIER_BANDS 한 곳에서만 정의한다. getTierProfile·게이지·구간 라벨이 모두 여기서 파생.
     const DIAL_BANDS = Object.fromEntries(
       TIER_BANDS.map((b, i) => [b.key, { min: b.min, max: b.max, base: i * 3 + 1 }])
@@ -5851,12 +5857,13 @@
         });
       };
 
-      if (reduced) { paint(filled); return; }
-
       // 칸당 90ms 고정이면 상위 등급일수록 길어진다(사랑 15칸 = 1.35초).
       // 전체 길이에 상한을 둬서 주의(7칸)부터는 점점 빨라지고 모두 ~0.6초에 끝난다.
       // 심각·경계(1~6칸)는 상한에 걸리지 않아 기존 속도 그대로.
-      const gap = Math.min(90, DIAL_MAX_DURATION / Math.max(filled, 1));
+      // 동작 줄이기가 켜져 있으면 같은 연출을 0.24초로 압축한다.
+      const budget = reduced ? DIAL_REDUCED_DURATION : DIAL_MAX_DURATION;
+      const perTick = reduced ? 30 : 90;
+      const gap = Math.min(perTick, budget / Math.max(filled, 1));
 
       paint(0);
       for (let n = 1; n <= filled; n += 1) {
